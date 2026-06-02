@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="pt-[50px]">
+    <>
       <section className="w-full bg-zinc-900 py-24 px-6 text-center">
         <p className="text-sm uppercase tracking-widest text-zinc-400 mb-4">
           Say Hello
@@ -16,7 +16,7 @@ export default function ContactPage() {
           Contact
         </h1>
         <p className="text-zinc-300 max-w-2xl mx-auto text-lg font-light">
-          We'd love to hear from you.
+          We&apos;d love to hear from you.
         </p>
       </section>
 
@@ -27,21 +27,16 @@ export default function ContactPage() {
               <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-2">
                 Email
               </h2>
-              <a
-                href="mailto:hello@rozne.in"
-                className="text-xl hover:underline"
-              >
+              <a href="mailto:hello@rozne.in" className="text-xl hover:underline">
                 hello@rozne.in
               </a>
             </div>
-
             <div>
               <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-2">
                 Phone
               </h2>
               <p className="text-xl">+1 (234) 567-8901</p>
             </div>
-
             <div>
               <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-2">
                 Address
@@ -52,7 +47,6 @@ export default function ContactPage() {
                 Mountain View, California
               </p>
             </div>
-
             <div>
               <h2 className="text-sm uppercase tracking-widest text-muted-foreground mb-2">
                 Hours
@@ -105,6 +99,6 @@ export default function ContactPage() {
           </form>
         </div>
       </Shell>
-    </main>
+    </>
   );
 }
