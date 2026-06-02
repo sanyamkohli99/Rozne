@@ -26,8 +26,21 @@ export const getCurrentUserSession = async () => {
   return userResponse.data.session;
 };
 
-export const isAdmin = (currentUser: User | null) =>
-  currentUser?.app_metadata.isAdmin;
+export const isAdmin = async (currentUser: User | null): Promise<boolean> => {
+  if (!currentUser) return false;
+  // Check Supabase app_metadata first (set via Admin API)
+  if (currentUser.app_metadata?.isAdmin) return true;
+  // Fall back to checking the profiles table is_admin column
+  // This lets you grant access directly from Supabase Table Editor
+  try {
+    const profile = await db.query.profiles.findFirst({
+      where: eq(profiles.id, currentUser.id),
+    });
+    return profile?.is_admin === true;
+  } catch {
+    return false;
+  }
+};
 
 export const getUser = async ({ userId }: { userId: string }) => {
   const cookieStore = cookies();
