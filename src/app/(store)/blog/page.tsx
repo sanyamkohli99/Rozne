@@ -31,7 +31,7 @@ const posts = [
 
 export default function BlogPage() {
   return (
-    <main className="pt-[50px]">
+    <>
       <section className="w-full bg-zinc-900 py-24 px-6 text-center">
         <p className="text-sm uppercase tracking-widest text-zinc-400 mb-4">
           Journal
@@ -53,9 +53,7 @@ export default function BlogPage() {
                 <span>·</span>
                 <span>{post.category}</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-semibold mb-3 hover:underline cursor-pointer">
-                {post.title}
-              </h2>
+              <h2 className="text-2xl md:text-3xl font-semibold mb-3">{post.title}</h2>
               <p className="text-muted-foreground leading-relaxed text-lg">
                 {post.excerpt}
               </p>
@@ -63,6 +61,6 @@ export default function BlogPage() {
           ))}
         </div>
       </Shell>
-    </main>
+    </>
   );
 }
