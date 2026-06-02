@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetFooter,
   SheetTrigger,
@@ -29,9 +30,11 @@ export function SideMenu() {
       >
         <div className="grid py-8 gap-y-3 ml-12 md:ml-[96px] mt-[120px]">
           {siteConfig.mainNav.map(({ title, href }, index) => (
-            <Link key={index} href={href} className="text-xl md:text-3xl">
-              {title}
-            </Link>
+            <SheetClose asChild key={index}>
+              <Link href={href} className="text-xl md:text-3xl">
+                {title}
+              </Link>
+            </SheetClose>
           ))}
         </div>
 
