@@ -1,10 +1,10 @@
 {
-  "name": "hiyori",
+  "name": "rozne",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "graphql-codegen & next build",
+    "build": "graphql-codegen && next build",
     "start": "node .next/standalone/server.js",
     "lint": "next lint --ignore-path .gitignore .",
     "export": "next build && next export",
