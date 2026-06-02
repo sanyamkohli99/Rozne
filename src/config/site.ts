@@ -31,12 +31,6 @@ export const siteConfig = {
       items: [],
     },
     {
-      title: "Blog",
-      href: "/blog",
-      description: "Read our latest blog posts.",
-      items: [],
-    },
-    {
       title: "Contact",
       href: "/contact",
       description: "Get in touch with us.",
