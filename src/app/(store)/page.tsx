@@ -108,27 +108,27 @@ export default async function Home() {
 
 function HeroSection() {
   return (
-    <section className="w-full h-screen md:h-[800px] mx-auto flex justify-center">
+    <section className="w-full h-screen md:h-[800px] mx-auto flex justify-center bg-zinc-900">
       <div className="relative w-full h-full md:h-[800px]">
         <Image
-          alt="Furniture"
-          src="https://hiyori-backpack.s3.us-west-2.amazonaws.com/public/hero-image.jpg"
+          alt="ROZNE Collection"
+          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1920"
           width={1920}
           height={1200}
           priority={true}
-          className="h-full w-full object-cover "
+          className="h-full w-full object-cover opacity-60"
         />
       </div>
 
       <div className="container absolute py-8 h-screen md:h-[800px] w-full">
         <div className="flex flex-col justify-center z-30 h-full">
           <p className="text-sm md:text-md uppercase tracking-widest text-white ">
-            hugolam
+            ROZNE EXCLUSIVE
           </p>
-          <h1 className="text-5xl md:text-9xl font-bold text-white my-4 shadow-md">
-            Utilized with
+          <h1 className="text-5xl md:text-9xl font-bold text-white my-4 drop-shadow-lg">
+            Shop Smart,
             <br />
-            GraphQL:
+            Live Better.
           </h1>
 
           <div className="flex space-x-4 mt-5 max-w-screen">
@@ -138,22 +138,10 @@ function HeroSection() {
                 buttonVariants({ variant: "outline", size: "lg" }),
                 "border-2 border-white text-white rounded px-8 py-3 ",
                 "md:px-16 md:py-6",
-                "hover:text-zinc-600 hover:bg-white",
+                "hover:text-zinc-900 hover:bg-white",
               )}
             >
-              New in
-            </Link>
-
-            <Link
-              href="https://github.com/clonglam/HIYORI-master"
-              target="_blank"
-              className={cn(
-                buttonVariants({ variant: "default", size: "lg" }),
-                "border-2 border-primary text-white rounded px-8 py-3 ",
-                "md:px-16 md:py-6",
-              )}
-            >
-              View the Code
+              Shop Collection
             </Link>
           </div>
         </div>
