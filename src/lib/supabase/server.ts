@@ -1,5 +1,3 @@
-import { env } from "@/env.mjs";
-
 import { CookieOptions, createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -11,8 +9,10 @@ export function createClient({
   isAdmin?: boolean;
 }) {
   return createServerClient(
-    `https://${env.NEXT_PUBLIC_SUPABASE_PROJECT_REF}.supabase.co`,
-    isAdmin ? env.DATABASE_SERVICE_ROLE : env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    isAdmin
+      ? process.env.DATABASE_SERVICE_ROLE!
+      : process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
