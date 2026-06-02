@@ -8,11 +8,11 @@ import { registerUrql } from "@urql/next/rsc";
 
 export const makeClient = (access_token?: string) => {
   return createClient({
-    url: `https://ijhzkrbxahlhpkcextwl.supabase.co/graphql/v1`,
+    url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/graphql/v1`,
     exchanges: [cacheExchange, fetchExchange],
     fetchOptions: () => {
-      const headers = {
-        apiKey: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqaHprcmJ4YWhsaHBrY2V4dHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzODE3NTYsImV4cCI6MjA5NTk1Nzc1Nn0.kR8iHK6eBjss02pwdqA_AO4D6qow_leCMsLlmvOSuAM`,
+      const headers: Record<string, string> = {
+        apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       };
 
       if (access_token) {
