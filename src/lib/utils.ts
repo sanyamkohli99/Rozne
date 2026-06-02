@@ -20,6 +20,8 @@ export const getURL = () => {
 
 export const keytoUrl = (key?: string) => {
   if (!key) return "/assets/bathroom-planning.jpg";
+  // If the key is already a full URL (e.g. Unsplash or any https link), use it directly
+  if (key.startsWith("http://") || key.startsWith("https://")) return key;
   const bucket = env.NEXT_PUBLIC_S3_BUCKET;
   const region = env.NEXT_PUBLIC_S3_REGION;
   if (!bucket || !region) return "/assets/bathroom-planning.jpg";
