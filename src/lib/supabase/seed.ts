@@ -18,7 +18,7 @@ const queryClient = postgres(process.env.DATABASE_URL);
 export const db = drizzle(queryClient, { schema });
 
 const seeddata = async () => {
-  // await seed.medias()
+  await seed.medias()
   await seed.collections();
   await seed.products();
   // await seed.shopOrders()
