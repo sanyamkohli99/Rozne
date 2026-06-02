@@ -9,21 +9,21 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getURL = () => {
   let url =
-    env.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+    env.NEXT_PUBLIC_SITE_URL ??
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ??
     "http://localhost:3000";
 
-  // Make sure to include `https://` when not localhost.
   url = url.includes("http") ? url : `https://${url}`;
-  // Make sure to include a trailing `/`.
   url = url.charAt(url.length - 1) === "/" ? url : `${url}/`;
   return url;
 };
 
 export const keytoUrl = (key?: string) => {
-  return key
-    ? `https://${env.NEXT_PUBLIC_S3_BUCKET}.s3.${env.NEXT_PUBLIC_S3_REGION}.amazonaws.com/${key}`
-    : "/assets/bathroom-planning.jpg";
+  if (!key) return "/assets/bathroom-planning.jpg";
+  const bucket = env.NEXT_PUBLIC_S3_BUCKET;
+  const region = env.NEXT_PUBLIC_S3_REGION;
+  if (!bucket || !region) return "/assets/bathroom-planning.jpg";
+  return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
 };
 
 export function formatPrice(price: number | string) {
@@ -85,12 +85,10 @@ export function isArrayOfFile(files: unknown): files is File[] {
 export function getNameInitials(fullName: string): string {
   const nameParts = fullName.split(" ");
   let initials = "";
-
   for (const part of nameParts) {
     if (part.length > 0) {
       initials += part[0].toUpperCase();
     }
   }
-
   return initials;
 }
