@@ -4,16 +4,15 @@ import {
   createClient,
   fetchExchange,
 } from "@urql/core";
-import { env } from "../env.mjs";
 import { registerUrql } from "@urql/next/rsc";
 
 export const makeClient = (access_token?: string) => {
   return createClient({
-    url: `https://${env.NEXT_PUBLIC_SUPABASE_PROJECT_REF}.supabase.co/graphql/v1`,
+    url: `https://ijhzkrbxahlhpkcextwl.supabase.co/graphql/v1`,
     exchanges: [cacheExchange, fetchExchange],
     fetchOptions: () => {
       const headers = {
-        apiKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        apiKey: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlqaHprcmJ4YWhsaHBrY2V4dHdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzODE3NTYsImV4cCI6MjA5NTk1Nzc1Nn0.kR8iHK6eBjss02pwdqA_AO4D6qow_leCMsLlmvOSuAM`,
       };
 
       if (access_token) {
