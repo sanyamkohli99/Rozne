@@ -70,11 +70,18 @@ const LandingRouteQuery = gql(/* GraphQL */ `
 export default async function Home() {
   const currentUser = await getCurrentUser();
 
-  const { data } = await getClient().query(LandingRouteQuery, {
+  const { data, error } = await getClient().query(LandingRouteQuery, {
     user_id: currentUser?.id,
   });
 
-  if (data === null) return notFound();
+  if (error) {
+    console.error("GraphQL Error:", error);
+  }
+
+  if (!data || !data.products) {
+    console.error("Data is missing products:", data);
+    return notFound();
+  }
 
   return (
     <main>
