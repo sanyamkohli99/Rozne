@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function OurStoryPage() {
   return (
-    <main className="pt-[50px]">
+    <>
       <section className="w-full bg-zinc-900 py-24 px-6 text-center">
         <p className="text-sm uppercase tracking-widest text-zinc-400 mb-4">
           Who We Are
@@ -40,8 +40,7 @@ export default function OurStoryPage() {
             <ul className="space-y-4 text-muted-foreground text-lg">
               <li className="flex gap-3">
                 <span className="font-semibold text-foreground">Integrity.</span>
-                Every product is designed with honesty — what you see is what you
-                get.
+                Every product is designed with honesty — what you see is what you get.
               </li>
               <li className="flex gap-3">
                 <span className="font-semibold text-foreground">Sustainability.</span>
@@ -64,6 +63,6 @@ export default function OurStoryPage() {
           </div>
         </div>
       </Shell>
-    </main>
+    </>
   );
 }
