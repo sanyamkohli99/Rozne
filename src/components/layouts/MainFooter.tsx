@@ -65,11 +65,11 @@ function MainFooter({}: Props) {
       ],
     },
     {
-      title: "About HIYORI",
+      title: "About ROZNE",
       items: [
         {
           title: "Our Story",
-          href: "https://github.com/clonglam/HIYORI-master",
+          href: "https://github.com/sanyamkohli99/Rozne",
           items: [],
         },
         {
