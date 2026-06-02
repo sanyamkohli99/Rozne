@@ -1,9 +1,6 @@
-import { Shell } from "@/components/layouts/Shell";
+"use client";
 
-export const metadata = {
-  title: "Contact | ROZNE",
-  description: "Get in touch with the ROZNE team.",
-};
+import { Shell } from "@/components/layouts/Shell";
 
 export default function ContactPage() {
   return (
