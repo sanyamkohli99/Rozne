@@ -78,24 +78,22 @@ export default async function Home() {
     console.error("GraphQL Error:", error);
   }
 
-  if (!data || !data.products) {
-    console.error("Data is missing products:", data);
-    return notFound();
-  }
+  const productsEdges = data?.products?.edges || [];
+  const collectionEdges = data?.collectionScrollCards?.edges || [];
 
   return (
     <main>
       <HeroSection />
 
       <Shell>
-        {data.products && data.products.edges ? (
+        {collectionEdges.length > 0 ? (
           <ProductSubCollectionsCircles
-            collections={data.collectionScrollCards.edges}
+            collections={collectionEdges}
           />
         ) : null}
 
-        {data.products && data.products.edges ? (
-          <FeaturedProductsCards products={data.products.edges} />
+        {productsEdges.length > 0 ? (
+          <FeaturedProductsCards products={productsEdges} />
         ) : null}
 
         <CollectionGrid />
