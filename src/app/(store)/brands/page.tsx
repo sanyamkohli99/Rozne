@@ -9,32 +9,28 @@ const brands = [
   {
     name: "Arko Studio",
     category: "Furniture & Living",
-    description:
-      "Minimalist furniture crafted from sustainably sourced materials.",
+    description: "Minimalist furniture crafted from sustainably sourced materials.",
   },
   {
     name: "Lumé",
     category: "Lighting",
-    description:
-      "Handmade lighting collections that transform any space.",
+    description: "Handmade lighting collections that transform any space.",
   },
   {
     name: "Forrest & Co.",
     category: "Textiles",
-    description:
-      "Organic cotton and linen homewares made in small batches.",
+    description: "Organic cotton and linen homewares made in small batches.",
   },
   {
     name: "Serai",
     category: "Kitchen & Bath",
-    description:
-      "Functional, beautiful objects for the most-used rooms in your home.",
+    description: "Functional, beautiful objects for the most-used rooms in your home.",
   },
 ];
 
 export default function BrandsPage() {
   return (
-    <main className="pt-[50px]">
+    <>
       <section className="w-full bg-zinc-900 py-24 px-6 text-center">
         <p className="text-sm uppercase tracking-widest text-zinc-400 mb-4">
           Partners
@@ -43,8 +39,7 @@ export default function BrandsPage() {
           Brands &amp; Designers
         </h1>
         <p className="text-zinc-300 max-w-2xl mx-auto text-lg font-light">
-          We curate only the best — makers who share our values and craft with
-          purpose.
+          We curate only the best — makers who share our values and craft with purpose.
         </p>
       </section>
 
@@ -66,6 +61,6 @@ export default function BrandsPage() {
           ))}
         </div>
       </Shell>
-    </main>
+    </>
   );
 }
