@@ -19,13 +19,21 @@ export const getURL = () => {
 };
 
 export const keytoUrl = (key?: string) => {
-  if (!key) return "/assets/bathroom-planning.jpg";
+  if (!key) return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=400";
   // If the key is already a full URL (e.g. Unsplash or any https link), use it directly
   if (key.startsWith("http://") || key.startsWith("https://")) return key;
+  // Prefer S3 if configured
   const bucket = env.NEXT_PUBLIC_S3_BUCKET;
   const region = env.NEXT_PUBLIC_S3_REGION;
-  if (!bucket || !region) return "/assets/bathroom-planning.jpg";
-  return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+  if (bucket && region) {
+    return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+  }
+  // Fallback to Supabase Storage if available
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
+  if (supabaseUrl) {
+    return `${supabaseUrl}/storage/v1/object/public/media/${key}`;
+  }
+  return "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=400";
 };
 
 export function formatPrice(price: number | string) {
