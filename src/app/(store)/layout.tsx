@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { CartSheet } from "@/features/carts";
 import MainFooter from "@/components/layouts/MainFooter";
 import Navbar from "@/components/layouts/MainNavbar";
