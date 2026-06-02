@@ -233,20 +233,20 @@ function CollectionGrid() {
     <section className="relative lg:space-x-5 space-y-5 lg:space-y-0 grid grid-cols-1 lg:grid-cols-3 max-h-[840px]">
       <div className="relative col-span-2 w-full h-[840px]">
         <Image
-          src={keytoUrl("public/zPiCx79oGe5X4rVBLg0Ss.jpeg")}
+          src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=1920"
           width={1080}
           height={1080}
           className="object-cover w-full h-full"
-          alt="1"
+          alt="Bath Room Collection"
         />
         <div className="bg-zinc-800/20 flex justify-center items-center flex-col absolute w-full h-full top-0 left-0 text-white">
           <p className="text-5xl mb-3">Bath Room</p>
-          <p className=" font-light mb-8">Designed for enhanchment</p>
+          <p className=" font-light mb-8">Designed for enhancement</p>
           <Link
             className={cn(buttonVariants({ size: "lg" }), "text-xl py-8 px-10")}
             href={"/collections/bathroom"}
           >
-            DiscoverNow
+            Discover Now
           </Link>
         </div>
       </div>
@@ -254,21 +254,21 @@ function CollectionGrid() {
       <div className="flex flex-col w-full space-y-5 h-[840px]">
         <div className="relative w-full h-[340px]">
           <Image
-            src={keytoUrl("public/E2MWE99uGyOZLd76UEixy.jpeg")}
+            src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
-            alt="1"
+            alt="Living Room Collection"
           />
         </div>
 
         <div className="relative overflow-hidden">
           <Image
-            src={keytoUrl("public/YPO3VwJvjvlkWzNtIv9FS.jpeg")}
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
-            alt="1"
+            alt="Bedroom Collection"
           />
         </div>
       </div>
