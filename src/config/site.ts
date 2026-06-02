@@ -10,7 +10,7 @@ export const siteConfig = {
   url: "https://rozne.in",
   address: "1600 Amphitheatre Parkway in Mountain View, California",
   phone: "+1(234)-567-8901",
-  email: "hello@hugo-coding.com",
+  email: "hello@rozne.in",
   mainNav: [
     {
       title: "Shop",
@@ -20,26 +20,26 @@ export const siteConfig = {
     },
     {
       title: "Our Story",
-      href: "https://github.com/clonglam/HIYORI-master",
+      href: "#",
       description: "Our Story.",
       items: [],
     },
     {
       title: "Brands & Designers",
-      href: "https://github.com/clonglam/HIYORI-master",
-      description: "Read our latest blog posts.",
+      href: "#",
+      description: "Discover our brands.",
       items: [],
     },
     {
       title: "Blog",
-      href: "https://blog.hugo-coding.com",
+      href: "#",
       description: "Read our latest blog posts.",
       items: [],
     },
     {
       title: "Contact",
-      href: "https://hugo-coding.com/#contact",
-      description: "Read our latest blog posts.",
+      href: "#",
+      description: "Get in touch with us.",
       items: [],
     },
   ] satisfies NavItemWithOptionalChildren[],
