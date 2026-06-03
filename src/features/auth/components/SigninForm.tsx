@@ -23,6 +23,8 @@ import { authSchema } from "../validations";
 import { PasswordInput } from "./PasswordInput";
 
 type FormData = z.infer<typeof authSchema>;
+const emailSchema = z.object({ email: z.string().email() });
+type EmailData = z.infer<typeof emailSchema>;
 
 export function SignInForm() {
   const router = useRouter();
@@ -30,13 +32,17 @@ export function SignInForm() {
   const { toast } = useToast();
   const supabase = createClient();
   const [isPending, startTransition] = React.useTransition();
+  const [magicMode, setMagicMode] = React.useState(false);
+  const [magicSent, setMagicSent] = React.useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(authSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
+  });
+
+  const magicForm = useForm<EmailData>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: { email: "" },
   });
 
   React.useEffect(() => {
@@ -46,19 +52,86 @@ export function SignInForm() {
 
   function onSubmit({ email, password }: FormData) {
     startTransition(async () => {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      console.log("data", data);
-
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         toast({ title: "Error", description: error.message });
       } else {
-        toast({ title: "Login Sucess" });
+        toast({ title: "Login Success" });
         router.push(searchParams?.get("from") || "/");
       }
     });
+  }
+
+  function onMagicLink({ email }: EmailData) {
+    startTransition(async () => {
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: redirectTo },
+      });
+      if (error) {
+        toast({ title: "Error", description: error.message });
+      } else {
+        setMagicSent(true);
+      }
+    });
+  }
+
+  if (magicMode) {
+    if (magicSent) {
+      return (
+        <div className="text-center space-y-3 py-4">
+          <p className="text-lg font-medium">Check your email ✉️</p>
+          <p className="text-muted-foreground text-sm">
+            We sent a sign-in link to{" "}
+            <strong>{magicForm.getValues("email")}</strong>. Click the link to
+            log in — no password needed.
+          </p>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => { setMagicSent(false); setMagicMode(false); }}
+          >
+            Back to sign in
+          </Button>
+        </div>
+      );
+    }
+
+    return (
+      <Form {...magicForm}>
+        <form
+          className="grid gap-4"
+          onSubmit={(...args) => void magicForm.handleSubmit(onMagicLink)(...args)}
+        >
+          <FormField
+            control={magicForm.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="email@domain.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button disabled={isPending}>
+            {isPending && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Send magic link
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setMagicMode(false)}
+          >
+            Sign in with password instead
+          </Button>
+        </form>
+      </Form>
+    );
   }
 
   return (
@@ -98,11 +171,16 @@ export function SignInForm() {
           )}
         />
         <Button disabled={isPending}>
-          {isPending && (
-            <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-          )}
+          {isPending && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
           Sign in
-          <span className="sr-only">Sign in</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => setMagicMode(true)}
+        >
+          Sign in with email link instead
         </Button>
       </form>
     </Form>
