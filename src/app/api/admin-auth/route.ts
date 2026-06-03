@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { token } = await req.json();
-  const secret = process.env.SESSION_SECRET ?? process.env.ADMIN_TOKEN;
+  const secret = process.env.ADMIN_TOKEN ?? process.env.SESSION_SECRET;
 
   if (!secret || token !== secret) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });

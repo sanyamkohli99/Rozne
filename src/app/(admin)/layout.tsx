@@ -11,7 +11,7 @@ type Props = { children: ReactNode };
 
 async function AdminLayout({ children }: Props) {
   const cookieStore = cookies();
-  const secret = process.env.SESSION_SECRET ?? process.env.ADMIN_TOKEN;
+  const secret = process.env.ADMIN_TOKEN ?? process.env.SESSION_SECRET;
   const bypassCookie = cookieStore.get("admin-bypass")?.value;
   const hasBypass = secret && bypassCookie === secret;
 
