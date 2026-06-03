@@ -19,36 +19,40 @@ export default function OurStoryPage() {
           Our Story
         </h1>
         <p className="text-zinc-300 max-w-2xl mx-auto text-lg font-light">
-          Born from a belief that great design should be for everyone.
+          From the textile capital of India — crafting warmth, stitch by stitch.
         </p>
       </section>
 
       <Shell>
         <div className="max-w-3xl mx-auto py-16 space-y-10">
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Where it began</h2>
+            <h2 className="text-2xl font-semibold mb-4">About ROZNE</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-              ROZNE started with a simple question: why do people have to choose
-              between quality and affordability? We set out to build a brand that
-              refuses that compromise — one that brings thoughtfully designed
-              products to everyday life without the premium price tag.
+              ROZNE is a premium knitwear brand rooted in Ludhiana, Punjab — India&apos;s knitwear capital. We bring quality sweaters, woollen wear, and hosiery garments directly to you, with no compromise on craftsmanship or comfort.
             </p>
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Our values</h2>
+            <h2 className="text-2xl font-semibold mb-4">What We Stand For</h2>
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Every ROZNE piece is made with precision — from yarn selection to the final stitch. Whether you are looking for everyday warmth or a bulk wholesale order, we deliver factory-direct quality at honest prices.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Our Values</h2>
             <ul className="space-y-4 text-muted-foreground text-lg">
               <li className="flex gap-3">
-                <span className="font-semibold text-foreground">Integrity.</span>
-                Every product is designed with honesty — what you see is what you get.
+                <span className="font-semibold text-foreground">Quality.</span>
+                Every garment is crafted with attention to yarn, knit, and finish — no shortcuts.
               </li>
               <li className="flex gap-3">
-                <span className="font-semibold text-foreground">Sustainability.</span>
-                We partner only with makers who put the earth first.
+                <span className="font-semibold text-foreground">Transparency.</span>
+                Direct pricing — what you see is what you pay.
               </li>
               <li className="flex gap-3">
-                <span className="font-semibold text-foreground">Community.</span>
-                A portion of every sale funds a meal for a youth in need.
+                <span className="font-semibold text-foreground">Reliability.</span>
+                On-time delivery and consistent quality across every order.
               </li>
             </ul>
           </div>
@@ -60,6 +64,10 @@ export default function OurStoryPage() {
             >
               Shop the collection
             </Link>
+          </div>
+
+          <div className="border-t border-border pt-8 text-sm text-muted-foreground">
+            <p>Manufactured by <span className="font-medium text-foreground">KRS Apparels</span> — B-34/3339, Shakti Vihar, Chander Nagar, Ludhiana (Pb.) INDIA</p>
           </div>
         </div>
       </Shell>

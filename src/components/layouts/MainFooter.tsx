@@ -13,28 +13,23 @@ function MainFooter({}: Props) {
       title: "Shop",
       items: [
         {
-          title: "Furniture",
-          href: "/collections/furniture",
+          title: "Sweaters",
+          href: "/collections/sweaters",
           items: [],
         },
         {
-          title: "Lighting",
-          disabled: true,
+          title: "Woollen Cardigans",
+          href: "/collections/cardigans",
           items: [],
         },
         {
-          title: "Rugs",
-          disabled: true,
+          title: "Hosiery Basics",
+          href: "/collections/hosiery",
           items: [],
         },
         {
-          title: "New",
-          disabled: true,
-          items: [],
-        },
-        {
-          title: "Sale",
-          disabled: true,
+          title: "Kids Knitwear",
+          href: "/collections/kids",
           items: [],
         },
       ],
@@ -48,13 +43,13 @@ function MainFooter({}: Props) {
           items: [],
         },
         {
-          title: "Store Policy",
-          disabled: true,
+          title: "Bulk / Wholesale",
+          href: "/contact",
           items: [],
         },
         {
-          title: "Payment Methods",
-          disabled: true,
+          title: "Custom Orders",
+          href: "/contact",
           items: [],
         },
         {
@@ -65,26 +60,21 @@ function MainFooter({}: Props) {
       ],
     },
     {
-      title: "About ROZNE",
+      title: "About KRS",
       items: [
         {
           title: "Our Story",
-          href: "https://github.com/sanyamkohli99/Rozne",
+          href: "/our-story",
           items: [],
         },
         {
-          title: "Brands & Designers",
-          disabled: true,
-          items: [],
-        },
-        {
-          title: "Stores",
-          disabled: true,
+          title: "Collections",
+          href: "/brands",
           items: [],
         },
         {
           title: "Contact",
-          disabled: true,
+          href: "/contact",
           items: [],
         },
       ],
@@ -116,7 +106,6 @@ function MainFooter({}: Props) {
         </div>
 
         <div className="flex gap-x-5 justify-between flex-col md:flex-row md:items-center items-start ">
-          {/* <div className="grid gap-x-5 justify-between items-center"> */}
           <div className="flex flex-col md:flex-row gap-x-5 md:items-center items-start mb-4 md:mb-0">
             <Branding className="text-3xl" />
             <div className="text-[10px] font-light">

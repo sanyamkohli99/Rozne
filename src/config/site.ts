@@ -6,11 +6,11 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "ROZNE",
-  description: "Ecommerce Application built with NextJS 14",
+  description: "Premium Hosiery Garments — Manufacturer from Ludhiana, Punjab",
   url: "https://rozne.in",
-  address: "1600 Amphitheatre Parkway in Mountain View, California",
-  phone: "+1(234)-567-8901",
-  email: "hello@rozne.in",
+  address: "B-34/3339, Shakti Vihar, Chander Nagar, Ludhiana (Pb.) INDIA",
+  phone: "+91 884 7570 473",
+  email: "krsapparels39@gmail.com",
   mainNav: [
     {
       title: "Shop",
@@ -25,9 +25,9 @@ export const siteConfig = {
       items: [],
     },
     {
-      title: "Brands & Designers",
+      title: "Collections",
       href: "/brands",
-      description: "Discover our brands.",
+      description: "Discover our collections.",
       items: [],
     },
     {
