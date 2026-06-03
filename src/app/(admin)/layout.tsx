@@ -10,7 +10,6 @@ import { cookies } from "next/headers";
 type Props = { children: ReactNode };
 
 async function AdminLayout({ children }: Props) {
-  // Bypass: check for admin-bypass cookie set by /api/admin-auth
   const cookieStore = cookies();
   const secret = process.env.SESSION_SECRET ?? process.env.ADMIN_TOKEN;
   const bypassCookie = cookieStore.get("admin-bypass")?.value;
@@ -19,7 +18,7 @@ async function AdminLayout({ children }: Props) {
   if (!hasBypass) {
     const currentUser = await getCurrentUser();
     if (!(await isAdmin(currentUser))) {
-      redirect(`/sign-in?error=Only authenticated users can access`);
+      redirect(`/admin-login`);
     }
   }
 
