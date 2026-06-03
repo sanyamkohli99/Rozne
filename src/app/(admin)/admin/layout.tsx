@@ -13,14 +13,18 @@ export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
   const cookieStore = cookies();
-  const supabase = createServerClient({ cookieStore });
 
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-  if (authError || !user) {
-    redirect("/sign-in");
+  // Allow bypass via admin-login cookie
+  const secret = process.env.ADMIN_TOKEN ?? process.env.SESSION_SECRET;
+  const bypassCookie = cookieStore.get("admin-bypass")?.value;
+  const hasBypass = secret && bypassCookie === secret;
+
+  if (!hasBypass) {
+    const supabase = createServerClient({ cookieStore });
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      redirect("/sign-in");
+    }
   }
 
   return (
