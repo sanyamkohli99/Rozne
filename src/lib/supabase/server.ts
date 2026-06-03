@@ -1,6 +1,9 @@
 import { CookieOptions, createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://ijhzkrbxahlhpkcextwl.supabase.co";
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_CcSxvC-OxEhrmP3FI37eXQ_NPGDnbt1";
+
 export function createClient({
   cookieStore,
   isAdmin = false,
@@ -9,10 +12,10 @@ export function createClient({
   isAdmin?: boolean;
 }) {
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    SUPABASE_URL,
     isAdmin
-      ? process.env.DATABASE_SERVICE_ROLE!
-      : process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      ? process.env.DATABASE_SERVICE_ROLE ?? SUPABASE_ANON_KEY
+      : SUPABASE_ANON_KEY,
     {
       cookies: {
         get(name: string) {
