@@ -56,10 +56,24 @@ async function EditProjectPage({
 
   const raw = data.productsCollection.edges[0].node;
 
+  const r = raw as any;
   const product: SelectProducts = {
-    ...raw,
-    collectionId: (raw as any).collection_id ?? null,
-    featuredImageId: (raw as any).featured_image_id,
+    id: r.id,
+    name: r.name,
+    slug: r.slug,
+    description: r.description ?? null,
+    featured: r.featured ?? null,
+    badge: r.badge ?? null,
+    rating: String(r.rating ?? "4"),
+    price: String(r.price ?? "0"),
+    tags: r.tags ?? [],
+    images: r.images ?? [],
+    sizes: [],
+    stock: r.stock ?? null,
+    totalComments: r.totalComments ?? 0,
+    createdAt: r.createdAt ?? new Date().toISOString(),
+    collectionId: r.collection_id ?? null,
+    featuredImageId: r.featured_image_id,
   };
 
   return (
