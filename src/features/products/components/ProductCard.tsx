@@ -90,7 +90,7 @@ export function ProductCard({
           </CardDescription>
         </div>
 
-        <div className="">${price}</div>
+        <div className="">₹{price}</div>
 
         <div className="hidden md:block">
           <Rating value={product.rating} precision={0.5} readOnly />

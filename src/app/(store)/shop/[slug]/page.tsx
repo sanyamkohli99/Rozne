@@ -95,7 +95,7 @@ async function ProductDetailPage({ params }: Props) {
               <h1 className="text-3xl font-semibold tracking-wide mb-2">
                 {name}
               </h1>
-              <p className="text-2xl font-semibold mb-1">{`$${price}`}</p>
+              <p className="text-2xl font-semibold mb-1">{`₹${price}`}</p>
               <p className="text-xs text-muted-foreground">
                 Tax included. Shipping calculated at checkout.
               </p>
@@ -168,7 +168,7 @@ async function ProductDetailPage({ params }: Props) {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground space-y-2">
                   <p>
-                    Free standard shipping on orders over $80. Express and
+                    Free standard shipping on orders over ₹80. Express and
                     overnight options available at checkout.
                   </p>
                   <p>

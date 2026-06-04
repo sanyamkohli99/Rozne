@@ -54,7 +54,7 @@ function BuyAgainCard({ products }: BuyAgainCardProps) {
                 {node.name}
               </Link>
               <Link href={node.slug} className="text-red-700">
-                <p>${node.price}</p>
+                <p>₹{node.price}</p>
               </Link>
             </div>
           </div>

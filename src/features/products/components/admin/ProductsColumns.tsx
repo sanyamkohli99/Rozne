@@ -93,7 +93,7 @@ const ProductsColumns: ColumnDef<{
     cell: ({ row }) => {
       const product = row.original.node;
 
-      return <div className="font-medium">{`$ ${product.price}`}</div>;
+      return <div className="font-medium">{`₹ ${product.price}`}</div>;
     },
   },
   {

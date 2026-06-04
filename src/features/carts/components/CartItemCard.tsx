@@ -85,7 +85,7 @@ function CartItemCard({
       </CardHeader>
 
       <CardFooter className="gap-x-2 md:gap-x-5 p-0 ">
-        <p>$ {product.price}</p>
+        <p>₹ {product.price}</p>
 
         <Button
           aria-label="Remove Item Button"

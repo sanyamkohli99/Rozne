@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         user_id: !data.guest
           ? (await supabase.auth.getUser()).data.user.id
           : null,
-        currency: "cad",
+        currency: "inr",
         amount: `${amount}`,
         order_status: "pending",
         payment_status: "unpaid",
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       client_reference_id: insertedOrder[0].id,
       line_items: productsQuantity.map(({ name, price, quantity }) => ({
         price_data: {
-          currency: "cad",
+currency: "inr",
           product_data: {
             name: name,
           },
