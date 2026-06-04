@@ -13,10 +13,14 @@ import {
   BuyNowButton,
   ProductCard,
   ProductImageShowcase,
+  SizeChartDialog,
 } from "@/features/products";
 import { AddToWishListButton } from "@/features/wishlists";
 import { gql } from "@/gql";
+import db from "@/lib/supabase/db";
+import { products } from "@/lib/supabase/schema";
 import { getClient } from "@/lib/urql";
+import { eq } from "drizzle-orm";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -25,9 +29,10 @@ type Props = {
     slug: string;
   };
 };
+
 export const metadata: Metadata = {
-  title: `ROZNE | Premium Ecommerce Platform`,
-  description: "Shop smart, live better with ROZNE.",
+  title: `ROZNE | Premium Knitwear & Hosiery`,
+  description: "Discover handcrafted sweaters, cardigans and hosiery at ROZNE.",
 };
 
 const ProductDetailPageQuery = gql(/* GraphQL */ `
@@ -80,6 +85,17 @@ async function ProductDetailPage({ params }: Props) {
   const { id, name, description, price, commentsCollection, totalComments } =
     data.productsCollection.edges[0].node;
 
+  let availableSizes: string[] = [];
+  try {
+    const dbProduct = await db.query.products.findFirst({
+      where: eq(products.slug, params.slug),
+      columns: { sizes: true },
+    });
+    availableSizes = dbProduct?.sizes ?? [];
+  } catch {
+    availableSizes = [];
+  }
+
   return (
     <Shell>
       <div className="grid grid-cols-12 gap-x-8">
@@ -88,48 +104,94 @@ async function ProductDetailPage({ params }: Props) {
         </div>
 
         <div className="col-span-12 md:col-span-5">
-          <section className="flex justify-between items-start max-w-lg">
+          <section className="flex justify-between items-start max-w-lg mb-4">
             <div>
-              <h1 className="text-4xl font-semibold tracking-wide mb-3">
+              <h1 className="text-3xl font-semibold tracking-wide mb-2">
                 {name}
               </h1>
-              <p className="text-2xl font-semibold mb-3">{`$${price}`}</p>
+              <p className="text-2xl font-semibold mb-1">{`$${price}`}</p>
+              <p className="text-xs text-muted-foreground">
+                Tax included. Shipping calculated at checkout.
+              </p>
             </div>
             <AddToWishListButton productId={id} />
           </section>
 
-          <section className="flex mb-8 items-end space-x-5">
+          <section className="mb-6 max-w-lg space-y-4">
             <Suspense>
-              <AddProductToCartForm productId={id} />
+              <AddProductToCartForm
+                productId={id}
+                availableSizes={availableSizes}
+              />
             </Suspense>
+
+            {availableSizes.length > 0 && (
+              <div className="flex items-center gap-x-3">
+                <SizeChartDialog />
+              </div>
+            )}
 
             <BuyNowButton productId={id} />
           </section>
 
-          <section>
-            <p>{description}</p>
+          <section className="max-w-lg">
+            {description && (
+              <p className="text-sm leading-relaxed text-zinc-700 mb-4">
+                {description}
+              </p>
+            )}
 
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="material">
+                <AccordionTrigger className="text-sm font-medium">
+                  Material & Care
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground space-y-2">
+                  <p>
+                    Crafted from premium natural fibres selected for softness,
+                    warmth, and longevity. Each piece is knitted with care to
+                    ensure lasting quality.
+                  </p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>Hand wash cold or dry clean recommended</li>
+                    <li>Do not tumble dry — lay flat to dry</li>
+                    <li>Cool iron if needed; do not iron ribbing</li>
+                    <li>Store folded, not hung, to retain shape</li>
+                  </ul>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
+
+              <AccordionItem value="fit">
+                <AccordionTrigger className="text-sm font-medium">
+                  Fit & Sizing
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground space-y-2">
+                  <p>
+                    Our knitwear is designed with a relaxed, easy fit. If you
+                    prefer a slimmer silhouette, we recommend sizing down one
+                    size.
+                  </p>
+                  <p>
+                    Model is 5′8″ and wears size S. Garment measurements vary
+                    by style — refer to the Size Guide for exact measurements.
+                  </p>
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Ship & Returns</AccordionTrigger>
-                <AccordionContent>
-                  Shipping & Returns Spend $80 to receive free shipping for a
-                  limited time. Oversized items require additional handling
-                  fees. Learn more Except for furniture, innerwear, and food,
-                  merchandise can be returned or exchanged within 30 days of
-                  delivery. Learn more
+
+              <AccordionItem value="shipping">
+                <AccordionTrigger className="text-sm font-medium">
+                  Shipping & Returns
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground space-y-2">
+                  <p>
+                    Free standard shipping on orders over $80. Express and
+                    overnight options available at checkout.
+                  </p>
+                  <p>
+                    Returns and exchanges accepted within 30 days of delivery
+                    for unworn, unwashed items with tags attached. Innerwear and
+                    personalised items are final sale.
+                  </p>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -137,9 +199,9 @@ async function ProductDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <Header heading={`We Think You'll Love`} />
+      <Header heading={`You May Also Like`} />
 
-      <div className="container grid grid-cols-2 lg:grid-cols-4 gap-x-8 ">
+      <div className="container grid grid-cols-2 lg:grid-cols-4 gap-x-8">
         {data.recommendations &&
           data.recommendations.edges.map(({ node }) => (
             <ProductCard key={node.id} product={node} />

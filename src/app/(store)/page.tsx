@@ -20,6 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import RozneLogo from "@/components/layouts/RozneLogo";
 
 const LandingRouteQuery = gql(/* GraphQL */ `
   query LandingRouteQuery($user_id: UUID) {
@@ -87,9 +88,7 @@ export default async function Home() {
 
       <Shell>
         {collectionEdges.length > 0 ? (
-          <ProductSubCollectionsCircles
-            collections={collectionEdges}
-          />
+          <ProductSubCollectionsCircles collections={collectionEdges} />
         ) : null}
 
         {productsEdges.length > 0 ? (
@@ -108,40 +107,55 @@ export default async function Home() {
 
 function HeroSection() {
   return (
-    <section className="w-full h-screen md:h-[800px] mx-auto flex justify-center bg-zinc-900">
-      <div className="relative w-full h-full md:h-[800px]">
+    <section className="w-full h-screen md:h-[800px] mx-auto flex justify-center bg-zinc-900 overflow-hidden">
+      {/* Full-bleed background */}
+      <div className="absolute inset-0 h-screen md:h-[800px]">
         <Image
-          alt="ROZNE Collection"
-          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1920"
+          alt="ROZNE Knitwear Collection"
+          src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&q=80&w=1920"
           width={1920}
           height={1200}
           priority={true}
-          className="h-full w-full object-cover opacity-60"
+          className="h-full w-full object-cover opacity-55"
         />
+        {/* Gradient vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/30 via-transparent to-zinc-900/70" />
       </div>
 
-      <div className="container absolute py-8 h-screen md:h-[800px] w-full">
-        <div className="flex flex-col justify-center z-30 h-full">
-          <p className="text-sm md:text-md uppercase tracking-widest text-white ">
-            ROZNE EXCLUSIVE
-          </p>
-          <h1 className="text-5xl md:text-9xl font-bold text-white my-4 drop-shadow-lg">
-            Shop Smart,
-            <br />
-            Live Better.
-          </h1>
+      {/* Content */}
+      <div className="container relative z-10 py-8 h-screen md:h-[800px] w-full">
+        <div className="flex flex-col justify-center h-full gap-y-6">
 
-          <div className="flex space-x-4 mt-5 max-w-screen">
+          {/* Large hero logo — the brand mark front and center */}
+          <div className="text-white">
+            <RozneLogo className="text-5xl md:text-8xl" />
+          </div>
+
+          {/* Tagline */}
+          <p className="text-white/75 text-sm md:text-base max-w-xs leading-relaxed tracking-wide font-light">
+            Sweaters, cardigans &amp; hosiery
+            <br />
+            crafted for real warmth.
+          </p>
+
+          {/* CTA */}
+          <div className="flex items-center gap-x-4">
             <Link
               href="/shop"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "border-2 border-white text-white rounded px-8 py-3 ",
-                "md:px-16 md:py-6",
-                "hover:text-zinc-900 hover:bg-white",
+                "border border-white/70 text-white rounded-none px-8 py-3 text-xs tracking-widest uppercase",
+                "md:px-14 md:py-5",
+                "hover:text-zinc-900 hover:bg-white hover:border-white transition-all",
               )}
             >
               Shop Collection
+            </Link>
+            <Link
+              href="/collections"
+              className="text-white/60 text-xs tracking-widest uppercase hover:text-white transition-colors"
+            >
+              View all →
             </Link>
           </div>
         </div>
@@ -150,7 +164,7 @@ function HeroSection() {
   );
 }
 
-interface FeaturedProductsCards {
+interface FeaturedProductsCardsProps {
   products: { node: DocumentType<typeof ProductCardFragment> }[];
 }
 
@@ -170,8 +184,6 @@ function ProductSubCollectionsCircles({ collections }: CollectionsCardsProps) {
             className={cn(
               "relative bg-secondary rounded-full flex justify-center items-center",
               "w-[280px] h-[280px]",
-              // "md:w-[320px] md:h-[320px]"
-              // "lg:w-[360px] lg:h-[360px]"
             )}
           >
             <Image
@@ -182,8 +194,6 @@ function ProductSubCollectionsCircles({ collections }: CollectionsCardsProps) {
               className={cn(
                 "object-center object-cover hover:scale-105 transition-all duration-500",
                 "w-[240px] h-[240px]",
-                // "md:w-[280px] md:h-[280px]",
-                // "lg:w-[320px] lg:h-[320px]"
               )}
             />
           </div>
@@ -196,20 +206,16 @@ function ProductSubCollectionsCircles({ collections }: CollectionsCardsProps) {
   );
 }
 
-interface FeaturedProductsCardsProps {
-  products: { node: DocumentType<typeof ProductCardFragment> }[];
-}
-
 function FeaturedProductsCards({ products }: FeaturedProductsCardsProps) {
   return (
     <section className="container mt-12">
       <div className="">
         <h2 className="font-semibold text-2xl md:text-3xl mb-1 md:mb-3">
-          Featured Products
+          New Arrivals
         </h2>
         <p className="max-w-4xl text-sm md:text-md leading-[1.5] tracking-[-2%] mb-2">
-          Ideas to help Bring Home to Life based on your recently viewed
-          products. Share your space on Instagram and tag @Penpengrian
+          Fresh pieces from our latest knitwear collection — merino sweaters,
+          textured cardigans and fine hosiery to carry you through the season.
         </p>
       </div>
 
@@ -233,18 +239,18 @@ function CollectionGrid() {
     <section className="relative lg:space-x-5 space-y-5 lg:space-y-0 grid grid-cols-1 lg:grid-cols-3 max-h-[840px]">
       <div className="relative col-span-2 w-full h-[840px]">
         <Image
-          src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&q=80&w=1920"
+          src="https://images.unsplash.com/photo-1614251055880-ee96e4803393?auto=format&fit=crop&q=80&w=1920"
           width={1080}
           height={1080}
           className="object-cover w-full h-full"
-          alt="Bath Room Collection"
+          alt="Sweater Collection"
         />
         <div className="bg-zinc-800/20 flex justify-center items-center flex-col absolute w-full h-full top-0 left-0 text-white">
-          <p className="text-5xl mb-3">Bath Room</p>
-          <p className=" font-light mb-8">Designed for enhancement</p>
+          <p className="text-5xl mb-3">Sweaters</p>
+          <p className="font-light mb-8">Designed for every temperature</p>
           <Link
             className={cn(buttonVariants({ size: "lg" }), "text-xl py-8 px-10")}
-            href={"/collections/bathroom"}
+            href={"/collections/sweaters"}
           >
             Discover Now
           </Link>
@@ -252,46 +258,45 @@ function CollectionGrid() {
       </div>
 
       <div className="flex flex-col w-full space-y-5 h-[840px]">
-        <div className="relative w-full h-[340px]">
+        <div className="relative w-full h-[415px]">
           <Image
-            src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&q=80&w=800"
+            src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
-            alt="Living Room Collection"
+            alt="Cardigans Collection"
           />
+          <div className="bg-zinc-800/10 flex justify-center items-center flex-col absolute w-full h-full top-0 left-0 text-white">
+            <p className="text-3xl mb-2">Cardigans</p>
+            <Link
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "border-white text-white hover:text-zinc-900")}
+              href={"/collections/cardigans"}
+            >
+              Shop Now
+            </Link>
+          </div>
         </div>
 
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden flex-1">
           <Image
-            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800"
+            src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
-            alt="Bedroom Collection"
+            alt="Hosiery Collection"
           />
+          <div className="bg-zinc-800/10 flex justify-center items-center flex-col absolute w-full h-full top-0 left-0 text-white">
+            <p className="text-3xl mb-2">Hosiery</p>
+            <Link
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "border-white text-white hover:text-zinc-900")}
+              href={"/collections/hosiery"}
+            >
+              Shop Now
+            </Link>
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function CollectionRectCard({ collections }: CollectionsCardsProps) {
-  return (
-    <ScrollArea className="whitespace-nowrap relative container">
-      <div className="flex w-max space-x-10 py-5 overflow-auto">
-        <Suspense
-          fallback={[...Array(6)].map((_, index) => (
-            <CollectionsCardSkeleton key={`Collections-sekelton-${index}`} />
-          ))}
-        >
-          {collections.map(({ node }) => (
-            <CollectionsCard collection={node} key={node.id} />
-          ))}
-        </Suspense>
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
   );
 }
 
@@ -299,34 +304,34 @@ function DifferentFeatureCards() {
   const features = [
     {
       Icon: Icons.cart,
-      title: "Responsible Design",
+      title: "Natural Fibres",
       description:
-        "Designed with integrity and durably crafted for everyday use.",
+        "We use only premium merino wool, cashmere, and fine cotton in every piece we make.",
     },
     {
       Icon: Icons.tag,
       title: "Transparent Pricing",
       description:
-        "We believe in accessible pricing and full transparency. Our pricing model is an open book.",
+        "No inflated markups. We price fairly so quality knitwear is accessible to everyone.",
     },
     {
       Icon: Icons.package,
-      title: "Sustainable Sourcing",
+      title: "Responsible Sourcing",
       description:
-        "We only partner with people who put the earth, and its people, first.",
+        "Every yarn is traceable. We partner only with farms and mills that meet strict ethical standards.",
     },
     {
       Icon: Icons.award,
-      title: "Giving Back",
+      title: "Built to Last",
       description:
-        "Thanks to Mealshare, every purchase directly donates a meal to a youth in need.",
+        "Each garment is designed to be worn season after season, not discarded after one.",
     },
   ];
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 pt-5 gap-y-8 gap-x-5 md:gap-x-12 mx-auto">
       {features.map(({ Icon, title, description }, index) => (
         <div
-          className="text-center  max-w-[18rem]"
+          className="text-center max-w-[18rem]"
           key={`FeatureCards_${index}`}
         >
           <div className="flex justify-center items-center p-5">
@@ -351,7 +356,7 @@ function LessIsMoreCard() {
       <div className="relative w-full h-[340px] md:h-[580px] col-span-12 md:col-span-8 overflow-hidden">
         <Image
           src={"/assets/cutingcardImage.jpg"}
-          alt=""
+          alt="ROZNE Knitwear Detail"
           fill
           className="object-cover object-center"
         />
@@ -359,20 +364,19 @@ function LessIsMoreCard() {
 
       <div className="col-span-12 md:col-span-4 pb-6 md:py-20 px-6 md:px-16">
         <h2 className="text-xl md:text-3xl font-semibold mb-3">
-          Less is More. Minimal.
+          Slow Fashion. Real Craft.
         </h2>
         <p className="text-xs leading-[1.5] md:text-lg tracking-tight mb-5 md:mb-12 text-left max-w-md">
-          We believe no one should have to choose between the quality they want,
-          and the price they can afford. That’s why we make sure our products
-          stand up to only the highest quality and sustainability standards -
-          and produce them in a way that keeps great design affordable for
-          everyone.
+          We believe you should never have to choose between quality and
+          conscience. Every sweater, cardigan and knit we make is built to
+          outlast trends — because the most sustainable garment is the one
+          you keep wearing.
         </p>
         <Link
           href="/shop"
           className={cn(buttonVariants(), "rounded-full text-xs md:text-md")}
         >
-          Shop now
+          Shop the Collection
         </Link>
       </div>
     </section>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import RozneLogo from "@/components/layouts/RozneLogo";
 
 export default function AdminLoginPage() {
   const [token, setToken] = useState("");
@@ -33,10 +34,14 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-6 p-8 border border-border rounded-2xl shadow-sm">
-        <div className="text-center space-y-1">
-          <h1 className="text-2xl font-semibold">Admin Access</h1>
-          <p className="text-sm text-muted-foreground">Enter your admin password</p>
+      <div className="w-full max-w-sm space-y-8 p-8 border border-border rounded-2xl shadow-sm">
+        <div className="flex flex-col items-center gap-5">
+          <RozneLogo className="text-2xl" />
+          <div className="text-center space-y-1">
+            <p className="text-xs tracking-widest uppercase text-muted-foreground font-light">
+              Admin Access
+            </p>
+          </div>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

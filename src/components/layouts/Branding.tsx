@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import RozneLogo from "./RozneLogo";
 
 type Props = { className?: string };
 
@@ -8,9 +8,10 @@ function Branding({ className }: Props) {
   return (
     <Link
       href="/"
-      className={cn("text-2xl font-medium align-middle", className)}
+      aria-label="ROZNE — home"
+      className={cn("inline-flex items-center text-xl", className)}
     >
-      ROZNE
+      <RozneLogo />
     </Link>
   );
 }

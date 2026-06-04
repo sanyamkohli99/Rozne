@@ -9,3 +9,5 @@ export { default as ProductsDataTable } from "./admin/ProductsDataTable";
 export { default as ProductForm } from "./admin/ProductForm";
 export { default as ProductsColumns } from "./admin/ProductsColumns";
 export * from "./admin/ProductForm";
+export { default as SizeSelector } from "./SizeSelector";
+export { default as SizeChartDialog } from "./SizeChartDialog";

@@ -1,6 +1,11 @@
 "use client";
 
-import { createProductAction, updateProductAction } from "@/_actions/products";
+import {
+  createProductAction,
+  getProductGalleryMediaIds,
+  updateProductAction,
+  upsertProductMediasAction,
+} from "@/_actions/products";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Form,
@@ -34,13 +39,15 @@ import { useQuery } from "@urql/next";
 import { createInsertSchema } from "drizzle-zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Suspense, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { gql } from "urql";
+import { ProductGalleryField } from "./ProductGalleryField";
 
 type ProductsFormProps = {
   product?: SelectProducts;
 };
+
 export const ProductFormQuery = gql(/* GraphQL */ `
   query ProductFormQuery {
     collectionsCollection(orderBy: [{ label: AscNullsLast }]) {
@@ -55,10 +62,34 @@ export const ProductFormQuery = gql(/* GraphQL */ `
   }
 `);
 
+const PRESET_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+
 function ProductFrom({ product }: ProductsFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { toast } = useToast();
+
+  const [galleryImageIds, setGalleryImageIds] = useState<(string | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    getProductGalleryMediaIds(product.id)
+      .then((ids) => {
+        if (ids.length > 0) {
+          const padded: (string | null)[] = [null, null, null, null];
+          ids.slice(0, 4).forEach((id, i) => {
+            padded[i] = id;
+          });
+          setGalleryImageIds(padded);
+        }
+      })
+      .catch(() => {});
+  }, [product?.id]);
 
   const [{ data }] = useQuery({
     query: ProductFormQuery,
@@ -76,12 +107,31 @@ function ProductFrom({ product }: ProductsFormProps) {
     formState: { errors },
   } = form;
 
+  const addPresetSize = (size: string) => {
+    const current: string[] = form.getValues("sizes") || [];
+    if (!current.includes(size)) {
+      form.setValue("sizes", [...current, size]);
+    }
+  };
+
   const onSubmit = handleSubmit(async (data: InsertProducts) => {
     startTransition(async () => {
       try {
-        product
-          ? await updateProductAction(product.id, data)
-          : await createProductAction(data);
+        let savedProduct;
+        if (product) {
+          const result = await updateProductAction(product.id, data);
+          savedProduct = result[0];
+        } else {
+          const result = await createProductAction(data);
+          savedProduct = result[0];
+        }
+
+        if (savedProduct) {
+          const validMediaIds = galleryImageIds.filter(
+            (id): id is string => !!id,
+          );
+          await upsertProductMediasAction(savedProduct.id, validMediaIds);
+        }
 
         router.push("/admin/products");
         router.refresh();
@@ -91,12 +141,11 @@ function ProductFrom({ product }: ProductsFormProps) {
           description: `${data.name}`,
         });
       } catch (err) {
-        // console.log("unexpected Error Occured")
+        toast({ title: "Error saving product. Please try again." });
       }
     });
   });
 
-  console.log("!!data", data);
   return (
     <Form {...form}>
       <form
@@ -104,7 +153,7 @@ function ProductFrom({ product }: ProductsFormProps) {
         className="gap-x-5 flex gap-y-5 flex-col px-3"
         onSubmit={onSubmit}
       >
-        <div className="flex flex-col gap-y-5 max-w-[500px]">
+        <div className="flex flex-col gap-y-5 max-w-[560px]">
           <FormItem>
             <FormLabel className="text-sm">Name*</FormLabel>
             <FormControl>
@@ -123,7 +172,7 @@ function ProductFrom({ product }: ProductsFormProps) {
               <Input
                 defaultValue={product?.slug}
                 aria-invalid={!!form.formState.errors.slug}
-                placeholder="Type Product slug."
+                placeholder="e.g. ribbed-merino-cardigan"
                 {...register("slug")}
               />
             </FormControl>
@@ -131,38 +180,18 @@ function ProductFrom({ product }: ProductsFormProps) {
           </FormItem>
 
           <FormItem>
-            <FormLabel className="text-sm">Description*</FormLabel>
+            <FormLabel className="text-sm">Description</FormLabel>
             <FormControl>
-              <Input
+              <textarea
+                className="w-full min-h-[80px] px-3 py-2 text-sm border border-input rounded-md bg-background resize-y focus:outline-none focus:ring-2 focus:ring-ring"
                 defaultValue={product?.description || ""}
-                aria-invalid={!!form.formState.errors.description}
-                placeholder="Type a short description for the product.."
+                placeholder="Describe the garment — fabric, fit, care instructions..."
                 {...register("description")}
               />
             </FormControl>
             <FormMessage />
           </FormItem>
 
-          {/* <FormField
-            control={form.control}
-            name="featured"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
-                <FormControl>
-                  <FormLabel>Featured*</FormLabel>
-                  <Checkbox
-                    defaultChecked={false}
-                    checked={field.value || false}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-
-                <FormDescription>
-                  You can manage your mobile notifications in the{" "}
-                </FormDescription>
-              </FormItem>
-            )}
-          /> */}
           <Suspense>
             {data && data.collectionsCollection && (
               <FormField
@@ -170,7 +199,7 @@ function ProductFrom({ product }: ProductsFormProps) {
                 name={"collectionId"}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{"Collections"}</FormLabel>
+                    <FormLabel>Collection</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value || undefined}
@@ -181,7 +210,7 @@ function ProductFrom({ product }: ProductsFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {data.collectionsCollection.edges.map(
+                        {data.collectionsCollection!.edges.map(
                           ({ node: collection }) => (
                             <SelectItem
                               value={collection.id}
@@ -194,7 +223,7 @@ function ProductFrom({ product }: ProductsFormProps) {
                       </SelectContent>
                     </Select>
                     <FormDescription>
-                      {"Select a Collection for the products."}
+                      Assign this product to a collection.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -206,12 +235,24 @@ function ProductFrom({ product }: ProductsFormProps) {
           <BadgeSelectField name="badge" label={""} />
 
           <FormItem>
-            <FormLabel className="text-sm">Rating*</FormLabel>
+            <FormLabel className="text-sm">Price*</FormLabel>
+            <FormControl>
+              <Input
+                defaultValue={product?.price}
+                aria-invalid={!!form.formState.errors.price}
+                placeholder="0.00"
+                {...register("price")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+
+          <FormItem>
+            <FormLabel className="text-sm">Rating</FormLabel>
             <FormControl>
               <Input
                 defaultValue={product?.rating}
-                aria-invalid={!!form.formState.errors.rating}
-                placeholder="Rating (0-5)."
+                placeholder="4.0"
                 {...register("rating")}
               />
             </FormControl>
@@ -223,19 +264,32 @@ function ProductFrom({ product }: ProductsFormProps) {
             <FormControl>
               <TagsField name={"tags"} defaultValue={product?.tags || []} />
             </FormControl>
+            <FormDescription>
+              Press Enter after each tag (e.g. wool, merino, winter).
+            </FormDescription>
             <FormMessage />
           </FormItem>
 
           <FormItem>
-            <FormLabel className="text-sm">Price*</FormLabel>
+            <FormLabel className="text-sm">Available Sizes</FormLabel>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {PRESET_SIZES.map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => addPresetSize(size)}
+                  className="px-3 py-1 text-xs border border-zinc-300 rounded hover:bg-zinc-100 transition-colors"
+                >
+                  + {size}
+                </button>
+              ))}
+            </div>
             <FormControl>
-              <Input
-                defaultValue={product?.price}
-                aria-invalid={!!form.formState.errors.price}
-                placeholder="Price"
-                {...register("price")}
-              />
+              <TagsField name={"sizes"} defaultValue={product?.sizes || []} />
             </FormControl>
+            <FormDescription>
+              Click a preset to add it, or type a custom size and press Enter.
+            </FormDescription>
             <FormMessage />
           </FormItem>
 
@@ -252,10 +306,8 @@ function ProductFrom({ product }: ProductsFormProps) {
                     value={field.value}
                   />
                 </Suspense>
-
                 <FormDescription>
-                  Drag n Drop the image to above section or click the button to
-                  select from Image gallery.
+                  The main image shown on product cards and search results.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -263,12 +315,20 @@ function ProductFrom({ product }: ProductsFormProps) {
           />
         </div>
 
+        <div className="max-w-[560px]">
+          <ProductGalleryField
+            value={galleryImageIds}
+            onChange={setGalleryImageIds}
+            maxImages={4}
+          />
+        </div>
+
         <div className="py-8 flex gap-x-5 items-center">
           <Button disabled={isPending} variant={"outline"} form="project-form">
-            {product ? "Update" : "Create"}
+            {product ? "Update Product" : "Create Product"}
             {isPending && (
               <Spinner
-                className="mr-2 h-4 w-4 animate-spin"
+                className="ml-2 h-4 w-4 animate-spin"
                 aria-hidden="true"
               />
             )}
