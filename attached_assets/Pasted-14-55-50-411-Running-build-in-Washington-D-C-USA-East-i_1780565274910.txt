@@ -1,0 +1,58 @@
+14:55:50.411 Running build in Washington, D.C., USA (East) – iad1
+14:55:50.412 Build machine configuration: 2 cores, 8 GB
+14:55:50.740 Cloning github.com/sanyamkohli99/Rozne (Branch: main, Commit: f8341a6)
+14:55:52.135 Cloning completed: 1.394s
+14:55:52.557 Restored build cache from previous deployment (GDXoWtRBjbdaYjkXbc3JTEQb4zuM)
+14:55:52.776 Running "vercel build"
+14:55:52.797 Vercel CLI 54.9.0
+14:55:53.085 Warning: Detected "engines": { "node": ">=20.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+14:55:53.109 Installing dependencies...
+14:55:56.622 
+14:55:56.623 changed 3 packages in 3s
+14:55:56.623 
+14:55:56.623 255 packages are looking for funding
+14:55:56.623   run `npm fund` for details
+14:55:56.973 Detected Next.js version: 14.2.35
+14:55:56.982 Running "npm run build"
+14:55:57.409 
+14:55:57.410 > rozne@0.1.0 build
+14:55:57.410 > graphql-codegen && next build
+14:55:57.410 
+14:55:58.283 [STARTED] Parse Configuration
+14:55:58.284 [SUCCESS] Parse Configuration
+14:55:58.285 [STARTED] Generate outputs
+14:55:58.286 [STARTED] Generate to ./src/gql
+14:55:58.379 [STARTED] Load GraphQL schemas
+14:55:58.510 [SUCCESS] Load GraphQL schemas
+14:55:58.511 [STARTED] Load GraphQL documents
+14:55:59.513 [SUCCESS] Load GraphQL documents
+14:55:59.516 [STARTED] Generate
+14:55:59.518 DEPRECATED: `gql-tag-operations-preset` is deprecated in favor of `client-preset`.
+14:55:59.812 [SUCCESS] Generate
+14:55:59.813 [SUCCESS] Generate to ./src/gql
+14:55:59.813 [SUCCESS] Generate outputs
+14:56:02.254   ▲ Next.js 14.2.35
+14:56:02.255 
+14:56:02.276    Creating an optimized production build ...
+14:56:18.205 Browserslist: caniuse-lite is outdated. Please run:
+14:56:18.205   npx update-browserslist-db@latest
+14:56:18.205   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+14:56:21.646 Browserslist: caniuse-lite is outdated. Please run:
+14:56:21.646   npx update-browserslist-db@latest
+14:56:21.646   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+14:56:23.279  ✓ Compiled successfully
+14:56:23.280    Linting and checking validity of types ...
+14:56:37.406 Failed to compile.
+14:56:37.407 
+14:56:37.407 ./rozne/src/features/carts/components/AddProductToCartForm.tsx:18:28
+14:56:37.407 Type error: Cannot find module '../hooks/useCartActions' or its corresponding type declarations.
+14:56:37.407 
+14:56:37.407   16 | import { cn } from "@/lib/utils";
+14:56:37.407   17 | import { useAuth } from "@/providers/AuthProvider";
+14:56:37.407 > 18 | import useCartActions from "../hooks/useCartActions";
+14:56:37.407      |                            ^
+14:56:37.407   19 | import { AddProductCartData, AddProductToCartSchema } from "../validations";
+14:56:37.407   20 |
+14:56:37.408   21 | const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+14:56:37.452 Next.js build worker exited with code: 1 and signal: null
+14:56:37.487 Error: Command "npm run build" exited with 1
