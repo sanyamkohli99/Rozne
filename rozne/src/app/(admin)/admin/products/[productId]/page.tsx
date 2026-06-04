@@ -1,8 +1,7 @@
 import AdminShell from "@/components/admin/AdminShell";
 import { ProductForm } from "@/features/products";
-import { getProductGalleryMediaIds } from "@/_actions/products";
 import db from "@/lib/supabase/db";
-import { products } from "@/lib/supabase/schema";
+import { productMedias, products } from "@/lib/supabase/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -23,7 +22,11 @@ async function EditProjectPage({
 
   let galleryImageIds: string[] = [];
   try {
-    galleryImageIds = await getProductGalleryMediaIds(productId);
+    const rows = await db
+      .select({ mediaId: productMedias.mediaId })
+      .from(productMedias)
+      .where(eq(productMedias.productId, productId));
+    galleryImageIds = rows.map((r) => r.mediaId);
   } catch {
     galleryImageIds = [];
   }
