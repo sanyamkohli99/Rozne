@@ -134,7 +134,7 @@ function HeroSection() {
               Shop Collection
             </Link>
             <Link
-              href="/collections"
+              href="/shop"
               className="text-white/60 text-xs tracking-widest uppercase hover:text-white transition-colors"
             >
               View all →
