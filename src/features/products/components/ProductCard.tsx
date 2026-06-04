@@ -41,17 +41,6 @@ export const ProductCardFragment = gql(/* GraphQL */ `
       key
       alt
     }
-    hoverImage: product_mediasCollection(first: 1, orderBy: [{ priority: DescNullsLast }]) {
-      edges {
-        node {
-          media {
-            id
-            key
-            alt
-          }
-        }
-      }
-    }
     collections {
       id
       label
@@ -66,55 +55,21 @@ export function ProductCard({
   ...props
 }: ProductCardProps) {
   const { id, name, slug, featuredImage, badge, price } = product;
-  const [hovered, setHovered] = useState(false);
-
-  const hoverMediaData = product.hoverImage?.edges?.[0]?.node?.media;
 
   return (
     <Card
-      className={cn("w-full border-0 rounded-lg py-3", className)}
+      className={cn("w-full border-0 rounded-lg py-3 group", className)}
       {...props}
     >
-      <CardContent
-        className="relative p-0 mb-5 overflow-hidden"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        <Link href={`/shop/${slug}`} className="block relative">
+      <CardContent className="relative p-0 mb-5 overflow-hidden">
+        <Link href={`/shop/${slug}`}>
           <Image
             src={keytoUrl(featuredImage.key)}
             alt={featuredImage.alt}
             width={400}
             height={400}
-            className={cn(
-              "aspect-[1/1] object-cover object-center transition-all duration-500",
-              hoverMediaData && hovered
-                ? "opacity-0 scale-[1.03]"
-                : "opacity-100 scale-100"
-            )}
+            className="aspect-[1/1] object-cover object-center transition-all duration-500 group-hover:scale-[1.03] group-hover:opacity-80"
           />
-          {hoverMediaData && (
-            <Image
-              src={keytoUrl(hoverMediaData.key)}
-              alt={hoverMediaData.alt || "Product image"}
-              width={400}
-              height={400}
-              className={cn(
-                "absolute inset-0 aspect-[1/1] object-cover object-center transition-all duration-500",
-                hovered
-                  ? "opacity-100 scale-100"
-                  : "opacity-0 scale-[1.03]"
-              )}
-            />
-          )}
-          {!hoverMediaData && (
-            <div
-              className={cn(
-                "absolute inset-0 bg-zinc-900/10 transition-opacity duration-500",
-                hovered ? "opacity-100" : "opacity-0"
-              )}
-            />
-          )}
         </Link>
         {badge && (
           <Badge
@@ -124,6 +79,12 @@ export function ProductCard({
             {badge}
           </Badge>
         )}
+        {/* Quick-view overlay on hover */}
+        <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <span className="bg-white/90 text-zinc-900 text-xs tracking-widest uppercase px-4 py-2 font-medium">
+            Quick View
+          </span>
+        </div>
       </CardContent>
 
       <CardHeader className="p-0 mb-3 md:mb-5">
