@@ -41,13 +41,11 @@ function ProductImageShowcase({ data }: ProductImageShowcaseProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const goToImage = (index: number) => {
-    if (index === activeImageIndex) return;
-    setActiveImageIndex(index);
+    if (index !== activeImageIndex) setActiveImageIndex(index);
   };
 
   const nextImage = () => {
-    if (activeImageIndex < allImages.length - 1)
-      goToImage(activeImageIndex + 1);
+    if (activeImageIndex < allImages.length - 1) goToImage(activeImageIndex + 1);
   };
 
   const prevImage = () => {
@@ -56,64 +54,55 @@ function ProductImageShowcase({ data }: ProductImageShowcaseProps) {
 
   return (
     <section className="flex md:flex-row flex-col items-start gap-x-4 gap-y-5">
-      {/* Main Image */}
-      <div className="w-full order-1 md:order-3 grow relative overflow-hidden aspect-square bg-zinc-50">
-        {allImages.map((image, index) => (
-          <div
-            key={image.id}
-            className={cn(
-              "absolute inset-0 transition-opacity duration-300 ease-in-out",
-              index === activeImageIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            )}
-          >
+      {/* Main image */}
+      <div className="w-full order-1 md:order-3 grow">
+        {allImages[activeImageIndex] && (
+          <div className="relative w-full aspect-square overflow-hidden bg-zinc-50">
             <Image
-              src={keytoUrl(image.key)}
-              alt={image.alt || "Product image"}
+              key={allImages[activeImageIndex].id}
+              src={keytoUrl(allImages[activeImageIndex].key)}
+              alt={allImages[activeImageIndex].alt || "Product image"}
               fill
               sizes="(max-width: 768px) 100vw, 60vw"
-              className="object-cover object-center"
-              priority={index === 0}
+              className="object-cover object-center transition-opacity duration-300"
+              priority={activeImageIndex === 0}
             />
-          </div>
-        ))}
-
-        {/* Prev / Next arrows on main image (desktop) */}
-        {allImages.length > 1 && (
-          <>
-            <button
-              onClick={prevImage}
-              disabled={activeImageIndex === 0}
-              className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white p-1.5 shadow transition-all disabled:opacity-0"
-              aria-label="Previous image"
-            >
-              <Icons.chevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={nextImage}
-              disabled={activeImageIndex === allImages.length - 1}
-              className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white p-1.5 shadow transition-all disabled:opacity-0"
-              aria-label="Next image"
-            >
-              <Icons.chevronRight className="w-4 h-4" />
-            </button>
-
-            {/* Dot indicator */}
-            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-20">
-              {allImages.map((_, i) => (
+            {/* Desktop prev/next arrows */}
+            {allImages.length > 1 && (
+              <>
                 <button
-                  key={i}
-                  onClick={() => goToImage(i)}
-                  className={cn(
-                    "w-1.5 h-1.5 rounded-full transition-all duration-200",
-                    i === activeImageIndex
-                      ? "bg-zinc-800 scale-125"
-                      : "bg-zinc-400 hover:bg-zinc-600"
-                  )}
-                  aria-label={`Go to image ${i + 1}`}
-                />
-              ))}
-            </div>
-          </>
+                  onClick={prevImage}
+                  disabled={activeImageIndex === 0}
+                  className="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-1.5 shadow transition-all disabled:opacity-0"
+                  aria-label="Previous image"
+                >
+                  <Icons.chevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={nextImage}
+                  disabled={activeImageIndex === allImages.length - 1}
+                  className="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white p-1.5 shadow transition-all disabled:opacity-0"
+                  aria-label="Next image"
+                >
+                  <Icons.chevronRight className="w-4 h-4" />
+                </button>
+                {/* Dot indicator */}
+                <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                  {allImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goToImage(i)}
+                      className={cn(
+                        "w-1.5 h-1.5 rounded-full transition-all duration-200",
+                        i === activeImageIndex ? "bg-zinc-800 scale-125" : "bg-zinc-400 hover:bg-zinc-600"
+                      )}
+                      aria-label={`Go to image ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         )}
       </div>
 
@@ -127,8 +116,7 @@ function ProductImageShowcase({ data }: ProductImageShowcaseProps) {
               onClick={() => goToImage(index)}
               aria-label={`View image ${index + 1}`}
               className={cn(
-                "relative flex-shrink-0 w-16 h-16 md:w-full md:h-[84px] overflow-hidden",
-                "border-2 transition-all duration-200",
+                "relative flex-shrink-0 w-16 h-16 md:w-full md:h-[84px] overflow-hidden border-2 transition-all duration-200",
                 index === activeImageIndex
                   ? "border-zinc-900"
                   : "border-transparent opacity-55 hover:opacity-85 hover:border-zinc-300"
