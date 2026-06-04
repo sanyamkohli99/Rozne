@@ -1,0 +1,56 @@
+14:44:10.687 Running build in Washington, D.C., USA (East) – iad1
+14:44:10.687 Build machine configuration: 2 cores, 8 GB
+14:44:10.819 Cloning github.com/sanyamkohli99/Rozne (Branch: main, Commit: fb41cc8)
+14:44:11.666 Cloning completed: 847.000ms
+14:44:12.356 Restored build cache from previous deployment (GDXoWtRBjbdaYjkXbc3JTEQb4zuM)
+14:44:12.556 Running "vercel build"
+14:44:12.591 Vercel CLI 54.9.0
+14:44:12.836 Warning: Detected "engines": { "node": ">=20.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+14:44:12.866 Installing dependencies...
+14:44:16.248 
+14:44:16.248 changed 3 packages in 3s
+14:44:16.248 
+14:44:16.249 255 packages are looking for funding
+14:44:16.249   run `npm fund` for details
+14:44:16.286 Detected Next.js version: 14.2.35
+14:44:16.294 Running "npm run build"
+14:44:16.392 
+14:44:16.393 > rozne@0.1.0 build
+14:44:16.393 > graphql-codegen && next build
+14:44:16.393 
+14:44:17.203 [STARTED] Parse Configuration
+14:44:17.204 [SUCCESS] Parse Configuration
+14:44:17.204 [STARTED] Generate outputs
+14:44:17.205 [STARTED] Generate to ./src/gql
+14:44:17.295 [STARTED] Load GraphQL schemas
+14:44:17.422 [SUCCESS] Load GraphQL schemas
+14:44:17.423 [STARTED] Load GraphQL documents
+14:44:18.365 [SUCCESS] Load GraphQL documents
+14:44:18.365 [STARTED] Generate
+14:44:18.366 DEPRECATED: `gql-tag-operations-preset` is deprecated in favor of `client-preset`.
+14:44:18.704 [SUCCESS] Generate
+14:44:18.705 [SUCCESS] Generate to ./src/gql
+14:44:18.705 [SUCCESS] Generate outputs
+14:44:21.480   ▲ Next.js 14.2.35
+14:44:21.481 
+14:44:21.500    Creating an optimized production build ...
+14:44:34.987 Browserslist: caniuse-lite is outdated. Please run:
+14:44:34.988   npx update-browserslist-db@latest
+14:44:34.988   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+14:44:37.905  ✓ Compiled successfully
+14:44:37.907    Linting and checking validity of types ...
+14:44:49.497 Failed to compile.
+14:44:49.498 
+14:44:49.498 ./rozne/src/app/(admin)/admin/products/[productId]/page.tsx:42:11
+14:44:49.498 Type error: Type '{ product: { name: string; id: string; slug: string; description: string; featured: boolean; badge: "featured" | "new_product" | "best_sale"; rating: string; tags: string[]; images: string[]; price: string; ... 4 more ...; collectionId: string; }; defaultGalleryImageIds: string[]; }' is not assignable to type 'IntrinsicAttributes & ProductsFormProps'.
+14:44:49.499   Property 'defaultGalleryImageIds' does not exist on type 'IntrinsicAttributes & ProductsFormProps'.
+14:44:49.499 
+14:44:49.499   40 |         <ProductForm
+14:44:49.499   41 |           product={product}
+14:44:49.499 > 42 |           defaultGalleryImageIds={galleryImageIds}
+14:44:49.499      |           ^
+14:44:49.499   43 |         />
+14:44:49.499   44 |       </Suspense>
+14:44:49.499   45 |     </AdminShell>
+14:44:49.540 Next.js build worker exited with code: 1 and signal: null
+14:44:49.572 Error: Command "npm run build" exited with 1
