@@ -1,13 +1,11 @@
 import Header from "@/components/layouts/Header";
 import { Shell } from "@/components/layouts/Shell";
-import { Skeleton } from "@/components/ui/skeleton";
-import { listCollectionsAction } from "@/features/collections";
 import { SearchProductsGridSkeleton } from "@/features/products";
-import {
-  FilterSelections,
-  SearchProductsInifiteScroll,
-} from "@/features/search";
+import { SearchProductsInifiteScroll } from "@/features/search";
 import { Suspense } from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface ProductsPageProps {
   searchParams: {
@@ -15,25 +13,33 @@ interface ProductsPageProps {
   };
 }
 
-async function ProductsPage({}: ProductsPageProps) {
-  // TODO: PROBLEM in server actrion
-  // const collectionsData = await listCollectionsAction();
+const categories = [
+  { label: "All", href: "/shop" },
+  { label: "Sweaters", href: "/collections/sweaters" },
+  { label: "Cardigans", href: "/collections/cardigans" },
+  { label: "Hosiery", href: "/collections/hosiery" },
+];
 
+async function ProductsPage({ searchParams }: ProductsPageProps) {
   return (
     <Shell>
       <Header heading="Shop Now" />
 
-      {/* <Suspense
-        fallback={
-          <div>
-            <Skeleton className="max-w-xl h-8 mb-3" />
-            <Skeleton className="max-w-2xl h-8" />
-          </div>
-        }
-      >
-        <FilterSelections collectionsSection={collectionsData} />
-      </Suspense>
-       */}
+      {/* Category filter pills */}
+      <nav aria-label="Product categories" className="flex flex-wrap gap-2 mb-8 -mt-2">
+        {categories.map(({ label, href }) => (
+          <Link
+            key={label}
+            href={href}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "rounded-full text-xs tracking-widest uppercase hover:bg-zinc-900 hover:text-white transition-colors"
+            )}
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
 
       <Suspense fallback={<SearchProductsGridSkeleton />}>
         <SearchProductsInifiteScroll />
