@@ -2,6 +2,7 @@
 
 import {
   createProductAction,
+  getProductGalleryMediaIds,
   updateProductAction,
   upsertProductMediasAction,
 } from "@/_actions/products";
@@ -38,14 +39,13 @@ import { useQuery } from "@urql/next";
 import { createInsertSchema } from "drizzle-zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Suspense, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { gql } from "urql";
 import { ProductGalleryField } from "./ProductGalleryField";
 
 type ProductsFormProps = {
   product?: SelectProducts;
-  defaultGalleryImageIds?: string[];
 };
 
 export const ProductFormQuery = gql(/* GraphQL */ `
@@ -64,16 +64,32 @@ export const ProductFormQuery = gql(/* GraphQL */ `
 
 const PRESET_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
-function ProductFrom({ product, defaultGalleryImageIds = [] }: ProductsFormProps) {
+function ProductFrom({ product }: ProductsFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { toast } = useToast();
 
-  const [galleryImageIds, setGalleryImageIds] = useState<(string | null)[]>(
-    defaultGalleryImageIds.length > 0
-      ? defaultGalleryImageIds
-      : [null, null, null, null],
-  );
+  const [galleryImageIds, setGalleryImageIds] = useState<(string | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    getProductGalleryMediaIds(product.id)
+      .then((ids) => {
+        if (ids.length > 0) {
+          const padded: (string | null)[] = [null, null, null, null];
+          ids.slice(0, 4).forEach((id, i) => {
+            padded[i] = id;
+          });
+          setGalleryImageIds(padded);
+        }
+      })
+      .catch(() => {});
+  }, [product?.id]);
 
   const [{ data }] = useQuery({
     query: ProductFormQuery,
