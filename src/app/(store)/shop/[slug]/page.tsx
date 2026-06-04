@@ -17,10 +17,7 @@ import {
 } from "@/features/products";
 import { AddToWishListButton } from "@/features/wishlists";
 import { gql } from "@/gql";
-import db from "@/lib/supabase/db";
-import { products } from "@/lib/supabase/schema";
 import { getClient } from "@/lib/urql";
-import { eq } from "drizzle-orm";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -85,17 +82,6 @@ async function ProductDetailPage({ params }: Props) {
   const { id, name, description, price, commentsCollection, totalComments } =
     data.productsCollection.edges[0].node;
 
-  let availableSizes: string[] = [];
-  try {
-    const dbProduct = await db.query.products.findFirst({
-      where: eq(products.slug, params.slug),
-      columns: { sizes: true },
-    });
-    availableSizes = dbProduct?.sizes ?? [];
-  } catch {
-    availableSizes = [];
-  }
-
   return (
     <Shell>
       <div className="grid grid-cols-12 gap-x-8">
@@ -121,15 +107,13 @@ async function ProductDetailPage({ params }: Props) {
             <Suspense>
               <AddProductToCartForm
                 productId={id}
-                availableSizes={availableSizes}
+                availableSizes={[]}
               />
             </Suspense>
 
-            {availableSizes.length > 0 && (
-              <div className="flex items-center gap-x-3">
-                <SizeChartDialog />
-              </div>
-            )}
+            <div className="flex items-center gap-x-3">
+              <SizeChartDialog />
+            </div>
 
             <BuyNowButton productId={id} />
           </section>
@@ -144,7 +128,7 @@ async function ProductDetailPage({ params }: Props) {
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="material">
                 <AccordionTrigger className="text-sm font-medium">
-                  Material & Care
+                  Material &amp; Care
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground space-y-2">
                   <p>
@@ -163,7 +147,7 @@ async function ProductDetailPage({ params }: Props) {
 
               <AccordionItem value="fit">
                 <AccordionTrigger className="text-sm font-medium">
-                  Fit & Sizing
+                  Fit &amp; Sizing
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground space-y-2">
                   <p>
@@ -180,7 +164,7 @@ async function ProductDetailPage({ params }: Props) {
 
               <AccordionItem value="shipping">
                 <AccordionTrigger className="text-sm font-medium">
-                  Shipping & Returns
+                  Shipping &amp; Returns
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground space-y-2">
                   <p>
@@ -199,7 +183,7 @@ async function ProductDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <Header heading={`You May Also Like`} />
+      <Header heading="You May Also Like" />
 
       <div className="container grid grid-cols-2 lg:grid-cols-4 gap-x-8">
         {data.recommendations &&
