@@ -1,5 +1,4 @@
-"use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { DocumentType, gql } from "@/gql";
@@ -58,7 +57,7 @@ export function ProductCard({
 
   return (
     <Card
-      className={cn("w-full border-0 rounded-lg py-3 group", className)}
+      className={cn("w-full border-0 rounded-lg py-3 ", className)}
       {...props}
     >
       <CardContent className="relative p-0 mb-5 overflow-hidden">
@@ -68,23 +67,14 @@ export function ProductCard({
             alt={featuredImage.alt}
             width={400}
             height={400}
-            className="aspect-[1/1] object-cover object-center transition-all duration-500 group-hover:scale-[1.03] group-hover:opacity-80"
+            className="aspect-[1/1] object-cover object-center hover:scale-[1.02] hover:opacity-70 transition-all duration-500"
           />
         </Link>
         {badge && (
-          <Badge
-            className="absolute top-0 left-0 z-10"
-            variant={badge as BadgeType}
-          >
+          <Badge className="absolute top-0 left-0" variant={badge as BadgeType}>
             {badge}
           </Badge>
         )}
-        {/* Quick-view overlay on hover */}
-        <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          <span className="bg-white/90 text-zinc-900 text-xs tracking-widest uppercase px-4 py-2 font-medium">
-            Quick View
-          </span>
-        </div>
       </CardContent>
 
       <CardHeader className="p-0 mb-3 md:mb-5">
@@ -107,7 +97,7 @@ export function ProductCard({
         </div>
       </CardHeader>
 
-      <CardFooter className="gap-x-2 md:gap-x-5 p-0">
+      <CardFooter className="gap-x-2 md:gap-x-5 p-0 ">
         <Suspense
           fallback={
             <Button className="rounded-full p-0 h-8 w-8" disabled>
