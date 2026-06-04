@@ -112,7 +112,7 @@ function HeroSection() {
       <div className="absolute inset-0 h-screen md:h-[800px]">
         <Image
           alt="ROZNE Knitwear Collection"
-          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1920"
+          src="https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&q=80&w=1920"
           width={1920}
           height={1200}
           priority={true}
@@ -126,7 +126,7 @@ function HeroSection() {
       <div className="container relative z-10 py-8 h-screen md:h-[800px] w-full">
         <div className="flex flex-col justify-center h-full gap-y-6">
 
-          {/* Large hero logo — the brand mark front and center */}
+          {/* Large hero logo */}
           <div className="text-white">
             <RozneLogo className="text-5xl md:text-8xl" />
           </div>
@@ -239,7 +239,7 @@ function CollectionGrid() {
     <section className="relative lg:space-x-5 space-y-5 lg:space-y-0 grid grid-cols-1 lg:grid-cols-3 max-h-[840px]">
       <div className="relative col-span-2 w-full h-[840px]">
         <Image
-          src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=1920"
+          src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&q=80&w=1920"
           width={1080}
           height={1080}
           className="object-cover w-full h-full"
@@ -260,7 +260,7 @@ function CollectionGrid() {
       <div className="flex flex-col w-full space-y-5 h-[840px]">
         <div className="relative w-full h-[415px]">
           <Image
-            src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800"
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
@@ -279,7 +279,7 @@ function CollectionGrid() {
 
         <div className="relative overflow-hidden flex-1">
           <Image
-            src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=800"
+            src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?auto=format&fit=crop&q=80&w=800"
             width={800}
             height={900}
             className="object-cover w-full h-full"
@@ -355,7 +355,7 @@ function LessIsMoreCard() {
     <section className="max-w-[1920px] mx-auto h-[620px] md:h-[580px] bg-[#FFF8EE] grid grid-cols-12 my-16">
       <div className="relative w-full h-[340px] md:h-[580px] col-span-12 md:col-span-8 overflow-hidden">
         <Image
-          src={"/assets/cutingcardImage.jpg"}
+          src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=1920"
           alt="ROZNE Knitwear Detail"
           fill
           className="object-cover object-center"
