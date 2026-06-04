@@ -19,15 +19,27 @@ export const siteConfig = {
       items: [],
     },
     {
-      title: "Our Story",
-      href: "/our-story",
-      description: "Our Story.",
+      title: "Sweaters",
+      href: "/collections/sweaters",
+      description: "Premium merino sweaters.",
       items: [],
     },
     {
-      title: "Collections",
-      href: "/brands",
-      description: "Discover our collections.",
+      title: "Cardigans",
+      href: "/collections/cardigans",
+      description: "Layering cardigans for every season.",
+      items: [],
+    },
+    {
+      title: "Hosiery",
+      href: "/collections/hosiery",
+      description: "Fine hosiery and knitwear.",
+      items: [],
+    },
+    {
+      title: "Our Story",
+      href: "/our-story",
+      description: "Our Story.",
       items: [],
     },
     {
