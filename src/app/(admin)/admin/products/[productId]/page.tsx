@@ -15,9 +15,16 @@ type EditProjectPageProps = {
 async function EditProjectPage({
   params: { productId },
 }: EditProjectPageProps) {
-  const product = await db.query.products.findFirst({
-    where: eq(products.id, productId),
-  });
+  let product;
+  try {
+    product = await db.query.products.findFirst({
+      where: eq(products.id, productId),
+    });
+  } catch (e) {
+    console.error("DB error in admin product page:", e);
+    return notFound();
+  }
+
   if (!product) return notFound();
 
   return (
