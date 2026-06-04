@@ -26,7 +26,6 @@ const AdminEditProductQuery = gql(`
           rating
           price
           tags
-          sizes
           images
           stock
           totalComments
