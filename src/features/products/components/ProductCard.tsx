@@ -1,4 +1,5 @@
-import React, { Suspense } from "react";
+"use client";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { DocumentType, gql } from "@/gql";
@@ -40,6 +41,17 @@ export const ProductCardFragment = gql(/* GraphQL */ `
       key
       alt
     }
+    hoverImage: product_mediasCollection(first: 1, orderBy: [{ priority: DescNullsLast }]) {
+      edges {
+        node {
+          media {
+            id
+            key
+            alt
+          }
+        }
+      }
+    }
     collections {
       id
       label
@@ -54,24 +66,61 @@ export function ProductCard({
   ...props
 }: ProductCardProps) {
   const { id, name, slug, featuredImage, badge, price } = product;
+  const [hovered, setHovered] = useState(false);
+
+  const hoverMediaData = product.hoverImage?.edges?.[0]?.node?.media;
 
   return (
     <Card
-      className={cn("w-full border-0 rounded-lg py-3 ", className)}
+      className={cn("w-full border-0 rounded-lg py-3", className)}
       {...props}
     >
-      <CardContent className="relative p-0 mb-5 overflow-hidden">
-        <Link href={`/shop/${slug}`}>
+      <CardContent
+        className="relative p-0 mb-5 overflow-hidden"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <Link href={`/shop/${slug}`} className="block relative">
           <Image
             src={keytoUrl(featuredImage.key)}
             alt={featuredImage.alt}
             width={400}
             height={400}
-            className="aspect-[1/1] object-cover object-center hover:scale-[1.02] hover:opacity-70 transition-all duration-500"
+            className={cn(
+              "aspect-[1/1] object-cover object-center transition-all duration-500",
+              hoverMediaData && hovered
+                ? "opacity-0 scale-[1.03]"
+                : "opacity-100 scale-100"
+            )}
           />
+          {hoverMediaData && (
+            <Image
+              src={keytoUrl(hoverMediaData.key)}
+              alt={hoverMediaData.alt || "Product image"}
+              width={400}
+              height={400}
+              className={cn(
+                "absolute inset-0 aspect-[1/1] object-cover object-center transition-all duration-500",
+                hovered
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-[1.03]"
+              )}
+            />
+          )}
+          {!hoverMediaData && (
+            <div
+              className={cn(
+                "absolute inset-0 bg-zinc-900/10 transition-opacity duration-500",
+                hovered ? "opacity-100" : "opacity-0"
+              )}
+            />
+          )}
         </Link>
         {badge && (
-          <Badge className="absolute top-0 left-0" variant={badge as BadgeType}>
+          <Badge
+            className="absolute top-0 left-0 z-10"
+            variant={badge as BadgeType}
+          >
             {badge}
           </Badge>
         )}
@@ -97,7 +146,7 @@ export function ProductCard({
         </div>
       </CardHeader>
 
-      <CardFooter className="gap-x-2 md:gap-x-5 p-0 ">
+      <CardFooter className="gap-x-2 md:gap-x-5 p-0">
         <Suspense
           fallback={
             <Button className="rounded-full p-0 h-8 w-8" disabled>
