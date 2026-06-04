@@ -4,28 +4,29 @@ import * as schema from "../schema";
 const medias = [
   {
     id: "1",
-    key: "public/bathroom-planning.jpg",
-    alt: "bathroom-planning-category",
+    key: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800",
+    alt: "Premium Knit Sweaters",
   },
   {
     id: "2",
-    key: "public/kitchen-planning.jpg",
-    alt: "kitchen-planning-category",
+    key: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800",
+    alt: "Textured Cardigans",
   },
   {
     id: "3",
-    key: "public/living-room-planning.jpg",
-    alt: "living-room-planning-category",
+    key: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=800",
+    alt: "Fine Hosiery",
   },
   {
     id: "4",
-    key: "public/bedroom-planning.jpg",
-    alt: "bedroom-planning-category",
+    key: "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&q=80&w=800",
+    alt: "Knit Accessories",
   },
 ];
 
 const seedMedias = async () => {
   try {
+    await db.delete(schema.medias);
     const insertedMedia = await db
       .insert(schema.medias)
       .values(medias)

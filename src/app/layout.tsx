@@ -9,8 +9,8 @@ import CustomProvider from "../providers/CustomProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ROZNE | Premium Ecommerce Platform",
-  description: "Shop smart, live better.",
+  title: "ROZNE | Premium Knitwear & Hosiery",
+  description: "Crafting warmth, stitch by stitch. Premium sweaters, cardigans and woollen wear direct from Ludhiana.",
 };
 
 export default function RootLayout({

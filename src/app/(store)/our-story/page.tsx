@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Our Story | ROZNE",
-  description: "Learn about the story behind ROZNE.",
+  title: "Our Story | ROZNE Knitwear",
+  description: "Learn about the heritage and craftsmanship behind ROZNE knitwear in Ludhiana.",
 };
 
 export default function OurStoryPage() {
