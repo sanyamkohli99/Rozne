@@ -1,0 +1,55 @@
+14:38:05.906 Running build in Washington, D.C., USA (East) – iad1
+14:38:05.907 Build machine configuration: 2 cores, 8 GB
+14:38:06.043 Cloning github.com/sanyamkohli99/Rozne (Branch: main, Commit: 6840ef2)
+14:38:06.964 Cloning completed: 920.000ms
+14:38:07.926 Restored build cache from previous deployment (GDXoWtRBjbdaYjkXbc3JTEQb4zuM)
+14:38:08.148 Running "vercel build"
+14:38:08.169 Vercel CLI 54.9.0
+14:38:08.447 Warning: Detected "engines": { "node": ">=20.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+14:38:08.475 Installing dependencies...
+14:38:11.977 
+14:38:11.978 changed 3 packages in 3s
+14:38:11.989 
+14:38:11.989 255 packages are looking for funding
+14:38:11.989   run `npm fund` for details
+14:38:12.042 Detected Next.js version: 14.2.35
+14:38:12.050 Running "npm run build"
+14:38:12.153 
+14:38:12.154 > rozne@0.1.0 build
+14:38:12.154 > graphql-codegen && next build
+14:38:12.154 
+14:38:12.997 [STARTED] Parse Configuration
+14:38:12.998 [SUCCESS] Parse Configuration
+14:38:12.998 [STARTED] Generate outputs
+14:38:12.999 [STARTED] Generate to ./src/gql
+14:38:13.096 [STARTED] Load GraphQL schemas
+14:38:13.255 [SUCCESS] Load GraphQL schemas
+14:38:13.255 [STARTED] Load GraphQL documents
+14:38:14.204 [SUCCESS] Load GraphQL documents
+14:38:14.205 [STARTED] Generate
+14:38:14.205 DEPRECATED: `gql-tag-operations-preset` is deprecated in favor of `client-preset`.
+14:38:14.456 [SUCCESS] Generate
+14:38:14.457 [SUCCESS] Generate to ./src/gql
+14:38:14.457 [SUCCESS] Generate outputs
+14:38:17.058   ▲ Next.js 14.2.35
+14:38:17.060 
+14:38:17.079    Creating an optimized production build ...
+14:38:30.673 Browserslist: caniuse-lite is outdated. Please run:
+14:38:30.674   npx update-browserslist-db@latest
+14:38:30.674   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+14:38:34.974  ✓ Compiled successfully
+14:38:34.976    Linting and checking validity of types ...
+14:38:46.965 Failed to compile.
+14:38:46.966 
+14:38:46.966 ./rozne/src/app/(admin)/admin/products/[productId]/page.tsx:3:10
+14:38:46.966 Type error: Module '"@/_actions/products"' has no exported member 'getProductGalleryMediaIds'.
+14:38:46.967 
+14:38:46.967   1 | import AdminShell from "@/components/admin/AdminShell";
+14:38:46.967   2 | import { ProductForm } from "@/features/products";
+14:38:46.967 > 3 | import { getProductGalleryMediaIds } from "@/_actions/products";
+14:38:46.967     |          ^
+14:38:46.967   4 | import db from "@/lib/supabase/db";
+14:38:46.968   5 | import { products } from "@/lib/supabase/schema";
+14:38:46.968   6 | import { eq } from "drizzle-orm";
+14:38:47.005 Next.js build worker exited with code: 1 and signal: null
+14:38:47.038 Error: Command "npm run build" exited with 1
