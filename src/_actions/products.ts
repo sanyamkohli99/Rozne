@@ -16,10 +16,10 @@ export const createProductAction = async (product: InsertProducts) => {
   try {
     createInsertSchema(products).parse(product);
     const data = await db.insert(products).values(product).returning();
-    return data;
+    return { data };
   } catch (err) {
     console.error("Error in createProductAction:", err);
-    throw err;
+    return { error: err instanceof Error ? err.message : "Unknown error" };
   }
 };
 
@@ -27,14 +27,18 @@ export const updateProductAction = async (
   productId: string,
   product: InsertProducts,
 ) => {
-  createInsertSchema(products).parse(product);
-  const insertedProduct = await db
-    .update(products)
-    .set(product)
-    .where(eq(products.id, productId))
-    .returning();
-
-  return insertedProduct;
+  try {
+    createInsertSchema(products).parse(product);
+    const data = await db
+      .update(products)
+      .set(product)
+      .where(eq(products.id, productId))
+      .returning();
+    return { data };
+  } catch (err) {
+    console.error("Error in updateProductAction:", err);
+    return { error: err instanceof Error ? err.message : "Unknown error" };
+  }
 };
 
 export const getProductsByIds = async (productIds: string[]) => {

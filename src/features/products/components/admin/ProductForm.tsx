@@ -129,10 +129,12 @@ function ProductFrom({ product }: ProductsFormProps) {
         let savedProduct;
         if (product) {
           const result = await updateProductAction(product.id, data);
-          savedProduct = result[0];
+          // Assuming updateProductAction might need a similar change
+          savedProduct = Array.isArray(result) ? result[0] : (result as any).data[0];
         } else {
           const result = await createProductAction(data);
-          savedProduct = result[0];
+          if (result.error) throw new Error(result.error);
+          savedProduct = result.data[0];
         }
 
         if (savedProduct) {
@@ -166,6 +168,7 @@ function ProductFrom({ product }: ProductsFormProps) {
         id="project-form"
         className="gap-x-5 flex gap-y-5 flex-col px-3"
         onSubmit={onSubmit}
+        suppressHydrationWarning
       >
         <div className="flex flex-col gap-y-5 max-w-[560px]">
           <FormItem>
