@@ -57,26 +57,26 @@ export const SupabaseAuthProvider: React.FC<SupabaseAuthProviderProps> = ({
           supabase.auth.getUser().then(({ data }) => {
             setUser(data.user);
 
-            const { cart } = JSON.parse(localStorage.getItem("cart")) as {
-              cart: CartItems;
-            };
+            const cartData = typeof window !== "undefined" ? localStorage.getItem("cart") : null;
+            if (cartData) {
+              const { cart } = JSON.parse(cartData) as { cart: CartItems };
 
-            const storageCarts = Object.entries(cart).map(
-              ([productId, productValue]) => ({
-                id: nanoid(),
-                productId,
-                quantity: productValue.quantity,
-                userId: data.user.id,
-              }),
-            );
-            // console.log("!!! storageCart", storageCarts)
+              const storageCarts = Object.entries(cart).map(
+                ([productId, productValue]) => ({
+                  id: nanoid(),
+                  productId,
+                  quantity: productValue.quantity,
+                  userId: data.user.id,
+                }),
+              );
 
-            supabase
-              .from("carts")
-              .insert(storageCarts)
-              .then((data) => {
-                // console.log("sync Cart Data Res", data)
-              });
+              supabase
+                .from("carts")
+                .insert(storageCarts)
+                .then((data) => {
+                  // console.log("sync Cart Data Res", data)
+                });
+            }
           });
 
           // Sync the wishlist with local storage
