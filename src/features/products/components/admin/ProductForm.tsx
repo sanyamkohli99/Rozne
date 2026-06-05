@@ -126,44 +126,54 @@ function ProductForm({ product }: ProductsFormProps) {
     }
   };
 
-  const onSubmit = handleSubmit(async (data: InsertProducts) => {
-    startTransition(async () => {
-      try {
-        let savedProduct;
-        if (product) {
-          const result = await updateProductAction(product.id, data);
-          if (result.error) throw new Error(result.error);
-          savedProduct = result.data[0];
-        } else {
-          const result = await createProductAction(data);
-          if (result.error) throw new Error(result.error);
-          savedProduct = result.data[0];
+  const onSubmit = handleSubmit(
+    async (data: InsertProducts) => {
+      startTransition(async () => {
+        try {
+          let savedProduct;
+          if (product) {
+            const result = await updateProductAction(product.id, data);
+            if (result.error) throw new Error(result.error);
+            savedProduct = result.data[0];
+          } else {
+            const result = await createProductAction(data);
+            if (result.error) throw new Error(result.error);
+            savedProduct = result.data[0];
+          }
+
+          if (savedProduct) {
+            const validMediaIds = galleryImageIds.filter(
+              (id): id is string => !!id,
+            );
+            await upsertProductMediasAction(savedProduct.id, validMediaIds);
+          }
+
+          router.push("/admin/products");
+          router.refresh();
+
+          toast({
+            title: `Product is ${product ? "updated" : "created"}.`,
+            description: `${data.name}`,
+          });
+        } catch (err) {
+          console.error("Product submission error:", err);
+          toast({
+            title: "Error saving product.",
+            description: err instanceof Error ? err.message : "An unknown error occurred.",
+            variant: "destructive",
+          });
         }
-
-        if (savedProduct) {
-          const validMediaIds = galleryImageIds.filter(
-            (id): id is string => !!id,
-          );
-          await upsertProductMediasAction(savedProduct.id, validMediaIds);
-        }
-
-        router.push("/admin/products");
-        router.refresh();
-
-        toast({
-          title: `Product is ${product ? "updated" : "created"}.`,
-          description: `${data.name}`,
-        });
-      } catch (err) {
-        console.error("Product submission error:", err);
-        toast({
-          title: "Error saving product.",
-          description: err instanceof Error ? err.message : "An unknown error occurred.",
-          variant: "destructive",
-        });
-      }
-    });
-  });
+      });
+    },
+    (errors) => {
+      console.error("Form validation errors:", errors);
+      toast({
+        title: "Validation Error",
+        description: "Please check the form fields for errors.",
+        variant: "destructive",
+      });
+    }
+  );
 
   return (
     <ClientOnly>
