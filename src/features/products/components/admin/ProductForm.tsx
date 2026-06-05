@@ -150,7 +150,12 @@ function ProductFrom({ product }: ProductsFormProps) {
           description: `${data.name}`,
         });
       } catch (err) {
-        toast({ title: "Error saving product. Please try again." });
+        console.error("Product submission error:", err);
+        toast({
+          title: "Error saving product.",
+          description: err instanceof Error ? err.message : "An unknown error occurred.",
+          variant: "destructive",
+        });
       }
     });
   });
