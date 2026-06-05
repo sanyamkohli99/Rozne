@@ -1060,7 +1060,7 @@ type carts implements Node {
   product_id: String!
   user_id: UUID!
   created_at: Datetime!
-  products: products!
+  products: products
 }
 
 type cartsConnection {
@@ -1149,7 +1149,7 @@ type collections implements Node {
   description: String!
   order: Int
   featured_image_id: String!
-  medias: medias!
+  medias: medias
   productsCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -1272,8 +1272,8 @@ type comments implements Node {
   profileId: UUID!
   comment: String!
   created_at: Datetime!
-  product: products!
-  profile: profiles!
+  product: products
+  profile: profiles
 }
 
 type commentsConnection {
@@ -1527,8 +1527,8 @@ type order_lines implements Node {
   quantity: Int!
   price: BigFloat!
   created_at: Datetime!
-  products: products!
-  order: orders!
+  products: products
+  order: orders
 }
 
 type order_linesConnection {
@@ -1772,8 +1772,8 @@ type product_medias implements Node {
   productId: String!
   mediaId: String!
   priority: Int
-  product: products!
-  media: medias!
+  product: products
+  media: medias
 }
 
 type product_mediasConnection {
@@ -1870,8 +1870,9 @@ type products implements Node {
   stock: Int
   collection_id: String
   featured_image_id: String!
+  sizes: JSON!
   collections: collections
-  medias: medias!
+  medias: medias
   cartsCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -2058,6 +2059,7 @@ input productsInsertInput {
   stock: Int
   collection_id: String
   featured_image_id: String
+  sizes: JSON
 }
 
 type productsInsertResponse {
@@ -2100,6 +2102,7 @@ input productsUpdateInput {
   stock: Int
   collection_id: String
   featured_image_id: String
+  sizes: JSON
 }
 
 type productsUpdateResponse {
@@ -2278,7 +2281,7 @@ type wishlist implements Node {
   product_id: String!
   user_id: UUID!
   created_at: Datetime!
-  products: products!
+  products: products
 }
 
 type wishlistConnection {

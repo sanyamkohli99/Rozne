@@ -816,7 +816,7 @@ export type Carts = Node & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   product_id: Scalars["String"];
-  products: Products;
+  products?: Maybe<Products>;
   quantity: Scalars["Int"];
   user_id: Scalars["UUID"];
 };
@@ -898,7 +898,7 @@ export type Collections = Node & {
   featured_image_id: Scalars["String"];
   id: Scalars["String"];
   label: Scalars["String"];
-  medias: Medias;
+  medias?: Maybe<Medias>;
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   order?: Maybe<Scalars["Int"]>;
@@ -1007,9 +1007,9 @@ export type Comments = Node & {
   id: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
-  product: Products;
+  product?: Maybe<Products>;
   productId: Scalars["String"];
-  profile: Profiles;
+  profile?: Maybe<Profiles>;
   profileId: Scalars["UUID"];
 };
 
@@ -1213,11 +1213,11 @@ export type Order_Lines = Node & {
   id: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
-  order: Orders;
+  order?: Maybe<Orders>;
   orderId: Scalars["String"];
   price: Scalars["BigFloat"];
   product_id: Scalars["String"];
-  products: Products;
+  products?: Maybe<Products>;
   quantity: Scalars["Int"];
 };
 
@@ -1436,12 +1436,12 @@ export type OrdersUpdateResponse = {
 export type Product_Medias = Node & {
   __typename?: "product_medias";
   id: Scalars["String"];
-  media: Medias;
+  media?: Maybe<Medias>;
   mediaId: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   priority?: Maybe<Scalars["Int"]>;
-  product: Products;
+  product?: Maybe<Products>;
   productId: Scalars["String"];
 };
 
@@ -1529,7 +1529,7 @@ export type Products = Node & {
   featured_image_id: Scalars["String"];
   id: Scalars["String"];
   images: Scalars["JSON"];
-  medias: Medias;
+  medias?: Maybe<Medias>;
   name: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
@@ -1537,6 +1537,7 @@ export type Products = Node & {
   price: Scalars["BigFloat"];
   product_mediasCollection?: Maybe<Product_MediasConnection>;
   rating: Scalars["BigFloat"];
+  sizes: Scalars["JSON"];
   slug: Scalars["String"];
   stock?: Maybe<Scalars["Int"]>;
   tags: Scalars["JSON"];
@@ -1649,6 +1650,7 @@ export type ProductsInsertInput = {
   name?: InputMaybe<Scalars["String"]>;
   price?: InputMaybe<Scalars["BigFloat"]>;
   rating?: InputMaybe<Scalars["BigFloat"]>;
+  sizes?: InputMaybe<Scalars["JSON"]>;
   slug?: InputMaybe<Scalars["String"]>;
   stock?: InputMaybe<Scalars["Int"]>;
   tags?: InputMaybe<Scalars["JSON"]>;
@@ -1691,6 +1693,7 @@ export type ProductsUpdateInput = {
   name?: InputMaybe<Scalars["String"]>;
   price?: InputMaybe<Scalars["BigFloat"]>;
   rating?: InputMaybe<Scalars["BigFloat"]>;
+  sizes?: InputMaybe<Scalars["JSON"]>;
   slug?: InputMaybe<Scalars["String"]>;
   stock?: InputMaybe<Scalars["Int"]>;
   tags?: InputMaybe<Scalars["JSON"]>;
@@ -1830,7 +1833,7 @@ export type Wishlist = Node & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   product_id: Scalars["String"];
-  products: Products;
+  products?: Maybe<Products>;
   user_id: Scalars["UUID"];
 };
 
@@ -2034,12 +2037,12 @@ export type AdminProductsPageQueryQuery = {
         badge?: string | null;
         price: any;
         featured?: boolean | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         collections?: {
           __typename?: "collections";
           id: string;
@@ -2082,12 +2085,12 @@ export type CollectionRouteQueryQuery = {
               slug: string;
               badge?: string | null;
               price: any;
-              featuredImage: {
+              featuredImage?: {
                 __typename?: "medias";
                 id: string;
                 key: string;
                 alt: string;
-              };
+              } | null;
               collections?: {
                 __typename?: "collections";
                 id: string;
@@ -2097,12 +2100,12 @@ export type CollectionRouteQueryQuery = {
             };
           }>;
         } | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
       };
     }>;
   } | null;
@@ -2132,7 +2135,7 @@ export type OrderPageQueryQuery = {
             node: {
               __typename?: "order_lines";
               id: string;
-              products: {
+              products?: {
                 __typename?: "products";
                 id: string;
                 featured?: boolean | null;
@@ -2140,13 +2143,13 @@ export type OrderPageQueryQuery = {
                 name: string;
                 slug: string;
                 description?: string | null;
-                featuredImage: {
+                featuredImage?: {
                   __typename?: "medias";
                   id: string;
                   key: string;
                   alt: string;
-                };
-              };
+                } | null;
+              } | null;
             };
           }>;
         } | null;
@@ -2165,12 +2168,12 @@ export type OrderPageQueryQuery = {
         name: string;
         slug: string;
         description?: string | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
       };
     }>;
   } | null;
@@ -2195,12 +2198,12 @@ export type LandingRouteQueryQuery = {
         slug: string;
         badge?: string | null;
         price: any;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         collections?: {
           __typename?: "collections";
           id: string;
@@ -2233,7 +2236,11 @@ export type LandingRouteQueryQuery = {
         id: string;
         label: string;
         slug: string;
-        featuredImage: { __typename?: "medias"; key: string; alt: string };
+        featuredImage?: {
+          __typename?: "medias";
+          key: string;
+          alt: string;
+        } | null;
       };
     }>;
   } | null;
@@ -2257,6 +2264,7 @@ export type ProductDetailPageQueryQuery = {
         rating: any;
         price: any;
         tags: any;
+        sizes: any;
         totalComments: number;
         commentsCollection?: {
           __typename?: "commentsConnection";
@@ -2266,7 +2274,10 @@ export type ProductDetailPageQueryQuery = {
               __typename?: "comments";
               id: string;
               comment: string;
-              profile: { __typename?: "profiles"; name?: string | null };
+              profile?: {
+                __typename?: "profiles";
+                name?: string | null;
+              } | null;
             };
           }>;
         } | null;
@@ -2276,24 +2287,24 @@ export type ProductDetailPageQueryQuery = {
           label: string;
           slug: string;
         } | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         images?: {
           __typename?: "product_mediasConnection";
           edges: Array<{
             __typename?: "product_mediasEdge";
             node: {
               __typename?: "product_medias";
-              media: {
+              media?: {
                 __typename?: "medias";
                 id: string;
                 key: string;
                 alt: string;
-              };
+              } | null;
             };
           }>;
         } | null;
@@ -2313,12 +2324,12 @@ export type ProductDetailPageQueryQuery = {
         slug: string;
         badge?: string | null;
         price: any;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         collections?: {
           __typename?: "collections";
           id: string;
@@ -2337,12 +2348,12 @@ export type CartItemCardFragmentFragment = {
   name: string;
   price: any;
   description?: string | null;
-  featuredImage: {
+  featuredImage?: {
     __typename?: "medias";
     id: string;
     key: string;
     alt: string;
-  };
+  } | null;
 };
 
 export type FetchGuestCartQueryQueryVariables = Exact<{
@@ -2364,12 +2375,12 @@ export type FetchGuestCartQueryQuery = {
         name: string;
         price: any;
         description?: string | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
       };
     }>;
   } | null;
@@ -2392,20 +2403,20 @@ export type FetchCartQueryQuery = {
         product_id: string;
         user_id: any;
         quantity: number;
-        product: {
+        product?: {
           __typename?: "products";
           id: string;
           slug: string;
           name: string;
           price: any;
           description?: string | null;
-          featuredImage: {
+          featuredImage?: {
             __typename?: "medias";
             id: string;
             key: string;
             alt: string;
-          };
-        };
+          } | null;
+        } | null;
       };
     }>;
   } | null;
@@ -2427,20 +2438,20 @@ export type CreateCartMutationMutation = {
       product_id: string;
       user_id: any;
       quantity: number;
-      product: {
+      product?: {
         __typename?: "products";
         id: string;
         slug: string;
         name: string;
         price: any;
         description?: string | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
-      };
+        } | null;
+      } | null;
     }>;
   } | null;
 };
@@ -2475,20 +2486,20 @@ export type UpdateCartsMutationMutation = {
       product_id: string;
       user_id: any;
       quantity: number;
-      product: {
+      product?: {
         __typename?: "products";
         id: string;
         slug: string;
         name: string;
         price: any;
         description?: string | null;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
-      };
+        } | null;
+      } | null;
     }>;
   };
 };
@@ -2518,12 +2529,12 @@ export type CollectionBannerFragmentFragment = {
   id: string;
   label: string;
   slug: string;
-  featuredImage: {
+  featuredImage?: {
     __typename?: "medias";
     id: string;
     key: string;
     alt: string;
-  };
+  } | null;
 };
 
 export type CollectionCardFragmentFragment = {
@@ -2531,7 +2542,7 @@ export type CollectionCardFragmentFragment = {
   id: string;
   label: string;
   slug: string;
-  featuredImage: { __typename?: "medias"; key: string; alt: string };
+  featuredImage?: { __typename?: "medias"; key: string; alt: string } | null;
 };
 
 export type CollectionColumnsFragmentFragment = {
@@ -2593,7 +2604,7 @@ export type ProductCommentsSectionFragmentFragment = {
   __typename?: "comments";
   id: string;
   comment: string;
-  profile: { __typename?: "profiles"; name?: string | null };
+  profile?: { __typename?: "profiles"; name?: string | null } | null;
 };
 
 export type ImageGridFragmentFragment = {
@@ -2650,12 +2661,12 @@ export type BuyAgainCardFragmentFragment = {
     name: string;
     slug: string;
     description?: string | null;
-    featuredImage: {
+    featuredImage?: {
       __typename?: "medias";
       id: string;
       key: string;
       alt: string;
-    };
+    } | null;
   };
 };
 
@@ -2674,7 +2685,7 @@ export type OrdersListFragmentFragment = {
         node: {
           __typename?: "order_lines";
           id: string;
-          products: {
+          products?: {
             __typename?: "products";
             id: string;
             featured?: boolean | null;
@@ -2682,13 +2693,13 @@ export type OrdersListFragmentFragment = {
             name: string;
             slug: string;
             description?: string | null;
-            featuredImage: {
+            featuredImage?: {
               __typename?: "medias";
               id: string;
               key: string;
               alt: string;
-            };
-          };
+            } | null;
+          } | null;
         };
       }>;
     } | null;
@@ -2718,12 +2729,12 @@ export type ProductCardFragmentFragment = {
   slug: string;
   badge?: string | null;
   price: any;
-  featuredImage: {
+  featuredImage?: {
     __typename?: "medias";
     id: string;
     key: string;
     alt: string;
-  };
+  } | null;
   collections?: {
     __typename?: "collections";
     id: string;
@@ -2735,19 +2746,24 @@ export type ProductCardFragmentFragment = {
 export type ProductImageShowcaseFragmentFragment = {
   __typename?: "products";
   id: string;
-  featuredImage: {
+  featuredImage?: {
     __typename?: "medias";
     id: string;
     key: string;
     alt: string;
-  };
+  } | null;
   images?: {
     __typename?: "product_mediasConnection";
     edges: Array<{
       __typename?: "product_mediasEdge";
       node: {
         __typename?: "product_medias";
-        media: { __typename?: "medias"; id: string; key: string; alt: string };
+        media?: {
+          __typename?: "medias";
+          id: string;
+          key: string;
+          alt: string;
+        } | null;
       };
     }>;
   } | null;
@@ -2758,7 +2774,7 @@ export type CarouselImagesFragmentFragment = {
   node: {
     __typename?: "product_medias";
     id: string;
-    media: { __typename?: "medias"; key: string; alt: string };
+    media?: { __typename?: "medias"; key: string; alt: string } | null;
   };
 };
 
@@ -2781,12 +2797,12 @@ export type RecomendationProductsQueryQuery = {
         slug: string;
         badge?: string | null;
         price: any;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         collections?: {
           __typename?: "collections";
           id: string;
@@ -2821,12 +2837,12 @@ export type ProductColumnFragmentFragment = {
   badge?: string | null;
   price: any;
   featured?: boolean | null;
-  featuredImage: {
+  featuredImage?: {
     __typename?: "medias";
     id: string;
     key: string;
     alt: string;
-  };
+  } | null;
   collections?: {
     __typename?: "collections";
     id: string;
@@ -2860,12 +2876,12 @@ export type SearchQuery = {
         slug: string;
         badge?: string | null;
         price: any;
-        featuredImage: {
+        featuredImage?: {
           __typename?: "medias";
           id: string;
           key: string;
           alt: string;
-        };
+        } | null;
         collections?: {
           __typename?: "collections";
           id: string;
@@ -3572,7 +3588,6 @@ export const ProductColumnFragmentFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
-          { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "featured" } },
           {
             kind: "Field",
@@ -4216,7 +4231,6 @@ export const AdminProductsPageQueryDocument = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
-          { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "featured" } },
           {
             kind: "Field",
@@ -5327,6 +5341,10 @@ export const ProductDetailPageQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "tags" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sizes" },
                             },
                             {
                               kind: "Field",
