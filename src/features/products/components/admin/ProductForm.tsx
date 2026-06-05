@@ -130,16 +130,20 @@ function ProductForm({ product }: ProductsFormProps) {
     async (data: InsertProducts) => {
       startTransition(async () => {
         try {
+          // Remove createdAt before sending to server action
+          const { createdAt, ...productData } = data;
+
           let savedProduct;
           if (product) {
-            const result = await updateProductAction(product.id, data);
+            const result = await updateProductAction(product.id, productData as InsertProducts);
             if (result.error) throw new Error(result.error);
             savedProduct = result.data[0];
           } else {
-            const result = await createProductAction(data);
+            const result = await createProductAction(productData as InsertProducts);
             if (result.error) throw new Error(result.error);
             savedProduct = result.data[0];
           }
+  // ...
 
           if (savedProduct) {
             const validMediaIds = galleryImageIds.filter(
