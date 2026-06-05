@@ -238,10 +238,10 @@ export const calcProductCount = (data: { node: { quantity: number } }[]) => {
 };
 
 const calcSubtotal = (
-  data: { node: { quantity: number; product: { price: number } } }[],
+  data: { node: { quantity: number; product?: { price: number } | null } }[],
 ) => {
   return data.reduce(
-    (acc, cur) => acc + cur.node.quantity * cur.node.product.price,
+    (acc, cur) => acc + cur.node.quantity * (cur.node.product?.price || 0),
     0,
   );
 };
