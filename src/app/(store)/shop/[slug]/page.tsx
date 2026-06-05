@@ -43,6 +43,7 @@ const ProductDetailPageQuery = gql(/* GraphQL */ `
           rating
           price
           tags
+          sizes
           totalComments
           ...ProductImageShowcaseFragment
           commentsCollection(first: 5) {
@@ -79,7 +80,7 @@ async function ProductDetailPage({ params }: Props) {
   if (!data || !data.productsCollection || !data.productsCollection.edges)
     return notFound();
 
-  const { id, name, description, price, commentsCollection, totalComments } =
+  const { id, name, description, price, sizes, commentsCollection, totalComments } =
     data.productsCollection.edges[0].node;
 
   return (
@@ -107,7 +108,7 @@ async function ProductDetailPage({ params }: Props) {
             <Suspense>
               <AddProductToCartForm
                 productId={id}
-                availableSizes={[]}
+                availableSizes={sizes as string[]}
               />
             </Suspense>
 
