@@ -87,6 +87,8 @@ async function ProductDetailPage({ params }: Props) {
   const { id, name, description, price, sizes, commentsCollection, totalComments } =
     data.productsCollection.edges[0].node;
 
+  console.log("DEBUG: Sizes from GraphQL:", sizes);
+
   return (
     <Shell>
       <div className="grid grid-cols-12 gap-x-8">
