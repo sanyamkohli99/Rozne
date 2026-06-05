@@ -97,7 +97,7 @@ function ProductForm({ product }: ProductsFormProps) {
   });
 
   const form = useForm<InsertProducts>({
-    resolver: zodResolver(createInsertSchema(products)),
+    resolver: zodResolver(createInsertSchema(products).omit({ createdAt: true })),
     defaultValues: product ? { ...product } : {
         name: "",
         slug: "",
@@ -130,16 +130,13 @@ function ProductForm({ product }: ProductsFormProps) {
     async (data: InsertProducts) => {
       startTransition(async () => {
         try {
-          // Remove createdAt before sending to server action
-          const { createdAt, ...productData } = data;
-
           let savedProduct;
           if (product) {
-            const result = await updateProductAction(product.id, productData as InsertProducts);
+            const result = await updateProductAction(product.id, data);
             if (result.error) throw new Error(result.error);
             savedProduct = result.data[0];
           } else {
-            const result = await createProductAction(productData as InsertProducts);
+            const result = await createProductAction(data);
             if (result.error) throw new Error(result.error);
             savedProduct = result.data[0];
           }
