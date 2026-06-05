@@ -49,7 +49,7 @@ const TagsInput: FC<TagsInputProps> = ({
 
   return (
     <div className="relative flex flex-wrap items-center border border-black p-2 gap-x-3 gap-y-4">
-      {tags.map((tag, index) => (
+      {(tags || []).map((tag, index) => (
         <Badge key={index} className="rounded-full">
           {tag}
           <button
