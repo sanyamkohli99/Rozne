@@ -45,7 +45,7 @@ function ImagePreviewCard({ mediaId }: ImagePreviewCard) {
 
   if (error) return <div>Error! Media fetch error</div>;
 
-  if (data && data.mediasCollection.edges[0].node) {
+  if (data?.mediasCollection?.edges?.[0]?.node) {
     const media = data.mediasCollection.edges[0].node;
     return (
       <Card className="group relative">
@@ -66,6 +66,8 @@ function ImagePreviewCard({ mediaId }: ImagePreviewCard) {
       </Card>
     );
   }
+
+  return <div className="text-xs text-muted-foreground">Image not found</div>;
 }
 
 export default ImagePreviewCard;

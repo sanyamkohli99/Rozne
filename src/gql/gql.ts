@@ -19,6 +19,8 @@ const documents = {
     types.AdminCollectionsPageQueryDocument,
   "\n  query AdminOrdersPageQuery {\n    ordersCollection(orderBy: [{ created_at: DescNullsLast }]) {\n      edges {\n        node {\n          __typename\n          id\n          ...OrderColumnsFragment\n        }\n      }\n    }\n  }\n":
     types.AdminOrdersPageQueryDocument,
+  "\n  query AdminEditProductQuery($productId: String!) {\n    productsCollection(filter: { id: { eq: $productId } }) {\n      edges {\n        node {\n          id\n          name\n          slug\n          description\n          featured\n          badge\n          rating\n          price\n          tags\n          images\n          stock\n          totalComments\n          createdAt: created_at\n          collection_id\n          featured_image_id\n          collections {\n            id\n            label\n          }\n        }\n      }\n    }\n  }\n":
+    types.AdminEditProductQueryDocument,
   "\n    query AdminProductsPageQuery {\n      productsCollection(orderBy: [{ created_at: DescNullsLast }]) {\n        edges {\n          node {\n            id\n            ...ProductColumnFragment\n          }\n        }\n      }\n    }\n  ":
     types.AdminProductsPageQueryDocument,
   "\n  query CollectionRouteQuery($collectionSlug: String) {\n    collectionsCollection(\n      filter: { slug: { eq: $collectionSlug } }\n      orderBy: [{ order: DescNullsLast }]\n      first: 1\n    ) {\n      edges {\n        node {\n          title\n          label\n          description\n          ...CollectionBannerFragment\n          productsCollection(orderBy: [{ created_at: DescNullsLast }]) {\n            pageInfo {\n              hasNextPage\n            }\n            edges {\n              node {\n                id\n                ...ProductCardFragment\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n":
@@ -121,6 +123,12 @@ export function gql(
 export function gql(
   source: "\n  query AdminOrdersPageQuery {\n    ordersCollection(orderBy: [{ created_at: DescNullsLast }]) {\n      edges {\n        node {\n          __typename\n          id\n          ...OrderColumnsFragment\n        }\n      }\n    }\n  }\n",
 ): (typeof documents)["\n  query AdminOrdersPageQuery {\n    ordersCollection(orderBy: [{ created_at: DescNullsLast }]) {\n      edges {\n        node {\n          __typename\n          id\n          ...OrderColumnsFragment\n        }\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\n  query AdminEditProductQuery($productId: String!) {\n    productsCollection(filter: { id: { eq: $productId } }) {\n      edges {\n        node {\n          id\n          name\n          slug\n          description\n          featured\n          badge\n          rating\n          price\n          tags\n          images\n          stock\n          totalComments\n          createdAt: created_at\n          collection_id\n          featured_image_id\n          collections {\n            id\n            label\n          }\n        }\n      }\n    }\n  }\n",
+): (typeof documents)["\n  query AdminEditProductQuery($productId: String!) {\n    productsCollection(filter: { id: { eq: $productId } }) {\n      edges {\n        node {\n          id\n          name\n          slug\n          description\n          featured\n          badge\n          rating\n          price\n          tags\n          images\n          stock\n          totalComments\n          createdAt: created_at\n          collection_id\n          featured_image_id\n          collections {\n            id\n            label\n          }\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
