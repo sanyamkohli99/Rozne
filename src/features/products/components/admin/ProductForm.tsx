@@ -108,8 +108,8 @@ function ProductFrom({ product }: ProductsFormProps) {
   } = form;
 
   const addPresetSize = (size: string) => {
-    const current: string[] = form.getValues("sizes") || [];
-    if (!current.includes(size)) {
+    const current = (form.getValues("sizes") as string[]) || [];
+    if (Array.isArray(current) && !current.includes(size)) {
       form.setValue("sizes", [...current, size]);
     }
   };
