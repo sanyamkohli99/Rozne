@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import DeleteDialog from "@/components/ui/deleteDialog";
+import { deleteProductAction } from "@/_actions/products";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +25,6 @@ export const ProductColumnFragment = gql(/* GraphQL */ `
     slug
     badge
     price
-    badge
     featured
     featuredImage: medias {
       id
@@ -122,7 +124,7 @@ const ProductsColumns: ColumnDef<{
             >
               Edit Product
             </Link>
-            {/* <DeleteCategoryDialog categoryId={category.id} /> */}
+            <DeleteProductDialog productId={product.id} />
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -130,14 +132,26 @@ const ProductsColumns: ColumnDef<{
   },
 ];
 
-const DeleteCategoryDialog = ({ categoryId }: { categoryId: string }) => {
-  const onClickHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    // await deleteCategoryAction(categoryId)
+const DeleteProductDialog = ({ productId }: { productId: string }) => {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const onClickHandler = async () => {
+    startTransition(async () => {
+      const result = await deleteProductAction(productId);
+      if (result.error) {
+        console.error("Delete error:", result.error);
+        alert("Failed to delete product.");
+      } else {
+        router.refresh();
+      }
+    });
   };
+
   return (
     <DeleteDialog
       onClickHandler={onClickHandler}
-      title="Delete Proejct"
+      title="Delete Product"
       actionLabel="Delete"
     />
   );
