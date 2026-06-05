@@ -129,8 +129,8 @@ function ProductFrom({ product }: ProductsFormProps) {
         let savedProduct;
         if (product) {
           const result = await updateProductAction(product.id, data);
-          // Assuming updateProductAction might need a similar change
-          savedProduct = Array.isArray(result) ? result[0] : (result as any).data[0];
+          if (result.error) throw new Error(result.error);
+          savedProduct = result.data[0];
         } else {
           const result = await createProductAction(data);
           if (result.error) throw new Error(result.error);
