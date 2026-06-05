@@ -108,7 +108,11 @@ async function ProductDetailPage({ params }: Props) {
             <Suspense>
               <AddProductToCartForm
                 productId={id}
-                availableSizes={sizes as string[]}
+                availableSizes={
+                  typeof sizes === "string" 
+                    ? JSON.parse(sizes as string) 
+                    : (sizes as string[])
+                }
               />
             </Suspense>
 
