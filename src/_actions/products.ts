@@ -13,9 +13,14 @@ type SearchProductsActionProps = {
 };
 
 export const createProductAction = async (product: InsertProducts) => {
-  createInsertSchema(products).parse(product);
-  const data = await db.insert(products).values(product).returning();
-  return data;
+  try {
+    createInsertSchema(products).parse(product);
+    const data = await db.insert(products).values(product).returning();
+    return data;
+  } catch (err) {
+    console.error("Error in createProductAction:", err);
+    throw err;
+  }
 };
 
 export const updateProductAction = async (
