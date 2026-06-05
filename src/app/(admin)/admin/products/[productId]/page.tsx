@@ -71,7 +71,7 @@ async function EditProjectPage({
     sizes: [],
     stock: r.stock ?? null,
     totalComments: r.totalComments ?? 0,
-    createdAt: r.createdAt ?? new Date().toISOString(),
+    createdAt: r.createdAt ?? "2026-06-04T12:00:00.000Z",
     collectionId: r.collection_id ?? null,
     featuredImageId: r.featured_image_id,
   };
