@@ -95,10 +95,19 @@ function ProductFrom({ product }: ProductsFormProps) {
     query: ProductFormQuery,
   });
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const form = useForm<InsertProducts>({
     resolver: zodResolver(createInsertSchema(products)),
     defaultValues: { ...product },
   });
+
+  useEffect(() => {
+    form.reset({ ...product });
+  }, [product, form]);
+
+  if (!mounted) return null;
 
   const {
     register,
