@@ -73,9 +73,13 @@ const ProductDetailPageQuery = gql(/* GraphQL */ `
 `);
 
 async function ProductDetailPage({ params }: Props) {
-  const { data, error } = await getClient().query(ProductDetailPageQuery, {
-    productSlug: params.slug as string,
-  });
+  const { data, error } = await getClient().query(
+    ProductDetailPageQuery,
+    {
+      productSlug: params.slug as string,
+    },
+    { requestPolicy: "network-only" }
+  );
 
   if (!data || !data.productsCollection || !data.productsCollection.edges)
     return notFound();
