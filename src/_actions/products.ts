@@ -73,3 +73,13 @@ export const getProductGalleryMediaIds = async (
     .where(eq(productMedias.productId, productId));
   return rows.map((r) => r.mediaId);
 };
+
+export const deleteProductAction = async (productId: string) => {
+  try {
+    await db.delete(products).where(eq(products.id, productId));
+    return { success: true };
+  } catch (err) {
+    console.error("Error in deleteProductAction:", err);
+    return { error: err instanceof Error ? err.message : "Unknown error" };
+  }
+};
