@@ -1,0 +1,41 @@
+14:48:16.995 Running build in Washington, D.C., USA (East) – iad1
+14:48:16.996 Build machine configuration: 2 cores, 8 GB
+14:48:17.135 Cloning github.com/sanyamkohli99/Rozne (Branch: main, Commit: a5953c4)
+14:48:17.835 Cloning completed: 700.000ms
+14:48:18.986 Restored build cache from previous deployment (GDXoWtRBjbdaYjkXbc3JTEQb4zuM)
+14:48:19.191 Running "vercel build"
+14:48:19.208 Vercel CLI 54.9.0
+14:48:19.454 Warning: Detected "engines": { "node": ">=20.0.0" } in your `package.json` that will automatically upgrade when a new major Node.js Version is released. Learn More: https://vercel.link/node-version
+14:48:19.479 Installing dependencies...
+14:48:22.754 
+14:48:22.755 changed 3 packages in 3s
+14:48:22.755 
+14:48:22.756 255 packages are looking for funding
+14:48:22.756   run `npm fund` for details
+14:48:22.792 Detected Next.js version: 14.2.35
+14:48:22.800 Running "npm run build"
+14:48:22.897 
+14:48:22.897 > rozne@0.1.0 build
+14:48:22.897 > graphql-codegen && next build
+14:48:22.898 
+14:48:23.742 [STARTED] Parse Configuration
+14:48:23.743 [SUCCESS] Parse Configuration
+14:48:23.743 [STARTED] Generate outputs
+14:48:23.745 [STARTED] Generate to ./src/gql
+14:48:23.873 [STARTED] Load GraphQL schemas
+14:48:23.996 [SUCCESS] Load GraphQL schemas
+14:48:23.997 [STARTED] Load GraphQL documents
+14:48:24.932 [SUCCESS] Load GraphQL documents
+14:48:24.933 [STARTED] Generate
+14:48:24.934 DEPRECATED: `gql-tag-operations-preset` is deprecated in favor of `client-preset`.
+14:48:25.254 [SUCCESS] Generate
+14:48:25.255 [SUCCESS] Generate to ./src/gql
+14:48:25.255 [SUCCESS] Generate outputs
+14:48:27.774   ▲ Next.js 14.2.35
+14:48:27.775 
+14:48:27.783    Creating an optimized production build ...
+14:48:40.795 Browserslist: caniuse-lite is outdated. Please run:
+14:48:40.796   npx update-browserslist-db@latest
+14:48:40.796   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+14:48:43.652  ✓ Compiled successfully
+14:48:43.653    Linting and checking validity of types ...
