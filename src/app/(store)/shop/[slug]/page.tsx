@@ -53,6 +53,7 @@ async function ProductDetailPage({ params }: Props) {
                 tags
                 sizes
                 size_chart
+                stock
                 totalComments
                 featuredImage: medias { id key alt }
                 images: product_mediasCollection(orderBy: [{ priority: DescNullsLast }]) {
@@ -96,6 +97,9 @@ async function ProductDetailPage({ params }: Props) {
   const { id, name, description, price, sizes, size_chart: sizeChart, commentsCollection, totalComments } =
     data.productsCollection.edges[0].node;
 
+  const stock = data.productsCollection.edges[0].node.stock;
+  const outOfStock = stock !== null && stock !== undefined && stock <= 0;
+
   return (
     <Shell>
       <div className="grid grid-cols-12 gap-x-8">
@@ -113,6 +117,11 @@ async function ProductDetailPage({ params }: Props) {
               <p className="text-xs text-muted-foreground">
                 Tax included. Shipping calculated at checkout.
               </p>
+              {outOfStock && (
+                <p className="mt-2 inline-block bg-zinc-900/85 text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
+                  Out of Stock
+                </p>
+              )}
             </div>
             <AddToWishListButton productId={id} />
           </section>
@@ -121,6 +130,7 @@ async function ProductDetailPage({ params }: Props) {
             <Suspense>
               <AddProductToCartForm
                 productId={id}
+                disabled={outOfStock}
                 availableSizes={
                   (() => {
                     const raw = typeof sizes === "string" ? JSON.parse(sizes) : sizes;
@@ -134,12 +144,12 @@ async function ProductDetailPage({ params }: Props) {
               <SizeChartDialog sizeChart={sizeChart} />
             </div>
 
-            <BuyNowButton productId={id} />
+            <BuyNowButton productId={id} disabled={outOfStock} />
           </section>
 
           <section className="max-w-lg">
             {description && (
-              <p className="text-sm leading-relaxed text-zinc-700 mb-4">
+              <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 mb-4">
                 {description}
               </p>
             )}

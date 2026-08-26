@@ -66,7 +66,7 @@ export default async function Home() {
   const promoCards = await getPromoCards();
 
   return (
-    <main className="pt-5 bg-[#FAF7F2]">
+    <main className="pt-5 bg-[#FAF7F2] dark:bg-background">
       <Hero />
       <Shell>
         {productsEdges.length > 0 && (
@@ -121,12 +121,12 @@ function DifferentFeatureCards() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 my-20">
       {features.map(({ Icon, title, description }, index) => (
-        <div className="bg-white/40 backdrop-blur-sm border border-stone-200/60 rounded-xl p-8 text-center hover:bg-white/60 hover:border-stone-300/80 transition-all duration-200" key={`FeatureCards_${index}`}>
+        <div className="bg-white/40 dark:bg-white/5 backdrop-blur-sm border border-stone-200/60 dark:border-white/10 rounded-xl p-8 text-center hover:bg-white/60 dark:hover:bg-white/10 hover:border-stone-300/80 dark:hover:border-white/20 transition-all duration-200" key={`FeatureCards_${index}`}>
           <div className="flex justify-center items-center mb-5">
-            <Icon width={28} height={28} className="text-stone-400" />
+            <Icon width={28} height={28} className="text-stone-400 dark:text-stone-500" />
           </div>
-          <h4 className="text-xs font-medium tracking-[0.15em] uppercase text-stone-700 mb-3">{title}</h4>
-          <p className="text-sm text-stone-500 leading-relaxed">{description}</p>
+          <h4 className="text-xs font-medium tracking-[0.15em] uppercase text-stone-700 dark:text-stone-300 mb-3">{title}</h4>
+          <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">{description}</p>
         </div>
       ))}
     </section>
@@ -135,7 +135,7 @@ function DifferentFeatureCards() {
 
 function LessIsMoreCard() {
   return (
-    <section className="max-w-[1920px] mx-auto bg-stone-100/80 grid grid-cols-12 my-20">
+    <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20">
       <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden">
         <Image
           src="/assets/lessismore.jpg"
@@ -147,9 +147,9 @@ function LessIsMoreCard() {
         />
       </div>
       <div className="col-span-12 md:col-span-4 flex flex-col justify-center px-8 md:px-14 py-12 md:py-0">
-        <p className="text-xs tracking-[0.3em] uppercase text-stone-400 mb-4">Our Philosophy</p>
-        <h2 className="text-2xl md:text-3xl font-light mb-4 leading-snug text-stone-800">Slow Fashion.<br />Real Craft.</h2>
-        <p className="text-sm leading-relaxed text-stone-500 mb-8 max-w-sm">
+        <p className="text-xs tracking-[0.3em] uppercase text-stone-400 dark:text-stone-500 mb-4">Our Philosophy</p>
+        <h2 className="text-2xl md:text-3xl font-light mb-4 leading-snug text-stone-800 dark:text-stone-200">Slow Fashion.<br />Real Craft.</h2>
+        <p className="text-sm leading-relaxed text-stone-500 dark:text-stone-400 mb-8 max-w-sm">
           We believe you should never have to choose between quality and conscience.
           Every sweater, cardigan and knit we make is built to outlast trends —
           because the most sustainable garment is the one you keep wearing.
@@ -180,7 +180,7 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
           <div key={card.id}>
             <Link
               href="/shop"
-              className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} bg-stone-100/60 overflow-hidden group`}
+              className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} bg-stone-100/60 dark:bg-stone-900/40 overflow-hidden group`}
             >
               <div className="relative w-full h-[320px] md:h-[480px] md:w-1/2 overflow-hidden">
                 <Image
@@ -193,9 +193,9 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
                 />
               </div>
               <div className="flex flex-col justify-center px-8 md:px-14 py-12 md:w-1/2">
-                <p className="text-xs tracking-[0.3em] uppercase text-stone-400 mb-3">ROZNE</p>
-                <h3 className="text-2xl md:text-3xl font-light mb-4 leading-snug text-stone-800">{card.title}</h3>
-                <p className="text-sm leading-relaxed text-stone-500 mb-8 max-w-md">{card.description}</p>
+                <p className="text-xs tracking-[0.3em] uppercase text-stone-400 dark:text-stone-500 mb-3">ROZNE</p>
+                <h3 className="text-2xl md:text-3xl font-light mb-4 leading-snug text-stone-800 dark:text-stone-200">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-stone-500 dark:text-stone-400 mb-8 max-w-md">{card.description}</p>
                 <span className="inline-block text-xs tracking-widest uppercase bg-stone-900/70 backdrop-blur-sm text-white px-6 py-3 w-fit hover:bg-stone-800/80 transition-all duration-200">
                   Shop Now
                 </span>
@@ -203,11 +203,11 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
             </Link>
             {card.catchphrase && (
               <div className={`py-16 md:py-24 flex flex-col ${catchphraseLeft ? "items-start text-left pl-4 md:pl-16" : "items-end text-right pr-4 md:pr-16"}`}>
-                <p className="text-xl md:text-3xl font-light text-stone-700 italic mb-4 max-w-lg">
+                <p className="text-xl md:text-3xl font-light text-stone-700 dark:text-stone-300 italic mb-4 max-w-lg">
                   {card.catchphrase}
                 </p>
                 {card.catchphraseDesc && (
-                  <p className="text-sm md:text-base text-stone-500 max-w-md leading-relaxed">
+                  <p className="text-sm md:text-base text-stone-500 dark:text-stone-400 max-w-md leading-relaxed">
                     {card.catchphraseDesc}
                   </p>
                 )}

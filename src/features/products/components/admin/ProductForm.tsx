@@ -83,6 +83,7 @@ function ProductForm({ product }: ProductsFormProps) {
         sizes: [],
         sizeChart: null,
         price: "0.00",
+        stock: 8,
         totalComments: 0,
         featuredImageId: "",
     },
@@ -229,6 +230,33 @@ function ProductForm({ product }: ProductsFormProps) {
               </FormControl>
               <FormDescription>
                 Price in INR (without currency symbol).
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+
+            <FormItem>
+              <FormLabel className="text-sm">Stock</FormLabel>
+              <div className="flex gap-x-2">
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={0}
+                    placeholder="e.g. 8"
+                    {...register("stock", { valueAsNumber: true })}
+                  />
+                </FormControl>
+                <Button
+                  type="button"
+                  variant={Number(form.watch("stock")) === 0 ? "default" : "outline"}
+                  onClick={() =>
+                    form.setValue("stock", Number(form.watch("stock")) === 0 ? 8 : 0)
+                  }
+                >
+                  {Number(form.watch("stock")) === 0 ? "In Stock" : "Out of Stock"}
+                </Button>
+              </div>
+              <FormDescription>
+                Set to 0 (or press Out of Stock) to hide add-to-cart and mark the product as sold out.
               </FormDescription>
               <FormMessage />
             </FormItem>

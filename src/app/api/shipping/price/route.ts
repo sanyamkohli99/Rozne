@@ -3,6 +3,8 @@ import { calculateShipping } from "@/lib/shipping";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const querySchema = z.object({
   weight: z.coerce.number().positive().optional(),
   pincode: z.string().regex(/^\d{6}$/, "Enter a valid 6-digit pincode."),

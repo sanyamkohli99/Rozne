@@ -2378,6 +2378,7 @@ export type CollectionRouteQueryQuery = {
               slug: string;
               badge?: string | null;
               price: any;
+              stock?: number | null;
               featuredImage?: {
                 __typename?: "medias";
                 id: string;
@@ -2491,6 +2492,7 @@ export type LandingRouteQueryQuery = {
         slug: string;
         badge?: string | null;
         price: any;
+        stock?: number | null;
         featuredImage?: {
           __typename?: "medias";
           id: string;
@@ -2910,6 +2912,7 @@ export type ProductCardFragmentFragment = {
   slug: string;
   badge?: string | null;
   price: any;
+  stock?: number | null;
   featuredImage?: {
     __typename?: "medias";
     id: string;
@@ -2978,6 +2981,7 @@ export type RecomendationProductsQueryQuery = {
         slug: string;
         badge?: string | null;
         price: any;
+        stock?: number | null;
         featuredImage?: {
           __typename?: "medias";
           id: string;
@@ -3044,6 +3048,7 @@ export type SearchQuery = {
         slug: string;
         badge?: string | null;
         price: any;
+        stock?: number | null;
         featuredImage?: {
           __typename?: "medias";
           id: string;
@@ -3565,6 +3570,7 @@ export const ProductCardFragmentFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
+          { kind: "Field", name: { kind: "Name", value: "stock" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "featuredImage" },
@@ -4695,6 +4701,7 @@ export const CollectionRouteQueryDocument = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
+          { kind: "Field", name: { kind: "Name", value: "stock" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "featuredImage" },
@@ -5302,6 +5309,7 @@ export const LandingRouteQueryDocument = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
+          { kind: "Field", name: { kind: "Name", value: "stock" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "featuredImage" },
@@ -6879,6 +6887,7 @@ export const RecomendationProductsQueryDocument = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
+          { kind: "Field", name: { kind: "Name", value: "stock" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "featuredImage" },
@@ -7203,6 +7212,7 @@ export const SearchDocument = {
           { kind: "Field", name: { kind: "Name", value: "slug" } },
           { kind: "Field", name: { kind: "Name", value: "badge" } },
           { kind: "Field", name: { kind: "Name", value: "price" } },
+          { kind: "Field", name: { kind: "Name", value: "stock" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "featuredImage" },

@@ -13,7 +13,7 @@ interface AddToCartButtonProps extends ButtonProps {
   cartId?: string;
 }
 
-function AddToCartButton({ productId, quantity = 1 }: AddToCartButtonProps) {
+function AddToCartButton({ productId, quantity = 1, disabled, ...props }: AddToCartButtonProps) {
   const { user } = useAuth();
   const { addProductToCart } = useCartActions(user, productId);
 
@@ -22,6 +22,9 @@ function AddToCartButton({ productId, quantity = 1 }: AddToCartButtonProps) {
       <Button
         className="rounded-full p-0 h-8 w-8"
         onClick={() => addProductToCart(quantity)}
+        disabled={disabled}
+        aria-label={disabled ? "Out of stock" : "Add to cart"}
+        {...props}
       >
         <Icons.basket className="h-5 w-5 md:h-4 md:w-4" />
       </Button>

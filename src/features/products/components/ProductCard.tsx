@@ -36,6 +36,7 @@ export const ProductCardFragment = gql(/* GraphQL */ `
     slug
     badge
     price
+    stock
     featuredImage: medias {
       id
       key
@@ -56,6 +57,7 @@ export function ProductCard({
 }: ProductCardProps) {
   const { id, name, slug, featuredImage, badge, price } = product;
   const isVideo = isVideoUrl(featuredImage?.key);
+  const outOfStock = product.stock !== null && product.stock !== undefined && (product.stock as number) <= 0;
 
   return (
     <HoverLift className={cn("w-full", className)}>
@@ -94,6 +96,12 @@ export function ProductCard({
             {badge}
           </Badge>
         )}
+        {outOfStock && (
+          <div className="absolute top-0 right-0 bg-zinc-900/85 backdrop-blur-sm text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
+            Out of Stock
+          </div>
+        )}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px]" />
       </CardContent>
 
       <CardHeader className="p-0 mb-3 md:mb-5">
@@ -124,7 +132,7 @@ export function ProductCard({
             </Button>
           }
         >
-          <AddToCartButton productId={id} />
+          <AddToCartButton productId={id} disabled={outOfStock} />
         </Suspense>
 
         <Suspense

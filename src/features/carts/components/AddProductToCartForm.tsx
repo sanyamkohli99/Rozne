@@ -23,11 +23,13 @@ const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 interface AddProductToCartFormProps {
   productId: string;
   availableSizes?: string[];
+  disabled?: boolean;
 }
 
 function AddProductToCartForm({
   productId,
   availableSizes = [],
+  disabled = false,
 }: AddProductToCartFormProps) {
   const { user } = useAuth();
   const { addProductToCart } = useCartActions(user, productId);
@@ -129,9 +131,9 @@ function AddProductToCartForm({
         <Button
           type="submit"
           className="w-full"
-          disabled={hasSizes && !selectedSize}
+          disabled={disabled || (hasSizes && !selectedSize)}
         >
-          {hasSizes && !selectedSize ? "Select a Size" : "Add to Cart"}
+          {disabled ? "Out of Stock" : hasSizes && !selectedSize ? "Select a Size" : "Add to Cart"}
         </Button>
       </form>
     </Form>

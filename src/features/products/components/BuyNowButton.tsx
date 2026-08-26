@@ -6,18 +6,22 @@ import Link from "next/link";
 
 type BuyNowButtonProps = {
   productId: string;
+  disabled?: boolean;
 };
 
-function BuyNowButton({ productId }: BuyNowButtonProps) {
+function BuyNowButton({ productId, disabled = false }: BuyNowButtonProps) {
   return (
     <Link
       href="/cart"
+      aria-disabled={disabled}
+      onClick={(e) => disabled && e.preventDefault()}
       className={cn(
         buttonVariants({ variant: "outline" }),
-        "w-full justify-center"
+        "w-full justify-center",
+        disabled && "pointer-events-none opacity-50"
       )}
     >
-      Buy Now — View Cart
+      {disabled ? "Out of Stock" : "Buy Now — View Cart"}
     </Link>
   );
 }
