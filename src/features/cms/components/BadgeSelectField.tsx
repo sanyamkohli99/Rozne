@@ -36,8 +36,12 @@ function BadgeSelectField({ name, label }: BadgeSelectFieldProps) {
         <FormItem>
           <FormLabel>Badge</FormLabel>
           <Select
-            onValueChange={field.onChange}
-            defaultValue={field.value || undefined}
+            onValueChange={(value) =>
+              setValue("badge", value === "none" ? null : (value as any), {
+                shouldDirty: true,
+              })
+            }
+            value={field.value || "none"}
           >
             <FormControl>
               <SelectTrigger>
@@ -48,15 +52,16 @@ function BadgeSelectField({ name, label }: BadgeSelectFieldProps) {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Badge</SelectLabel>
+                <SelectItem value="none">No Badge</SelectItem>
                 <SelectItem value="new_product">New Product</SelectItem>
                 <SelectItem value="best_sale">Best Sale</SelectItem>
-                <SelectItem value="featured">featured</SelectItem>
+                <SelectItem value="featured">Featured</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
 
           <FormDescription>
-            Select a Badge if you want the Product card attached a badge.
+            Choose &quot;No Badge&quot; if you don&apos;t want a tag on the product card.
           </FormDescription>
           <FormMessage />
         </FormItem>
