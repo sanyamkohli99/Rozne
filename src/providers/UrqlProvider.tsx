@@ -11,6 +11,7 @@ import {
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { useMemo } from "react";
 import { env } from "../env.mjs";
+import { forcePostFetch } from "../lib/urql";
 import { useAuth } from "./AuthProvider";
 
 export default function Provider({ children }: React.PropsWithChildren) {
@@ -21,6 +22,7 @@ export default function Provider({ children }: React.PropsWithChildren) {
 
     const client = createClient({
       url: `https://${env.NEXT_PUBLIC_SUPABASE_PROJECT_REF}.supabase.co/graphql/v1`,
+      fetch: forcePostFetch,
       exchanges: [
         // devtoolsExchange,
         cacheExchange({
