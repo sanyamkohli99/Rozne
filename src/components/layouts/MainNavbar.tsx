@@ -47,7 +47,7 @@ async function MainNavbar({ adminLayout = false }: MainNavbarProps) {
               <Icons.heart className="w-4 h-4" aria-label="wishlist" />
             </Link>
 
-            {!adminLayout && <ThemeToggle />}
+            <ThemeToggle />
 
             <Suspense fallback={<CartLink productCount={0} />}>
               {!adminLayout && <CartNav />}
