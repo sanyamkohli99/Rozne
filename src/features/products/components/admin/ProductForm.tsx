@@ -256,7 +256,7 @@ function ProductForm({ product }: ProductsFormProps) {
                 </Button>
               </div>
               <FormDescription>
-                Set to 0 (or press Out of Stock) to hide add-to-cart and mark the product as sold out.
+                Set to 0 (or press Out of Stock) to hide add-to-cart and mark the product as sold out. 5 or below shows a &quot;hurry, only X left&quot; urgency badge.
               </FormDescription>
               <FormMessage />
             </FormItem>

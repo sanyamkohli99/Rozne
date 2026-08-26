@@ -23,6 +23,8 @@ import { HoverLift } from "@/components/ui/HoverLift";
 
 type CardProps = React.ComponentProps<typeof Card>;
 
+const LOW_STOCK_THRESHOLD = 5;
+
 export type ProductCardProps = CardProps & {
   product: DocumentType<typeof ProductCardFragment>;
 };
@@ -57,7 +59,14 @@ export function ProductCard({
 }: ProductCardProps) {
   const { id, name, slug, featuredImage, badge, price } = product;
   const isVideo = isVideoUrl(featuredImage?.key);
-  const outOfStock = product.stock !== null && product.stock !== undefined && (product.stock as number) <= 0;
+  const outOfStock =
+    product.stock !== null && product.stock !== undefined && (product.stock as number) <= 0;
+  const lowStock =
+    !outOfStock &&
+    product.stock !== null &&
+    product.stock !== undefined &&
+    (product.stock as number) > 0 &&
+    (product.stock as number) <= LOW_STOCK_THRESHOLD;
 
   return (
     <HoverLift className={cn("w-full", className)}>
@@ -99,6 +108,11 @@ export function ProductCard({
         {outOfStock && (
           <div className="absolute top-0 right-0 bg-zinc-900/85 backdrop-blur-sm text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
             Out of Stock
+          </div>
+        )}
+        {lowStock && (
+          <div className="absolute top-0 right-0 bg-amber-400/95 text-zinc-900 text-[10px] tracking-widest uppercase px-3 py-1.5 font-medium">
+            Only {product.stock} left
           </div>
         )}
         <div className="absolute bottom-0 left-0 right-0 h-[1px]" />

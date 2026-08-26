@@ -16,6 +16,8 @@ import {
   SizeChartDialog,
 } from "@/features/products";
 import ShipReturns from "@/features/products/components/ShipReturns";
+
+const LOW_STOCK_THRESHOLD = 5;
 import { AddToWishListButton } from "@/features/wishlists";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -99,6 +101,7 @@ async function ProductDetailPage({ params }: Props) {
 
   const stock = data.productsCollection.edges[0].node.stock;
   const outOfStock = stock !== null && stock !== undefined && stock <= 0;
+  const lowStock = !outOfStock && stock !== null && stock !== undefined && stock <= LOW_STOCK_THRESHOLD;
 
   return (
     <Shell>
@@ -120,6 +123,11 @@ async function ProductDetailPage({ params }: Props) {
               {outOfStock && (
                 <p className="mt-2 inline-block bg-zinc-900/85 text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
                   Out of Stock
+                </p>
+              )}
+              {lowStock && (
+                <p className="mt-2 text-sm font-medium text-amber-600 dark:text-amber-400">
+                  Hurry! Only {stock} left in stock — order soon.
                 </p>
               )}
             </div>
