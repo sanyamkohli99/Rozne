@@ -294,7 +294,7 @@ function ProductForm({ product }: ProductsFormProps) {
                     key={size}
                     type="button"
                     onClick={() => addPresetSize(size)}
-                    className="px-3 py-1 text-xs border border-zinc-300 rounded hover:bg-zinc-100 transition-colors"
+                    className="px-3 py-1 text-xs border border-zinc-300 dark:border-zinc-600 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                   >
                     + {size}
                   </button>

@@ -26,7 +26,7 @@ function AdminShell({
             {heading}
           </h1>
           {description && (
-            <p className="max-w-2xl text-zinc-500 text-sm leading-relaxed">
+            <p className="max-w-2xl text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
               {description}
             </p>
           )}

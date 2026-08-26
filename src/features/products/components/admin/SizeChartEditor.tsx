@@ -94,21 +94,21 @@ export function SizeChartEditor({ value, onChange }: Props) {
         <button
           type="button"
           onClick={addRow}
-          className="px-3 py-1 text-xs border border-zinc-300 rounded hover:bg-zinc-100 transition-colors"
+          className="px-3 py-1 text-xs border border-zinc-300 dark:border-zinc-600 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           + Row
         </button>
         <button
           type="button"
           onClick={addHeader}
-          className="px-3 py-1 text-xs border border-zinc-300 rounded hover:bg-zinc-100 transition-colors"
+          className="px-3 py-1 text-xs border border-zinc-300 dark:border-zinc-600 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           + Column
         </button>
         <button
           type="button"
           onClick={resetToDefault}
-          className="px-3 py-1 text-xs border border-zinc-300 rounded hover:bg-zinc-100 transition-colors"
+          className="px-3 py-1 text-xs border border-zinc-300 dark:border-zinc-600 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           Reset
         </button>
@@ -121,18 +121,18 @@ export function SizeChartEditor({ value, onChange }: Props) {
         </button>
       </div>
 
-      <div className="overflow-x-auto border border-zinc-200 rounded-md">
+      <div className="overflow-x-auto border border-zinc-200 dark:border-zinc-700 rounded-md">
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr>
               {chart.headers.map((header, i) => (
-                <th key={i} className="border border-zinc-200 bg-zinc-50 px-2 py-1.5">
+                <th key={i} className="border border-zinc-200 bg-zinc-50 dark:bg-zinc-800 px-2 py-1.5">
                   <div className="flex items-center gap-1">
                     <input
                       type="text"
                       value={header}
                       onChange={(e) => updateHeader(i, e.target.value)}
-                      className="w-full text-xs font-medium text-zinc-700 bg-transparent border-none p-0 focus:outline-none focus:ring-0"
+                      className="w-full text-xs font-medium text-zinc-700 dark:text-zinc-200 bg-transparent border-none p-0 focus:outline-none focus:ring-0"
                     />
                     {chart.headers.length > 2 && (
                       <button
@@ -146,14 +146,14 @@ export function SizeChartEditor({ value, onChange }: Props) {
                   </div>
                 </th>
               ))}
-              <th className="w-8 bg-zinc-50 border border-zinc-200" />
+              <th className="w-8 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700" />
             </tr>
           </thead>
           <tbody>
             {chart.rows.map((row, ri) => (
-              <tr key={ri} className={ri % 2 === 0 ? "bg-white" : "bg-zinc-50/50"}>
+              <tr key={ri} className={ri % 2 === 0 ? "bg-white dark:bg-zinc-900" : "bg-zinc-50/50 dark:bg-zinc-800/50"}>
                 {row.map((cell, ci) => (
-                  <td key={ci} className="border border-zinc-200 px-2 py-1">
+                  <td key={ci} className="border border-zinc-200 dark:border-zinc-700 px-2 py-1">
                     <input
                       type="text"
                       value={cell}
@@ -162,7 +162,7 @@ export function SizeChartEditor({ value, onChange }: Props) {
                     />
                   </td>
                 ))}
-                <td className="border border-zinc-200 px-1 py-1 text-center">
+                <td className="border border-zinc-200 dark:border-zinc-700 px-1 py-1 text-center">
                   {chart.rows.length > 1 && (
                     <button
                       type="button"

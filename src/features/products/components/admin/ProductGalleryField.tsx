@@ -50,7 +50,7 @@ export function ProductGalleryField({
                 </button>
               </>
             ) : (
-              <div className="border-2 border-dashed border-zinc-200 rounded aspect-square flex items-center justify-center text-zinc-400 hover:border-zinc-400 transition-colors cursor-pointer text-xs text-center p-2">
+              <div className="border-2 border-dashed border-zinc-200 dark:border-zinc-700 rounded aspect-square flex items-center justify-center text-zinc-400 dark:text-zinc-500 hover:border-zinc-400 transition-colors cursor-pointer text-xs text-center p-2">
                 <ImageDialog
                   value={undefined}
                   defaultValue={undefined}

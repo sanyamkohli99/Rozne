@@ -93,10 +93,10 @@ function AddProductToCartForm({
                         }
                         className={cn(
                           "min-w-[3rem] h-10 px-3 border text-sm font-medium transition-all duration-150",
-                          "hover:border-zinc-900 hover:bg-zinc-50",
+                          "hover:border-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800",
                           field.value === size
                             ? "border-zinc-900 bg-zinc-900 text-white"
-                            : "border-zinc-300 bg-white text-zinc-800",
+                            : "border-zinc-300 bg-white text-zinc-800 dark:border-zinc-600 dark:bg-transparent dark:text-zinc-200",
                         )}
                       >
                         {size}
