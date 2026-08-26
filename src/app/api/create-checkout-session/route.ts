@@ -1,50 +1,33 @@
 import { getProductsByIds } from "@/_actions/products";
 import { validatePromoCode, incrementPromoCodeUsage } from "@/_actions/promo-codes";
 import type { CartItems } from "@/features/carts";
+import { handleApiError } from "@/lib/api/handleError";
+import { orderProductsSchema } from "@/lib/schemas/checkout";
 import { stripe } from "@/lib/stripe";
 import db from "@/lib/supabase/db";
 import { SelectProducts, orders } from "@/lib/supabase/schema";
 import { getURL } from "@/lib/utils";
 import { orderLines } from "./../../../lib/supabase/schema";
 
-import { User, createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-const orderProductsSchema = z.object({
-  orderProducts: z.record(
-    z.object({
-      quantity: z.number().min(1),
-    }),
-  ),
-  guest: z.boolean(),
-  promoCode: z.string().optional(),
-});
 
 type OrderProducts = CartItems;
 
 export async function POST(request: Request) {
-  const data = (await request.json()) as {
-    orderProducts: OrderProducts;
-    guest: boolean;
-    promoCode?: string;
-  };
-
-  let user: User | undefined;
+  const data = await request.json();
 
   const validation = orderProductsSchema.safeParse(data);
   const supabase = createRouteHandlerClient({ cookies });
 
-  if (!validation)
-    return new NextResponse(JSON.stringify("Invalid data format."), {
-      status: 400,
-    });
+  if (!validation.success)
+    return NextResponse.json({ error: "Invalid data format." }, { status: 400 });
 
   try {
     const productsQuantity = await mergeProductDetailsWithQuantities(
-      data.orderProducts,
+      validation.data.orderProducts as unknown as OrderProducts,
     );
 
     let amount = calcSubtotal(productsQuantity);
@@ -126,7 +109,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ sessionId: session.id });
   } catch (err) {
-    return new NextResponse("Internal Error", { status: 500 });
+    return handleApiError(err);
   }
 }
 

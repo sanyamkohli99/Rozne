@@ -8,19 +8,19 @@ export async function POST(request: NextRequest) {
   const client = createClient({ cookieStore, isAdmin: true });
   const session = await client.auth.getSession();
 
-  if (!session.data.session.user.app_metadata.isAdmin)
+  if (!session.data.session?.user?.app_metadata?.isAdmin)
     return NextResponse.json(
-      { message: `Only Admin allowed to do this action.` },
-      { status: 500 },
+      { message: "Only Admin allowed to do this action." },
+      { status: 403 },
     );
 
   const data: PromoteAdminSchema = await request.json();
   const validate = promoteAdminSchema.safeParse(data);
 
-  if (!validate)
+  if (!validate.success)
     return NextResponse.json(
       { message: "Error, Data validation failed." },
-      { status: 500 },
+      { status: 400 },
     );
 
   const { data: userResponse } = await client.auth.admin.getUserById(
@@ -30,10 +30,8 @@ export async function POST(request: NextRequest) {
   if (!userResponse.user)
     return NextResponse.json(
       { message: `Error, UserId: ${data.userId} not found.` },
-      { status: 500 },
+      { status: 404 },
     );
-
-  console.log("userResponse", userResponse.user);
 
   const { data: updatedUser, error } = await client.auth.admin.updateUserById(
     data.userId,

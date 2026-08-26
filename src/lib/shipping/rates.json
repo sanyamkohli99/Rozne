@@ -1,0 +1,25 @@
+{
+  "currency": "INR",
+  "freeShippingThreshold": 2999,
+  "defaultWeightKg": 0.5,
+  "zones": [
+    {
+      "name": "Local (Ludhiana)",
+      "pincodePrefixes": ["141"],
+      "basePrice": 40,
+      "pricePerExtraKg": 20
+    },
+    {
+      "name": "Punjab & North India",
+      "pincodePrefixes": ["14", "15", "16", "17", "11", "12", "13", "24", "25", "26", "30", "32", "33", "34"],
+      "basePrice": 70,
+      "pricePerExtraKg": 30
+    },
+    {
+      "name": "Rest of India",
+      "pincodePrefixes": [],
+      "basePrice": 100,
+      "pricePerExtraKg": 40
+    }
+  ]
+}

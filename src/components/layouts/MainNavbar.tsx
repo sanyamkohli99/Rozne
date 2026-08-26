@@ -8,6 +8,7 @@ import Branding from "./Branding";
 import MobileNavbar from "./MobileNavbar";
 import SearchInput from "./SearchInput";
 import { SideMenu } from "./SideMenu";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface MainNavbarProps {
   adminLayout?: boolean;
@@ -45,6 +46,8 @@ async function MainNavbar({ adminLayout = false }: MainNavbarProps) {
             <Link href={"/wish-list"}>
               <Icons.heart className="w-4 h-4" aria-label="wishlist" />
             </Link>
+
+            {!adminLayout && <ThemeToggle />}
 
             <Suspense fallback={<CartLink productCount={0} />}>
               {!adminLayout && <CartNav />}

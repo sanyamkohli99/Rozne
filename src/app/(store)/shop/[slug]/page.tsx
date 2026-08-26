@@ -15,6 +15,7 @@ import {
   ProductImageShowcase,
   SizeChartDialog,
 } from "@/features/products";
+import ShipReturns from "@/features/products/components/ShipReturns";
 import { AddToWishListButton } from "@/features/wishlists";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -184,16 +185,8 @@ async function ProductDetailPage({ params }: Props) {
                 <AccordionTrigger className="text-sm font-medium">
                   Shipping &amp; Returns
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-muted-foreground space-y-2">
-                  <p>
-                    Free standard shipping on orders over ₹80. Express and
-                    overnight options available at checkout.
-                  </p>
-                  <p>
-                    Returns and exchanges accepted within 30 days of delivery
-                    for unworn, unwashed items with tags attached. Innerwear and
-                    personalised items are final sale.
-                  </p>
+                <AccordionContent>
+                  <ShipReturns />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import EmptyCart from "./EmptyCart";
 import CartItemCard from "./CartItemCard";
 import CheckoutButton from "./CheckoutButton";
+import RazorpayButton from "./RazorpayButton";
 import useCartStore, {
   CartItems,
   calcProductCountStorage,
@@ -122,8 +123,9 @@ function GuestCartSection() {
               )}
             </CardContent>
 
-            <CardFooter className="gap-x-2 md:gap-x-5 px-3">
+            <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
               <CheckoutButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
+              <RazorpayButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
             </CardFooter>
           </Card>
         </section>

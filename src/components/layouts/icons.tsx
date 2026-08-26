@@ -38,6 +38,8 @@ import {
   Receipt,
   Play,
   Trash2,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -65,6 +67,8 @@ export const Icons = {
   twitter: Twitter,
   basket: ShoppingBasket,
   star: Star,
+  sun: Sun,
+  moon: Moon,
   add: Plus,
   minus: Minus,
   view: Eye,

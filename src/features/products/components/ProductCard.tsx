@@ -19,6 +19,7 @@ import { BadgeType } from "@/lib/supabase/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/layouts/icons";
+import { HoverLift } from "@/components/ui/HoverLift";
 
 type CardProps = React.ComponentProps<typeof Card>;
 
@@ -57,10 +58,11 @@ export function ProductCard({
   const isVideo = isVideoUrl(featuredImage?.key);
 
   return (
-    <Card
-      className={cn("w-full border-0 rounded-lg py-3 ", className)}
-      {...props}
-    >
+    <HoverLift className={cn("w-full", className)}>
+      <Card
+        className="w-full border-0 rounded-lg py-3 bg-card/80 backdrop-blur-sm transition-shadow duration-200 hover:shadow-lg"
+        {...props}
+      >
       <CardContent className="relative p-0 mb-5 overflow-hidden">
         <Link href={`/shop/${slug}`}>
           {isVideo ? (
@@ -135,7 +137,8 @@ export function ProductCard({
           <AddToWishListButton productId={product.id} />
         </Suspense>
       </CardFooter>
-    </Card>
+      </Card>
+    </HoverLift>
   );
 }
 

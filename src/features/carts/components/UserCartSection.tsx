@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import CartItemCard from "@/features/carts/components/CartItemCard";
 import CheckoutButton from "./CheckoutButton";
+import RazorpayButton from "./RazorpayButton";
 import EmptyCart from "@/features/carts/components/EmptyCart";
 import { RemoveCartsMutation, updateCartsMutation } from "../query";
 import { CartItems } from "../useCartStore";
@@ -206,8 +207,14 @@ function UserCartSection({ user }: UserCartSectionProps) {
               )}
             </CardContent>
 
-            <CardFooter className="gap-x-2 md:gap-x-5 px-3">
+            <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
               <CheckoutButton
+                guest={false}
+                disabled={isLoading}
+                order={createCartObject(data)}
+                promoCode={appliedPromo || undefined}
+              />
+              <RazorpayButton
                 guest={false}
                 disabled={isLoading}
                 order={createCartObject(data)}

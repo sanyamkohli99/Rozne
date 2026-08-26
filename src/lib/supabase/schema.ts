@@ -226,6 +226,8 @@ export const orders = pgTable(
     order_status: text("order_status"),
     addressId: text("addressId"),
     stripe_payment_intent_id: text("stripe_payment_intent_id"),
+    razorpay_order_id: text("razorpay_order_id"),
+    razorpay_payment_id: text("razorpay_payment_id"),
     payment_status: text("payment_status", {
       enum: ["paid", "unpaid", "no_payment_required"],
     }).notNull(),

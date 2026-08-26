@@ -1,4 +1,5 @@
 import { env } from "@/env.mjs";
+import { handleApiError } from "@/lib/api/handleError";
 import { uploadImage } from "@/lib/s3";
 import db from "@/lib/supabase/db";
 import { medias } from "@/lib/supabase/schema";
@@ -6,7 +7,6 @@ import { mediaSchema } from "@/validations/medias";
 import { createClient } from "@supabase/supabase-js";
 import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 
 const supabaseAdmin = createClient(
   env.NEXT_PUBLIC_SUPABASE_URL,
@@ -15,10 +15,18 @@ const supabaseAdmin = createClient(
 );
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData) as z.infer<typeof mediaSchema>;
+  try {
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData) as Record<string, File>;
+    const validation = mediaSchema.safeParse(data);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: "Invalid file data.", details: validation.error.flatten().fieldErrors },
+        { status: 400 },
+      );
+    }
 
-  const results: (string | { message: string })[] = [];
+    const results: (string | { message: string })[] = [];
 
   for (const [, file] of Object.entries(data)) {
     const fileExtension = file.type.split("/")[1];
@@ -62,4 +70,7 @@ export async function POST(request: NextRequest) {
   }
 
   return NextResponse.json(results, { status: 201 });
+  } catch (err) {
+    return handleApiError(err);
+  }
 }
