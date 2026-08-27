@@ -3,15 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { DocumentType, gql } from "@/gql";
 import { cn, keytoUrl, isVideoUrl } from "@/lib/utils";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { AddToCartButton } from "@/features/carts";
 import { AddToWishListButton } from "@/features/wishlists";
 import { Rating } from "@/components/ui/rating";
@@ -19,9 +10,8 @@ import { BadgeType } from "@/lib/supabase/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/layouts/icons";
-import { HoverLift } from "@/components/ui/HoverLift";
 
-type CardProps = React.ComponentProps<typeof Card>;
+type CardProps = React.ComponentProps<"div">;
 
 const LOW_STOCK_THRESHOLD = 5;
 
@@ -69,98 +59,104 @@ export function ProductCard({
     (product.stock as number) <= LOW_STOCK_THRESHOLD;
 
   return (
-    <HoverLift className={cn("w-full", className)}>
-      <Card
-        className="w-full border-0 rounded-lg py-3 bg-card/80 backdrop-blur-sm transition-shadow duration-200 hover:shadow-lg"
-        {...props}
-      >
-      <CardContent className="relative p-0 mb-5 overflow-hidden">
-        <Link href={`/shop/${slug}`}>
+    <div
+      className={cn(
+        "group relative flex flex-col overflow-hidden rounded-2xl border border-border/50 bg-card transition-all duration-300 hover:shadow-xl hover:shadow-black/5 hover:border-border",
+        className,
+      )}
+      {...props}
+    >
+      {/* Image section */}
+      <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+        <Link href={`/shop/${slug}`} className="block h-full">
           {isVideo ? (
-            <div className="relative aspect-[1/1] overflow-hidden">
+            <>
               <video
                 src={keytoUrl(featuredImage.key)}
-                className="w-full h-full object-cover object-center hover:opacity-70 transition-all duration-500"
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 muted
                 preload="metadata"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                <div className="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center">
-                  <Icons.video className="text-zinc-800 ml-0.5" size={16} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110">
+                  <Icons.video className="text-zinc-800 ml-0.5" size={18} />
                 </div>
               </div>
-            </div>
+            </>
           ) : (
             <Image
               src={keytoUrl(featuredImage.key)}
               alt={featuredImage.alt}
               width={400}
-              height={400}
-              className="aspect-[1/1] object-cover object-center hover:scale-[1.02] hover:opacity-70 transition-all duration-500"
+              height={500}
+              className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
             />
           )}
         </Link>
-        {badge && (
-          <Badge className="absolute top-0 left-0" variant={badge as BadgeType}>
-            {badge}
-          </Badge>
-        )}
-        {outOfStock && (
-          <div className="absolute top-0 right-0 bg-zinc-900/85 backdrop-blur-sm text-white text-[10px] tracking-widest uppercase px-3 py-1.5">
-            Out of Stock
-          </div>
-        )}
-        {lowStock && (
-          <div className="absolute top-0 right-0 bg-amber-400/95 text-zinc-900 text-[10px] tracking-widest uppercase px-3 py-1.5 font-medium">
-            Only {product.stock} left
-          </div>
-        )}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px]" />
-      </CardContent>
 
-      <CardHeader className="p-0 mb-3 md:mb-5">
-        <CardTitle>
-          <Link href={`/shop/${slug}`} className="hover:underline">
-            {name}
-          </Link>
-        </CardTitle>
+        {/* Gradient overlay at bottom */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-        <div className="hidden md:block">
-          <CardDescription className="max-w-[240px] line-clamp-2">
-            {product.description}
-          </CardDescription>
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          {badge && (
+            <Badge
+              className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase shadow-sm"
+              variant={badge as BadgeType}
+            >
+              {badge.replace("_", " ")}
+            </Badge>
+          )}
+          {outOfStock && (
+            <span className="inline-block rounded-full bg-zinc-900/90 backdrop-blur-sm px-2.5 py-0.5 text-[10px] font-semibold tracking-widest uppercase text-white shadow-sm">
+              Sold Out
+            </span>
+          )}
+          {lowStock && (
+            <span className="inline-block rounded-full bg-amber-400/95 backdrop-blur-sm px-2.5 py-0.5 text-[10px] font-semibold tracking-widest uppercase text-zinc-900 shadow-sm">
+              Only {product.stock} left
+            </span>
+          )}
         </div>
 
-        <div className="">₹{price}</div>
-
-        <div className="hidden md:block">
-          <Rating value={product.rating} precision={0.5} readOnly />
+        {/* Quick actions — appear on hover */}
+        <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+          <Suspense fallback={null}>
+            <AddToWishListButton productId={product.id} />
+          </Suspense>
         </div>
-      </CardHeader>
 
-      <CardFooter className="gap-x-2 md:gap-x-5 p-0 ">
-        <Suspense
-          fallback={
-            <Button className="rounded-full p-0 h-8 w-8" disabled>
-              <Icons.basket className="h-5 w-5 md:h-4 md:w-4" />
-            </Button>
-          }
-        >
-          <AddToCartButton productId={id} disabled={outOfStock} />
-        </Suspense>
+        {/* Quick add to cart — bottom center */}
+        {!outOfStock && (
+          <div className="absolute bottom-3 left-3 right-14 opacity-0 translate-y-2 transition-all duration-300 delay-75 group-hover:opacity-100 group-hover:translate-y-0">
+            <Suspense fallback={null}>
+              <AddToCartButton productId={id} />
+            </Suspense>
+          </div>
+        )}
+      </div>
 
-        <Suspense
-          fallback={
-            <Button className="rounded-full p-3" variant="ghost" disabled>
-              <Icons.heart className={"w-4 h-4 fill-none"} />
-            </Button>
-          }
+      {/* Content section */}
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
+        <Link
+          href={`/shop/${slug}`}
+          className="text-sm font-semibold leading-tight tracking-tight text-foreground hover:underline underline-offset-2 line-clamp-1"
         >
-          <AddToWishListButton productId={product.id} />
-        </Suspense>
-      </CardFooter>
-      </Card>
-    </HoverLift>
+          {name}
+        </Link>
+
+        <p className="text-xs text-muted-foreground line-clamp-1 hidden md:block">
+          {product.description}
+        </p>
+
+        <div className="mt-auto flex items-end justify-between pt-2">
+          <p className="text-base font-bold tracking-tight">₹{price}</p>
+          <div className="hidden md:block">
+            <Rating value={product.rating} precision={0.5} readOnly />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
