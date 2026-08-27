@@ -490,3 +490,15 @@ export type PaymentGatewayFlags = {
   razorpay: boolean;
   stripe: boolean;
 };
+
+export const paymentCredentials = pgTable("payment_credentials", {
+  provider: text("provider").primaryKey(),
+  keyIdEncrypted: text("key_id_encrypted"),
+  keySecretEncrypted: text("key_secret_encrypted"),
+  webhookSecretEncrypted: text("webhook_secret_encrypted"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export type SelectPaymentCredentials = InferSelectModel<typeof paymentCredentials>;

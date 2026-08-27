@@ -1,8 +1,20 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { env } from "@/env.mjs";
+import { getCredentials } from "@/_actions/credentials";
 
-export function isRazorpayConfigured() {
-  return Boolean(env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET);
+/** Read Razorpay credentials from DB first, then env var fallback. */
+async function resolveCreds() {
+  const db = await getCredentials("razorpay");
+  return {
+    keyId: db?.keyId || env.RAZORPAY_KEY_ID || "",
+    keySecret: db?.keySecret || env.RAZORPAY_KEY_SECRET || "",
+    webhookSecret: db?.webhookSecret || env.RAZORPAY_WEBHOOK_SECRET || "",
+  };
+}
+
+export async function isRazorpayConfigured() {
+  const { keyId, keySecret } = await resolveCreds();
+  return Boolean(keyId && keySecret);
 }
 
 type RazorpayOrderInput = {
@@ -12,19 +24,14 @@ type RazorpayOrderInput = {
   notes?: Record<string, string>;
 };
 
-/**
- * Creates an order via Razorpay's REST API.
- * Docs: https://razorpay.com/docs/api/orders/#create-an-order
- */
 export async function createRazorpayOrder({
   amountInPaise,
   receipt,
   currency = "INR",
   notes,
 }: RazorpayOrderInput) {
-  const auth = Buffer.from(
-    `${env.RAZORPAY_KEY_ID}:${env.RAZORPAY_KEY_SECRET}`,
-  ).toString("base64");
+  const { keyId, keySecret } = await resolveCreds();
+  const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
 
   const res = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
@@ -51,17 +58,14 @@ export async function createRazorpayOrder({
   return data as { id: string; amount: number; currency: string };
 }
 
-/** Verifies the checkout handler signature: HMAC_SHA256(order_id + "|" + payment_id). */
-export function verifyPaymentSignature(input: {
+export async function verifyPaymentSignature(input: {
   razorpayOrderId: string;
   razorpayPaymentId: string;
   signature: string;
 }) {
-  if (!env.RAZORPAY_KEY_SECRET) return false;
-  const expected = createHmac(
-    "sha256",
-    env.RAZORPAY_KEY_SECRET,
-  )
+  const { keySecret } = await resolveCreds();
+  if (!keySecret) return false;
+  const expected = createHmac("sha256", keySecret)
     .update(`${input.razorpayOrderId}|${input.razorpayPaymentId}`)
     .digest("hex");
   try {
@@ -71,10 +75,10 @@ export function verifyPaymentSignature(input: {
   }
 }
 
-/** Verifies webhook payloads: HMAC_SHA256(rawBody) against X-Razorpay-Signature. */
-export function verifyWebhookSignature(rawBody: string, signature: string) {
-  if (!env.RAZORPAY_WEBHOOK_SECRET) return false;
-  const expected = createHmac("sha256", env.RAZORPAY_WEBHOOK_SECRET)
+export async function verifyWebhookSignature(rawBody: string, signature: string) {
+  const { webhookSecret } = await resolveCreds();
+  if (!webhookSecret) return false;
+  const expected = createHmac("sha256", webhookSecret)
     .update(rawBody)
     .digest("hex");
   try {

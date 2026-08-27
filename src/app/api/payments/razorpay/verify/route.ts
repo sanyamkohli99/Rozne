@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid data format." }, { status: 400 });
     }
 
-    const isValid = verifyPaymentSignature({
+    const isValid = await verifyPaymentSignature({
       razorpayOrderId: parsed.data.razorpay_order_id,
       razorpayPaymentId: parsed.data.razorpay_payment_id,
       signature: parsed.data.razorpay_signature,

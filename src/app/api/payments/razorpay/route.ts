@@ -10,6 +10,7 @@ import {
   createRazorpayOrder,
   isRazorpayConfigured,
 } from "@/lib/razorpay";
+import { getRazorpayKeyId } from "@/_actions/credentials";
 import db from "@/lib/supabase/db";
 import { orderLines, orders } from "@/lib/supabase/schema";
 import { getURL } from "@/lib/utils";
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid data format." }, { status: 400 });
   }
 
-  if (!isRazorpayConfigured()) {
+  if (!(await isRazorpayConfigured())) {
     return NextResponse.json(
       { error: "Online payments are not configured yet." },
       { status: 503 },
@@ -106,7 +107,7 @@ export async function POST(request: Request) {
       razorpayOrderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
-      keyId: process.env.RAZORPAY_KEY_ID,
+      keyId: await getRazorpayKeyId(),
       successUrl: `${getURL()}/orders/${orderId}`,
     });
   } catch (err) {
