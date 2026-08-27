@@ -14,6 +14,9 @@ interface AddToCartButtonProps extends ButtonProps {
   quantity?: number;
 }
 
+const btnClass =
+  "h-7 px-4 rounded-full bg-primary text-primary-foreground font-medium text-[11px] leading-none hover:bg-primary/90 transition-colors";
+
 function AddToCartButtonInner({
   productId,
   quantity = 1,
@@ -30,13 +33,10 @@ function AddToCartButtonInner({
     return (
       <Button
         asChild
-        className={cn(
-          "h-8 w-full rounded-full bg-foreground text-background font-semibold text-xs hover:bg-foreground/90 transition-colors",
-          className,
-        )}
+        className={cn(btnClass, className)}
       >
-        <Link href="/cart">
-          <Icons.cart className="mr-2 h-4 w-4" />
+        <Link href="/cart" className="flex items-center gap-1.5">
+          <Icons.cart className="h-3 w-3" />
           View Cart
         </Link>
       </Button>
@@ -47,14 +47,11 @@ function AddToCartButtonInner({
     <Button
       onClick={() => addProductToCart(quantity)}
       disabled={disabled}
-          className={cn(
-            "h-8 w-full rounded-full bg-foreground text-background font-semibold text-xs hover:bg-foreground/90 transition-colors",
-            className,
-          )}
+      className={cn(btnClass, className)}
       aria-label={disabled ? "Out of stock" : "Add to cart"}
       {...props}
     >
-      <Icons.basket className="mr-2 h-4 w-4" />
+      <Icons.basket className="h-3 w-3" />
       Add to Cart
     </Button>
   );
