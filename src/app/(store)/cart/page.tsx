@@ -7,14 +7,16 @@ import {
 } from "@/features/products";
 import { getEnabledGateways } from "@/_actions/settings";
 import { getStripePublishableKey } from "@/lib/stripe";
+import { getRazorpayKeyId } from "@/_actions/credentials";
 
 import Link from "next/link";
 import { Suspense } from "react";
 
 async function CartPage() {
-  const [gateways, stripeKey] = await Promise.all([
+  const [gateways, stripeKey, razorpayKey] = await Promise.all([
     getEnabledGateways(),
     getStripePublishableKey(),
+    getRazorpayKeyId(),
   ]);
 
   return (
@@ -25,7 +27,11 @@ async function CartPage() {
       </section>
 
       <Suspense fallback={<CartSectionSkeleton />}>
-        <CartSection gateways={gateways} stripePublishableKey={stripeKey} />
+        <CartSection
+          gateways={gateways}
+          stripePublishableKey={stripeKey}
+          razorpayKeyId={razorpayKey}
+        />
       </Suspense>
 
       <Suspense fallback={<RecommendationProductsSkeleton />}>

@@ -12,19 +12,101 @@ type CheckoutButtonProps = React.ComponentProps<typeof Button> & {
   guest: boolean;
   promoCode?: string;
   stripePublishableKey?: string;
+  razorpayKeyId?: string;
 };
 
-function CheckoutButton({ order, guest, promoCode, stripePublishableKey, ...props }: CheckoutButtonProps) {
+declare global {
+  interface Window {
+    Razorpay?: new (options: any) => { open: () => void };
+  }
+}
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true);
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
+function CheckoutButton({ order, guest, promoCode, stripePublishableKey, razorpayKeyId, ...props }: CheckoutButtonProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  const useRazorpay = !!razorpayKeyId;
+  const useStripe = !!stripePublishableKey;
+
   const onClickHandler = async () => {
-    if (!stripePublishableKey) {
-      toast({ title: "Stripe is not configured yet." });
+    if (!useRazorpay && !useStripe) {
+      toast({ title: "No payment method configured yet." });
       return;
     }
+
     setIsLoading(true);
 
+    try {
+      if (useRazorpay) {
+        await handleRazorpay();
+      } else {
+        await handleStripe();
+      }
+    } catch {
+      toast({ title: "Something went wrong. Please try again." });
+      setIsLoading(false);
+    }
+  };
+
+  const handleRazorpay = async () => {
+    const loaded = await loadRazorpayScript();
+    if (!loaded) {
+      toast({ title: "Could not load payment gateway. Please try again." });
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await fetch("/api/payments/razorpay", {
+      method: "POST",
+      body: JSON.stringify({ orderProducts: order, guest, promoCode: promoCode || undefined }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      toast({ title: data?.error || "Payment unavailable. Please try again." });
+      setIsLoading(false);
+      return;
+    }
+
+    const { dbOrderId, razorpayOrderId, amount, currency, keyId } = await res.json();
+
+    const checkout = new window.Razorpay!({
+      key: keyId,
+      amount,
+      currency,
+      name: "ROZNE",
+      description: "Premium Knitwear & Hosiery",
+      order_id: razorpayOrderId,
+      theme: { color: "#2C2420" },
+      handler: async (response: any) => {
+        const verifyRes = await fetch("/api/payments/razorpay/verify", {
+          method: "POST",
+          body: JSON.stringify(response),
+        });
+        if (!verifyRes.ok) {
+          toast({ title: "Payment verification failed. Contact support." });
+          return;
+        }
+        window.location.href = `/orders/${dbOrderId}`;
+      },
+      modal: { ondismiss: () => setIsLoading(false) },
+    });
+
+    checkout.open();
+  };
+
+  const handleStripe = async () => {
     const res = await fetch("/api/create-checkout-session", {
       method: "POST",
       body: JSON.stringify({ orderProducts: order, guest, promoCode: promoCode || undefined }),
@@ -32,17 +114,17 @@ function CheckoutButton({ order, guest, promoCode, stripePublishableKey, ...prop
 
     if (!res.ok) {
       const data = await res.json().catch(() => null);
-      toast({ title: data?.error || "Something went wrong. Please try again." });
+      toast({ title: data?.error || "Payment unavailable. Please try again." });
       setIsLoading(false);
       return;
     }
 
     const { sessionId } = await res.json();
-
     setIsLoading(false);
-    const stripe = await getStripe(stripePublishableKey);
+    const stripe = await getStripe(stripePublishableKey!);
     stripe?.redirectToCheckout({ sessionId });
   };
+
   return (
     <Button
       {...props}
@@ -50,7 +132,7 @@ function CheckoutButton({ order, guest, promoCode, stripePublishableKey, ...prop
       onClick={onClickHandler}
       disabled={isLoading}
     >
-      {isLoading ? "Loading..." : "Checkout"}
+      {isLoading ? "Processing..." : "Checkout"}
       {isLoading && (
         <Spinner className="ml-3 h-4 w-4 animate-spin" aria-hidden="true" />
       )}

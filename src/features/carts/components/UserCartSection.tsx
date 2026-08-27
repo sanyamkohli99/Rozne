@@ -47,9 +47,9 @@ export const FetchCartQuery = gql(/* GraphQL */ `
   }
 `);
 
-type UserCartSectionProps = { user: User; gateways?: PaymentGatewayFlags; stripePublishableKey?: string };
+type UserCartSectionProps = { user: User; gateways?: PaymentGatewayFlags; stripePublishableKey?: string; razorpayKeyId?: string };
 
-function UserCartSection({ user, gateways, stripePublishableKey }: UserCartSectionProps) {
+function UserCartSection({ user, gateways, stripePublishableKey, razorpayKeyId }: UserCartSectionProps) {
   const [{ data, fetching, error }, reexecuteQuery] = useQuery({
     query: FetchCartQuery,
     variables: {
@@ -208,15 +208,14 @@ function UserCartSection({ user, gateways, stripePublishableKey }: UserCartSecti
             </CardContent>
 
             <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
-              {gateways?.stripe !== false && (
-                <CheckoutButton
-                  guest={false}
-                  disabled={isLoading}
-                  order={createCartObject(data)}
-                  promoCode={appliedPromo || undefined}
-                  stripePublishableKey={stripePublishableKey}
-                />
-              )}
+              <CheckoutButton
+                guest={false}
+                disabled={isLoading}
+                order={createCartObject(data)}
+                promoCode={appliedPromo || undefined}
+                stripePublishableKey={stripePublishableKey}
+                razorpayKeyId={razorpayKeyId}
+              />
             </CardFooter>
           </Card>
         </section>

@@ -22,7 +22,7 @@ import useCartStore, {
 import { useToast } from "@/components/ui/use-toast";
 import PromoCodeInput from "./PromoCodeInput";
 
-function GuestCartSection({ gateways, stripePublishableKey }: { gateways?: PaymentGatewayFlags; stripePublishableKey?: string }) {
+function GuestCartSection({ gateways, stripePublishableKey, razorpayKeyId }: { gateways?: PaymentGatewayFlags; stripePublishableKey?: string; razorpayKeyId?: string }) {
   const { toast } = useToast();
   const cartItems = useCartStore((s) => s.cart);
   const addProductToCart = useCartStore((s) => s.addProductToCart);
@@ -124,9 +124,7 @@ function GuestCartSection({ gateways, stripePublishableKey }: { gateways?: Payme
             </CardContent>
 
             <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
-              {gateways?.stripe !== false && (
-                <CheckoutButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} stripePublishableKey={stripePublishableKey} />
-              )}
+              <CheckoutButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} stripePublishableKey={stripePublishableKey} razorpayKeyId={razorpayKeyId} />
             </CardFooter>
           </Card>
         </section>
