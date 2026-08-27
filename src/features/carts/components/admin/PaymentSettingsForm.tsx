@@ -15,7 +15,8 @@ type Props = {
   initialGateways: PaymentGatewayFlags;
   initialRazorpayKeyId: string;
   hasRazorpaySecret: boolean;
-  hasRazorpayWebhook: boolean;
+  initialStripeKeyId: string;
+  hasStripeSecret: boolean;
 };
 
 const GATEWAYS: { key: keyof PaymentGatewayFlags; label: string; hint: string }[] = [
@@ -27,17 +28,26 @@ function PaymentSettingsForm({
   initialGateways,
   initialRazorpayKeyId,
   hasRazorpaySecret,
-  hasRazorpayWebhook,
+  initialStripeKeyId,
+  hasStripeSecret,
 }: Props) {
   const { toast } = useToast();
   const [flags, setFlags] = useState<PaymentGatewayFlags>(initialGateways);
+
   const [razorpayKeyId, setRazorpayKeyId] = useState(initialRazorpayKeyId);
   const [razorpayKeySecret, setRazorpayKeySecret] = useState("");
   const [razorpayWebhookSecret, setRazorpayWebhookSecret] = useState("");
+
+  const [stripeKeyId, setStripeKeyId] = useState(initialStripeKeyId);
+  const [stripeKeySecret, setStripeKeySecret] = useState("");
+  const [stripeWebhookSecret, setStripeWebhookSecret] = useState("");
+
   const [password, setPassword] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [showSecret, setShowSecret] = useState(false);
-  const [showWebhook, setShowWebhook] = useState(false);
+  const [showRpSecret, setShowRpSecret] = useState(false);
+  const [showRpWebhook, setShowRpWebhook] = useState(false);
+  const [showStripeSecret, setShowStripeSecret] = useState(false);
+  const [showStripeWebhook, setShowStripeWebhook] = useState(false);
 
   const noneEnabled = !flags.razorpay && !flags.stripe;
 
@@ -48,31 +58,31 @@ function PaymentSettingsForm({
     }
     startTransition(async () => {
       try {
-        const [gatewayResult, credResult] = await Promise.all([
+        const results = await Promise.all([
           updatePaymentGateways(flags, password),
-          saveCredentials(
-            "razorpay",
-            {
-              keyId: razorpayKeyId || undefined,
-              keySecret: razorpayKeySecret || undefined,
-              webhookSecret: razorpayWebhookSecret || undefined,
-            },
-            password,
-          ),
+          saveCredentials("razorpay", {
+            keyId: razorpayKeyId || undefined,
+            keySecret: razorpayKeySecret || undefined,
+            webhookSecret: razorpayWebhookSecret || undefined,
+          }, password),
+          saveCredentials("stripe", {
+            keyId: stripeKeyId || undefined,
+            keySecret: stripeKeySecret || undefined,
+            webhookSecret: stripeWebhookSecret || undefined,
+          }, password),
         ]);
 
-        if (!gatewayResult.ok) {
-          toast({ title: gatewayResult.error ?? "Could not save gateway settings.", variant: "destructive" });
-          return;
-        }
-        if (!credResult.ok) {
-          toast({ title: credResult.error ?? "Could not save API keys.", variant: "destructive" });
+        const failed = results.find((r) => !r.ok);
+        if (failed) {
+          toast({ title: failed.error ?? "Could not save.", variant: "destructive" });
           return;
         }
 
         toast({ title: "Payment settings saved." });
         setRazorpayKeySecret("");
         setRazorpayWebhookSecret("");
+        setStripeKeySecret("");
+        setStripeWebhookSecret("");
         setPassword("");
       } catch {
         toast({ title: "Something went wrong. Try again.", variant: "destructive" });
@@ -109,7 +119,7 @@ function PaymentSettingsForm({
         )}
       </div>
 
-      {/* Razorpay API keys */}
+      {/* Razorpay keys */}
       <div>
         <h3 className="text-sm font-semibold mb-3">Razorpay API Keys</h3>
         <div className="rounded-lg border border-border p-4 space-y-4">
@@ -118,54 +128,59 @@ function PaymentSettingsForm({
               ? "Keys are stored. Enter new values to replace, or leave blank to keep current."
               : "Enter your Razorpay test or live keys below."}
           </p>
-
           <div className="space-y-1">
-            <label className="text-sm font-medium">Key ID (publishable)</label>
-            <Input
-              type="text"
-              value={razorpayKeyId}
-              onChange={(e) => setRazorpayKeyId(e.target.value)}
-              placeholder="rzp_test_..."
-              autoComplete="off"
-            />
+            <label className="text-sm font-medium">Key ID</label>
+            <Input type="text" value={razorpayKeyId} onChange={(e) => setRazorpayKeyId(e.target.value)} placeholder="rzp_test_..." autoComplete="off" />
           </div>
-
           <div className="space-y-1">
             <label className="text-sm font-medium">Key Secret</label>
             <div className="relative">
-              <Input
-                type={showSecret ? "text" : "password"}
-                value={razorpayKeySecret}
-                onChange={(e) => setRazorpayKeySecret(e.target.value)}
-                placeholder={hasRazorpaySecret ? "•••••••• (stored)" : "Enter key secret"}
-                autoComplete="off"
-              />
-              <button
-                type="button"
-                onClick={() => setShowSecret(!showSecret)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showSecret ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
+              <Input type={showRpSecret ? "text" : "password"} value={razorpayKeySecret} onChange={(e) => setRazorpayKeySecret(e.target.value)} placeholder={hasRazorpaySecret ? "•••••••• (stored)" : "Enter key secret"} autoComplete="off" />
+              <button type="button" onClick={() => setShowRpSecret(!showRpSecret)} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                {showRpSecret ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
               </button>
             </div>
           </div>
-
           <div className="space-y-1">
             <label className="text-sm font-medium">Webhook Secret</label>
             <div className="relative">
-              <Input
-                type={showWebhook ? "text" : "password"}
-                value={razorpayWebhookSecret}
-                onChange={(e) => setRazorpayWebhookSecret(e.target.value)}
-                placeholder={hasRazorpayWebhook ? "•••••••• (stored)" : "Pick a secret string"}
-                autoComplete="off"
-              />
-              <button
-                type="button"
-                onClick={() => setShowWebhook(!showWebhook)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              >
-                {showWebhook ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
+              <Input type={showRpWebhook ? "text" : "password"} value={razorpayWebhookSecret} onChange={(e) => setRazorpayWebhookSecret(e.target.value)} placeholder="Pick a secret string" autoComplete="off" />
+              <button type="button" onClick={() => setShowRpWebhook(!showRpWebhook)} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                {showRpWebhook ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stripe keys */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Stripe API Keys</h3>
+        <div className="rounded-lg border border-border p-4 space-y-4">
+          <p className="text-xs text-muted-foreground">
+            {hasStripeSecret
+              ? "Keys are stored. Enter new values to replace, or leave blank to keep current."
+              : "Enter your Stripe test or live keys below."}
+          </p>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Publishable Key</label>
+            <Input type="text" value={stripeKeyId} onChange={(e) => setStripeKeyId(e.target.value)} placeholder="pk_test_..." autoComplete="off" />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Secret Key</label>
+            <div className="relative">
+              <Input type={showStripeSecret ? "text" : "password"} value={stripeKeySecret} onChange={(e) => setStripeKeySecret(e.target.value)} placeholder={hasStripeSecret ? "•••••••• (stored)" : "Enter secret key"} autoComplete="off" />
+              <button type="button" onClick={() => setShowStripeSecret(!showStripeSecret)} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                {showStripeSecret ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
+              </button>
+            </div>
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium">Webhook Signing Secret</label>
+            <div className="relative">
+              <Input type={showStripeWebhook ? "text" : "password"} value={stripeWebhookSecret} onChange={(e) => setStripeWebhookSecret(e.target.value)} placeholder="whsec_..." autoComplete="off" />
+              <button type="button" onClick={() => setShowStripeWebhook(!showStripeWebhook)} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                {showStripeWebhook ? <Icons.hide className="h-4 w-4" /> : <Icons.view className="h-4 w-4" />}
               </button>
             </div>
           </div>

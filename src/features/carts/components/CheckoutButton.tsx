@@ -11,13 +11,18 @@ type CheckoutButtonProps = React.ComponentProps<typeof Button> & {
   order: CartItems;
   guest: boolean;
   promoCode?: string;
+  stripePublishableKey?: string;
 };
 
-function CheckoutButton({ order, guest, promoCode, ...props }: CheckoutButtonProps) {
+function CheckoutButton({ order, guest, promoCode, stripePublishableKey, ...props }: CheckoutButtonProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const onClickHandler = async () => {
+    if (!stripePublishableKey) {
+      toast({ title: "Stripe is not configured yet." });
+      return;
+    }
     setIsLoading(true);
 
     const res = await fetch("/api/create-checkout-session", {
@@ -35,7 +40,7 @@ function CheckoutButton({ order, guest, promoCode, ...props }: CheckoutButtonPro
     const { sessionId } = await res.json();
 
     setIsLoading(false);
-    const stripe = await getStripe();
+    const stripe = await getStripe(stripePublishableKey);
     stripe?.redirectToCheckout({ sessionId });
   };
   return (

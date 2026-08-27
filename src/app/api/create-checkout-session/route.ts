@@ -3,7 +3,7 @@ import { validatePromoCode, incrementPromoCodeUsage } from "@/_actions/promo-cod
 import type { CartItems } from "@/features/carts";
 import { handleApiError } from "@/lib/api/handleError";
 import { orderProductsSchema } from "@/lib/schemas/checkout";
-import { stripe } from "@/lib/stripe";
+import { getStripeServer, isStripeConfigured } from "@/lib/stripe";
 import db from "@/lib/supabase/db";
 import { SelectProducts, orders } from "@/lib/supabase/schema";
 import { getURL } from "@/lib/utils";
@@ -25,7 +25,15 @@ export async function POST(request: Request) {
   if (!validation.success)
     return NextResponse.json({ error: "Invalid data format." }, { status: 400 });
 
+  if (!(await isStripeConfigured())) {
+    return NextResponse.json(
+      { error: "Stripe is not configured yet." },
+      { status: 503 },
+    );
+  }
+
   try {
+    const stripe = await getStripeServer();
     const productsQuantity = await mergeProductDetailsWithQuantities(
       validation.data.orderProducts as unknown as OrderProducts,
     );

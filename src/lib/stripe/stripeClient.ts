@@ -1,11 +1,10 @@
-import { env } from "@/env.mjs";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 
 let stripePromise: Promise<Stripe | null>;
 
-export const getStripe = () => {
+export const getStripe = (publishableKey: string) => {
   if (!stripePromise) {
-    stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+    stripePromise = loadStripe(publishableKey);
   }
   return stripePromise;
 };

@@ -1,5 +1,4 @@
-import { env } from "@/env.mjs";
-import { stripe } from "@/lib/stripe";
+import { getStripeServer, getStripeWebhookSecret } from "@/lib/stripe";
 import db from "@/lib/supabase/db";
 import { PaymentStatus, address, orders } from "@/lib/supabase/schema";
 import { eq } from "drizzle-orm";
@@ -20,7 +19,7 @@ export async function POST(request: NextRequest) {
   const body = await request.text();
   const sig = headers().get("Stripe-Signature");
 
-  const webhookSecret = env.STRIPE_WEBHOOK_SECERT_KEY;
+  const webhookSecret = await getStripeWebhookSecret();
 
   let event: Stripe.Event;
   try {
@@ -30,6 +29,7 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
+    const stripe = await getStripeServer();
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err: any) {
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
@@ -40,8 +40,6 @@ export async function POST(request: NextRequest) {
         case "product.created":
           break;
         case "payment_intent.succeeded":
-          // TODO:Update the Order payment Status
-
           break;
         case "checkout.session.completed":
           const checkoutSession = event.data.object as Stripe.Checkout.Session;

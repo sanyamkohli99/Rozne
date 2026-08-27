@@ -6,9 +6,10 @@ import { getCredentials } from "@/_actions/credentials";
 export const dynamic = "force-dynamic";
 
 async function PaymentSettingsPage() {
-  const [gateways, razorpayCreds] = await Promise.all([
+  const [gateways, razorpayCreds, stripeCreds] = await Promise.all([
     getEnabledGateways(),
     getCredentials("razorpay"),
+    getCredentials("stripe"),
   ]);
 
   return (
@@ -20,7 +21,8 @@ async function PaymentSettingsPage() {
         initialGateways={gateways}
         initialRazorpayKeyId={razorpayCreds?.keyId ?? ""}
         hasRazorpaySecret={!!razorpayCreds?.keySecret}
-        hasRazorpayWebhook={!!razorpayCreds?.webhookSecret}
+        initialStripeKeyId={stripeCreds?.keyId ?? ""}
+        hasStripeSecret={!!stripeCreds?.keySecret}
       />
     </AdminShell>
   );

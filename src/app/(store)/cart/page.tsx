@@ -6,12 +6,16 @@ import {
   RecommendationProductsSkeleton,
 } from "@/features/products";
 import { getEnabledGateways } from "@/_actions/settings";
+import { getStripePublishableKey } from "@/lib/stripe";
 
 import Link from "next/link";
 import { Suspense } from "react";
 
 async function CartPage() {
-  const gateways = await getEnabledGateways();
+  const [gateways, stripeKey] = await Promise.all([
+    getEnabledGateways(),
+    getStripePublishableKey(),
+  ]);
 
   return (
     <Shell>
@@ -21,7 +25,7 @@ async function CartPage() {
       </section>
 
       <Suspense fallback={<CartSectionSkeleton />}>
-        <CartSection gateways={gateways} />
+        <CartSection gateways={gateways} stripePublishableKey={stripeKey} />
       </Suspense>
 
       <Suspense fallback={<RecommendationProductsSkeleton />}>

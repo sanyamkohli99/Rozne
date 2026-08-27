@@ -17,7 +17,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import CartItemCard from "@/features/carts/components/CartItemCard";
 import CheckoutButton from "./CheckoutButton";
-import RazorpayButton from "./RazorpayButton";
 import EmptyCart from "@/features/carts/components/EmptyCart";
 import { RemoveCartsMutation, updateCartsMutation } from "../query";
 import { CartItems } from "../useCartStore";
@@ -48,9 +47,9 @@ export const FetchCartQuery = gql(/* GraphQL */ `
   }
 `);
 
-type UserCartSectionProps = { user: User; gateways?: PaymentGatewayFlags };
+type UserCartSectionProps = { user: User; gateways?: PaymentGatewayFlags; stripePublishableKey?: string };
 
-function UserCartSection({ user, gateways }: UserCartSectionProps) {
+function UserCartSection({ user, gateways, stripePublishableKey }: UserCartSectionProps) {
   const [{ data, fetching, error }, reexecuteQuery] = useQuery({
     query: FetchCartQuery,
     variables: {
@@ -215,14 +214,7 @@ function UserCartSection({ user, gateways }: UserCartSectionProps) {
                   disabled={isLoading}
                   order={createCartObject(data)}
                   promoCode={appliedPromo || undefined}
-                />
-              )}
-              {gateways?.razorpay !== false && (
-                <RazorpayButton
-                  guest={false}
-                  disabled={isLoading}
-                  order={createCartObject(data)}
-                  promoCode={appliedPromo || undefined}
+                  stripePublishableKey={stripePublishableKey}
                 />
               )}
             </CardFooter>

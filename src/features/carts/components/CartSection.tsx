@@ -6,12 +6,16 @@ import type { PaymentGatewayFlags } from "@/lib/supabase/schema";
 
 type Props = {
   gateways?: PaymentGatewayFlags;
+  stripePublishableKey?: string;
 };
 
-function CartSection({ gateways }: Props) {
+function CartSection({ gateways, stripePublishableKey }: Props) {
   const { user } = useAuth();
 
-  return <>{user ? <UserCartSection user={user} gateways={gateways} /> : <GuestCartSection gateways={gateways} />}</>;
+  return <>{user
+    ? <UserCartSection user={user} gateways={gateways} stripePublishableKey={stripePublishableKey} />
+    : <GuestCartSection gateways={gateways} stripePublishableKey={stripePublishableKey} />
+  }</>;
 }
 
 export default CartSection;
