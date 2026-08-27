@@ -180,7 +180,7 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
           <div key={card.id}>
             <Link
               href="/shop"
-              className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} bg-stone-100/60 dark:bg-stone-900/40 overflow-hidden group`}
+              className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} rounded-2xl overflow-hidden bg-stone-100/60 dark:bg-stone-900/40 group border border-border/50 transition-all duration-300 hover:shadow-xl hover:shadow-black/5`}
             >
               <div className="relative w-full h-[320px] md:h-[480px] md:w-1/2 overflow-hidden">
                 <Image
@@ -189,14 +189,14 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
                   fill
                   quality={85}
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className={`object-cover ${pos} transition-transform duration-300 group-hover:scale-105`}
+                  className={`object-cover ${pos} transition-transform duration-500 group-hover:scale-105`}
                 />
               </div>
               <div className="flex flex-col justify-center px-8 md:px-14 py-12 md:w-1/2">
                 <p className="text-xs tracking-[0.3em] uppercase text-stone-400 dark:text-stone-500 mb-3">ROZNE</p>
                 <h3 className="text-2xl md:text-3xl font-light mb-4 leading-snug text-stone-800 dark:text-stone-200">{card.title}</h3>
                 <p className="text-sm leading-relaxed text-stone-500 dark:text-stone-400 mb-8 max-w-md">{card.description}</p>
-                <span className="inline-block text-xs tracking-widest uppercase bg-stone-900/70 backdrop-blur-sm text-white px-6 py-3 w-fit hover:bg-stone-800/80 transition-all duration-200">
+                <span className="inline-block text-xs tracking-widest uppercase bg-stone-900/70 backdrop-blur-sm text-white px-6 py-3 rounded-full w-fit hover:bg-stone-800/80 transition-all duration-200">
                   Shop Now
                 </span>
               </div>

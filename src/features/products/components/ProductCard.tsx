@@ -3,12 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { DocumentType, gql } from "@/gql";
 import { cn, keytoUrl, isVideoUrl } from "@/lib/utils";
-import { AddToCartButton } from "@/features/carts";
+import AddToCartButton from "@/features/carts/components/AddToCartButton";
 import { AddToWishListButton } from "@/features/wishlists";
 import { Rating } from "@/components/ui/rating";
 import { BadgeType } from "@/lib/supabase/schema";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/layouts/icons";
 
 type CardProps = React.ComponentProps<"div">;
@@ -119,21 +118,12 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Quick actions — appear on hover */}
-        <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+        {/* Wishlist — top right */}
+        <div className="absolute top-3 right-3 opacity-0 translate-y-[-4px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
           <Suspense fallback={null}>
             <AddToWishListButton productId={product.id} />
           </Suspense>
         </div>
-
-        {/* Quick add to cart — bottom center */}
-        {!outOfStock && (
-          <div className="absolute bottom-3 left-3 right-14 opacity-0 translate-y-2 transition-all duration-300 delay-75 group-hover:opacity-100 group-hover:translate-y-0">
-            <Suspense fallback={null}>
-              <AddToCartButton productId={id} />
-            </Suspense>
-          </div>
-        )}
       </div>
 
       {/* Content section */}
@@ -149,13 +139,22 @@ export function ProductCard({
           {product.description}
         </p>
 
-        <div className="mt-auto flex items-end justify-between pt-2">
+        <div className="flex items-center gap-2 pt-1">
           <p className="text-base font-bold tracking-tight">₹{price}</p>
-          <div className="hidden md:block">
+          <div className="hidden md:block ml-auto">
             <Rating value={product.rating} precision={0.5} readOnly />
           </div>
         </div>
       </div>
+
+      {/* Action buttons — always visible at bottom */}
+      {!outOfStock && (
+        <div className="px-4 pb-4">
+          <Suspense fallback={null}>
+            <AddToCartButton productId={id} />
+          </Suspense>
+        </div>
+      )}
     </div>
   );
 }
