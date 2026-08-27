@@ -118,16 +118,25 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Wishlist — top right */}
+        {/* Wishlist — top right, appears on hover */}
         <div className="absolute top-3 right-3 opacity-0 translate-y-[-4px] transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
           <Suspense fallback={null}>
             <AddToWishListButton productId={product.id} />
           </Suspense>
         </div>
+
+        {/* Add to Cart — bottom, appears on hover */}
+        {!outOfStock && (
+          <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+            <Suspense fallback={null}>
+              <AddToCartButton productId={id} />
+            </Suspense>
+          </div>
+        )}
       </div>
 
       {/* Content section */}
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
+      <div className="flex flex-col gap-1.5 p-4">
         <Link
           href={`/shop/${slug}`}
           className="text-sm font-semibold leading-tight tracking-tight text-foreground hover:underline underline-offset-2 line-clamp-1"
@@ -146,15 +155,6 @@ export function ProductCard({
           </div>
         </div>
       </div>
-
-      {/* Action buttons — always visible at bottom */}
-      {!outOfStock && (
-        <div className="px-4 pb-4">
-          <Suspense fallback={null}>
-            <AddToCartButton productId={id} />
-          </Suspense>
-        </div>
-      )}
     </div>
   );
 }
