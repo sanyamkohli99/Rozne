@@ -6,24 +6,24 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Icons } from "@/components/layouts/icons";
 import { useToast } from "@/components/ui/use-toast";
+import CropModal from "./CropModal";
 
 type Props = {
   value: string;
   onChange: (url: string) => void;
   accept?: string;
   className?: string;
+  aspect?: number;
 };
 
-function ImageUploader({ value, onChange, accept = "image/*", className }: Props) {
+function ImageUploader({ value, onChange, accept = "image/*", className, aspect = 4 / 5 }: Props) {
   const { toast } = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [cropOpen, setCropOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const handleFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast({ title: "Please select an image file.", variant: "destructive" });
-      return;
-    }
+  const uploadFile = async (file: File) => {
     setIsUploading(true);
     try {
       const formData = new FormData();
@@ -42,13 +42,11 @@ function ImageUploader({ value, onChange, accept = "image/*", className }: Props
       const result = await res.json();
       const mediaId = Array.isArray(result) ? result[0] : result;
 
-      // Fetch the uploaded media to get its key
       const mediaRes = await fetch(`/api/medias/${mediaId}`);
       if (!mediaRes.ok) throw new Error("Failed to get media URL");
       const media = await mediaRes.json();
-      const key = media?.data?.key || media?.key || "";
 
-      onChange(key);
+      onChange(media?.data?.key || media?.key || value);
       toast({ title: "Image uploaded." });
     } catch (err) {
       toast({
@@ -59,6 +57,24 @@ function ImageUploader({ value, onChange, accept = "image/*", className }: Props
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleFile = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Please select an image file.", variant: "destructive" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSelectedImage(reader.result as string);
+      setCropOpen(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
+    const file = new File([blob], "cropped.jpg", { type: "image/jpeg" });
+    await uploadFile(file);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -124,6 +140,18 @@ function ImageUploader({ value, onChange, accept = "image/*", className }: Props
             </>
           )}
         </button>
+      )}
+
+      {selectedImage && (
+        <CropModal
+          open={cropOpen}
+          onClose={() => {
+            setCropOpen(false);
+            setSelectedImage(null);
+          }}
+          imageSrc={selectedImage}
+          onCropComplete={handleCropComplete}
+        />
       )}
     </div>
   );
