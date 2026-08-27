@@ -31,7 +31,7 @@ function AddToCartButtonInner({
       <Button
         asChild
         className={cn(
-          "h-11 w-full rounded-full bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors",
+          "h-9 w-full rounded-full bg-foreground text-background font-semibold text-xs hover:bg-foreground/90 transition-colors",
           className,
         )}
       >
@@ -47,10 +47,10 @@ function AddToCartButtonInner({
     <Button
       onClick={() => addProductToCart(quantity)}
       disabled={disabled}
-      className={cn(
-        "h-11 w-full rounded-full bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-colors",
-        className,
-      )}
+          className={cn(
+            "h-9 w-full rounded-full bg-foreground text-background font-semibold text-xs hover:bg-foreground/90 transition-colors",
+            className,
+          )}
       aria-label={disabled ? "Out of stock" : "Add to cart"}
       {...props}
     >

@@ -127,7 +127,7 @@ export function ProductCard({
 
         {/* Add to Cart — bottom, appears on hover */}
         {!outOfStock && (
-          <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+          <div className="absolute bottom-0 left-0 right-0 p-2.5 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
             <Suspense fallback={null}>
               <AddToCartButton productId={id} />
             </Suspense>
