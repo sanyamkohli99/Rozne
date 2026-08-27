@@ -182,7 +182,7 @@ function PromoCards({ cards }: { cards: SelectPromoCards[] }) {
               href="/shop"
               className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} rounded-2xl overflow-hidden bg-stone-100/60 dark:bg-stone-900/40 group border border-border/50 transition-all duration-300 hover:shadow-xl hover:shadow-black/5`}
             >
-              <div className="relative w-full h-[320px] md:h-[480px] md:w-1/2 overflow-hidden">
+              <div className="relative w-full h-[320px] md:h-[480px] md:w-1/2 overflow-hidden rounded-2xl">
                 <Image
                   src={card.imageUrl}
                   alt={card.title}
