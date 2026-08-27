@@ -6,6 +6,7 @@ import {
   foreignKey,
   integer,
   json,
+  jsonb,
   pgTable,
   primaryKey,
   text,
@@ -473,3 +474,19 @@ export const promoCodes = pgTable("promo_codes", {
 
 export type SelectPromoCodes = InferSelectModel<typeof promoCodes>;
 export type InsertPromoCodes = InferInsertModel<typeof promoCodes>;
+
+export const siteSettings = pgTable("site_settings", {
+  key: text("key").primaryKey(),
+  value: jsonb("value"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export type SelectSiteSettings = InferSelectModel<typeof siteSettings>;
+export type InsertSiteSettings = InferInsertModel<typeof siteSettings>;
+
+export type PaymentGatewayFlags = {
+  razorpay: boolean;
+  stripe: boolean;
+};

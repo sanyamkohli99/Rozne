@@ -22,6 +22,7 @@ import EmptyCart from "@/features/carts/components/EmptyCart";
 import { RemoveCartsMutation, updateCartsMutation } from "../query";
 import { CartItems } from "../useCartStore";
 import PromoCodeInput from "./PromoCodeInput";
+import type { PaymentGatewayFlags } from "@/lib/supabase/schema";
 
 export const FetchCartQuery = gql(/* GraphQL */ `
   query FetchCartQuery($userId: UUID, $first: Int, $after: Cursor) {
@@ -47,9 +48,9 @@ export const FetchCartQuery = gql(/* GraphQL */ `
   }
 `);
 
-type UserCartSectionProps = { user: User };
+type UserCartSectionProps = { user: User; gateways?: PaymentGatewayFlags };
 
-function UserCartSection({ user }: UserCartSectionProps) {
+function UserCartSection({ user, gateways }: UserCartSectionProps) {
   const [{ data, fetching, error }, reexecuteQuery] = useQuery({
     query: FetchCartQuery,
     variables: {
@@ -208,18 +209,22 @@ function UserCartSection({ user }: UserCartSectionProps) {
             </CardContent>
 
             <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
-              <CheckoutButton
-                guest={false}
-                disabled={isLoading}
-                order={createCartObject(data)}
-                promoCode={appliedPromo || undefined}
-              />
-              <RazorpayButton
-                guest={false}
-                disabled={isLoading}
-                order={createCartObject(data)}
-                promoCode={appliedPromo || undefined}
-              />
+              {gateways?.stripe !== false && (
+                <CheckoutButton
+                  guest={false}
+                  disabled={isLoading}
+                  order={createCartObject(data)}
+                  promoCode={appliedPromo || undefined}
+                />
+              )}
+              {gateways?.razorpay !== false && (
+                <RazorpayButton
+                  guest={false}
+                  disabled={isLoading}
+                  order={createCartObject(data)}
+                  promoCode={appliedPromo || undefined}
+                />
+              )}
             </CardFooter>
           </Card>
         </section>

@@ -5,11 +5,14 @@ import {
   RecommendationProducts,
   RecommendationProductsSkeleton,
 } from "@/features/products";
+import { getEnabledGateways } from "@/_actions/settings";
 
 import Link from "next/link";
 import { Suspense } from "react";
 
 async function CartPage() {
+  const gateways = await getEnabledGateways();
+
   return (
     <Shell>
       <section className="flex justify-between items-center py-8">
@@ -18,7 +21,7 @@ async function CartPage() {
       </section>
 
       <Suspense fallback={<CartSectionSkeleton />}>
-        <CartSection />
+        <CartSection gateways={gateways} />
       </Suspense>
 
       <Suspense fallback={<RecommendationProductsSkeleton />}>

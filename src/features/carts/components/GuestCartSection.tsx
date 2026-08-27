@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import EmptyCart from "./EmptyCart";
 import CartItemCard from "./CartItemCard";
+import type { PaymentGatewayFlags } from "@/lib/supabase/schema";
 import CheckoutButton from "./CheckoutButton";
 import RazorpayButton from "./RazorpayButton";
 import useCartStore, {
@@ -22,7 +23,7 @@ import useCartStore, {
 import { useToast } from "@/components/ui/use-toast";
 import PromoCodeInput from "./PromoCodeInput";
 
-function GuestCartSection() {
+function GuestCartSection({ gateways }: { gateways?: PaymentGatewayFlags }) {
   const { toast } = useToast();
   const cartItems = useCartStore((s) => s.cart);
   const addProductToCart = useCartStore((s) => s.addProductToCart);
@@ -124,8 +125,12 @@ function GuestCartSection() {
             </CardContent>
 
             <CardFooter className="gap-x-2 md:gap-x-5 px-3 flex-col gap-y-2">
-              <CheckoutButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
-              <RazorpayButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
+              {gateways?.stripe !== false && (
+                <CheckoutButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
+              )}
+              {gateways?.razorpay !== false && (
+                <RazorpayButton guest={true} order={cartItems} promoCode={appliedPromo || undefined} />
+              )}
             </CardFooter>
           </Card>
         </section>

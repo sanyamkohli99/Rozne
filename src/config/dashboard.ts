@@ -48,5 +48,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "receipt",
       items: [],
     },
+    {
+      title: "Payment Settings",
+      href: "/admin/settings/payments",
+      icon: "billing",
+      items: [],
+    },
   ],
 };
