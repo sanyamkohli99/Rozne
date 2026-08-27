@@ -196,7 +196,7 @@ function PaymentSettingsForm({
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Admin password"
           className="max-w-xs"
-          autoComplete="current-password"
+          autoComplete="new-password"
         />
         <p className="text-xs text-muted-foreground">
           Required every time you change payment settings.
