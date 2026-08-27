@@ -136,7 +136,7 @@ function DifferentFeatureCards() {
 function LessIsMoreCard() {
   return (
     <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20 rounded-2xl overflow-hidden border border-border/50 group transition-all duration-300 hover:shadow-xl hover:shadow-black/5">
-      <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden">
+      <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden rounded-2xl">
         <Image
           src="/assets/lessismore.jpg"
           alt="ROZNE Knitwear Detail"
