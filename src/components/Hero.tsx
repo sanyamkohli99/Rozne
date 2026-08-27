@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import RozneLogo from "@/components/layouts/RozneLogo";
+import { getHeroImage } from "@/_actions/settings";
+import { keytoUrl } from "@/lib/utils";
 
-export default function Hero() {
+export default async function Hero() {
+  const heroImage = await getHeroImage();
+
   return (
     <section className="relative w-full h-[600px] md:h-[800px] mx-auto overflow-hidden">
       <Image
         alt="ROZNE Knitwear Collection"
-        src="/assets/hero.jpg"
+        src={keytoUrl(heroImage)}
         fill
         priority
         quality={85}

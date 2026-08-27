@@ -9,6 +9,8 @@ import { SelectPromoCards } from "@/lib/supabase/schema";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState, useTransition } from "react";
+import ImageUploader from "@/components/ui/ImageUploader";
+import { keytoUrl } from "@/lib/utils";
 
 type Props = {
   cards: SelectPromoCards[];
@@ -128,37 +130,15 @@ export default function PromoCardsForm({ cards }: Props) {
               </div>
 
               <div className="p-6">
-                {/* Image preview + URL */}
+                {/* Image upload + title */}
                 <div className="flex gap-6 mb-6">
-                  <div className="shrink-0">
-                    <div className="w-[200px] h-[140px] rounded-md overflow-hidden bg-zinc-100 border">
-                      {card.imageUrl ? (
-                        <Image
-                          src={card.imageUrl}
-                          alt={card.title || "Preview"}
-                          width={200}
-                          height={140}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xs">
-                          No image
-                        </div>
-                      )}
-                    </div>
+                  <div className="shrink-0 w-[200px]">
+                    <ImageUploader
+                      value={card.imageUrl ? keytoUrl(card.imageUrl) : ""}
+                      onChange={(url) => update(pos, "imageUrl", url)}
+                    />
                   </div>
                   <div className="flex-1 space-y-4">
-                    <div className="space-y-1.5">
-                      <label className="text-sm font-medium">Image path</label>
-                      <Input
-                        placeholder="/assets/products/img1.jpg"
-                        value={card.imageUrl}
-                        onChange={(e) => update(pos, "imageUrl", e.target.value)}
-                      />
-                      <p className="text-xs text-zinc-400">
-                        Paste the image path, e.g. /assets/products/img3.jpg
-                      </p>
-                    </div>
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium">Product title</label>
                       <Input
@@ -166,6 +146,17 @@ export default function PromoCardsForm({ cards }: Props) {
                         value={card.title}
                         onChange={(e) => update(pos, "title", e.target.value)}
                       />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-medium">Image URL (advanced)</label>
+                      <Input
+                        placeholder="/assets/products/img1.jpg"
+                        value={card.imageUrl}
+                        onChange={(e) => update(pos, "imageUrl", e.target.value)}
+                      />
+                      <p className="text-xs text-zinc-400">
+                        Or paste the image path directly
+                      </p>
                     </div>
                   </div>
                 </div>

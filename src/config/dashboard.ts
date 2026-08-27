@@ -54,5 +54,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "billing",
       items: [],
     },
+    {
+      title: "Hero Image",
+      href: "/admin/settings/hero",
+      icon: "image",
+      items: [],
+    },
   ],
 };

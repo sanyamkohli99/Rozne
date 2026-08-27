@@ -79,3 +79,52 @@ export async function updatePaymentGateways(
 
   return { ok: true };
 }
+
+// Hero image settings
+const HERO_KEY = "hero";
+
+export async function getHeroImage(): Promise<string> {
+  try {
+    const [row] = await db
+      .select()
+      .from(siteSettings)
+      .where(eq(siteSettings.key, HERO_KEY))
+      .limit(1);
+
+    if (!row?.value) return "/assets/hero.jpg";
+    const value = row.value as { imageUrl?: string };
+    return value.imageUrl || "/assets/hero.jpg";
+  } catch {
+    return "/assets/hero.jpg";
+  }
+}
+
+export async function updateHeroImage(
+  imageUrl: string,
+  adminPassword: string,
+): Promise<{ ok: boolean; error?: string }> {
+  if (typeof adminPassword !== "string" || adminPassword.length === 0) {
+    return { ok: false, error: "Admin password is required." };
+  }
+
+  const expected = process.env.ADMIN_TOKEN ?? "";
+  if (!expected) {
+    return { ok: false, error: "Server is not configured for admin changes." };
+  }
+
+  const a = Buffer.from(hashToken(adminPassword));
+  const b = Buffer.from(hashToken(expected));
+  if (a.length !== b.length || !timingSafeEqual(a, b)) {
+    return { ok: false, error: "Incorrect admin password." };
+  }
+
+  await db
+    .insert(siteSettings)
+    .values({ key: HERO_KEY, value: { imageUrl } })
+    .onConflictDoUpdate({
+      target: siteSettings.key,
+      set: { value: { imageUrl }, updatedAt: new Date() },
+    });
+
+  return { ok: true };
+}
