@@ -16,22 +16,16 @@ type Props = {
 function HeroSettingsForm({ initialImageUrl }: Props) {
   const { toast } = useToast();
   const [imageUrl, setImageUrl] = useState(initialImageUrl);
-  const [password, setPassword] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const onSave = () => {
-    if (!password) {
-      toast({ title: "Enter your admin password to save.", variant: "destructive" });
-      return;
-    }
     startTransition(async () => {
-      const result = await updateHeroImage(imageUrl, password);
+      const result = await updateHeroImage(imageUrl);
       if (!result.ok) {
         toast({ title: result.error ?? "Could not save.", variant: "destructive" });
         return;
       }
       toast({ title: "Hero image updated." });
-      setPassword("");
     });
   };
 
@@ -51,18 +45,6 @@ function HeroSettingsForm({ initialImageUrl }: Props) {
             placeholder="/assets/hero.jpg"
           />
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Confirm with admin password</label>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Admin password"
-          className="max-w-xs"
-          autoComplete="current-password"
-        />
       </div>
 
       <Button onClick={onSave} disabled={isPending}>

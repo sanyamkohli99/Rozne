@@ -101,23 +101,7 @@ export async function getHeroImage(): Promise<string> {
 
 export async function updateHeroImage(
   imageUrl: string,
-  adminPassword: string,
 ): Promise<{ ok: boolean; error?: string }> {
-  if (typeof adminPassword !== "string" || adminPassword.length === 0) {
-    return { ok: false, error: "Admin password is required." };
-  }
-
-  const expected = process.env.ADMIN_TOKEN ?? "";
-  if (!expected) {
-    return { ok: false, error: "Server is not configured for admin changes." };
-  }
-
-  const a = Buffer.from(hashToken(adminPassword));
-  const b = Buffer.from(hashToken(expected));
-  if (a.length !== b.length || !timingSafeEqual(a, b)) {
-    return { ok: false, error: "Incorrect admin password." };
-  }
-
   await db
     .insert(siteSettings)
     .values({ key: HERO_KEY, value: { imageUrl } })
