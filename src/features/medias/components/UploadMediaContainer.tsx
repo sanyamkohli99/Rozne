@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import ImagesGrid from "./ImageGrid";
 import ImageGridSkeleton from "./ImageGridSkeleton";
+import CropModal from "@/components/ui/CropModal";
 
 interface UploadMediaContainerProps {
   onClickItemsHandler: (mediaId: string) => void;
@@ -23,6 +24,11 @@ function UploadMediaContainer({
   const [lastCursor, setLastCursor] = React.useState<string | undefined>(
     undefined,
   );
+
+  const [cropOpen, setCropOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+
   const [{ data, fetching, error }, refetch] = useQuery({
     query: MediasPageContentQuery,
     variables: {
@@ -37,18 +43,10 @@ function UploadMediaContainer({
     router.push(`/admin/medias/${mediaId}`);
   };
 
-  const onDrop = async (acceptedFiles: FileWithPath[]) => {
-    const uploadFiles = acceptedFiles.map((file) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      }),
-    );
-
-    setUploadingImages([...uploadingImages, ...uploadFiles]);
-
+  const uploadFiles = async (files: File[]) => {
     const formData = new FormData();
-    for (let i = 0; i < uploadFiles.length; i++) {
-      formData.append(`files[${i}]`, uploadFiles[i]);
+    for (let i = 0; i < files.length; i++) {
+      formData.append(`files[${i}]`, files[i]);
     }
 
     try {
@@ -61,14 +59,33 @@ function UploadMediaContainer({
 
       if (data) {
         refetch({ requestPolicy: "network-only" });
-
-        setUploadingImages(
-          uploadingImages.filter((item) => data.includes(item.path)),
-        );
       }
     } catch (error) {
       // console.error("Error uploading files:", error)
     }
+  };
+
+  const onDrop = async (acceptedFiles: FileWithPath[]) => {
+    for (const file of acceptedFiles) {
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setCropImageSrc(reader.result as string);
+          setPendingFile(file);
+          setCropOpen(true);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        await uploadFiles([file]);
+      }
+    }
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
+    if (!pendingFile) return;
+    const croppedFile = new File([blob], pendingFile.name, { type: "image/jpeg" });
+    await uploadFiles([croppedFile]);
+    setPendingFile(null);
   };
 
   useEffect(() => {
@@ -143,6 +160,19 @@ function UploadMediaContainer({
             </div>
           </div>
         </>
+      )}
+
+      {cropImageSrc && (
+        <CropModal
+          open={cropOpen}
+          onClose={() => {
+            setCropOpen(false);
+            setCropImageSrc(null);
+            setPendingFile(null);
+          }}
+          imageSrc={cropImageSrc}
+          onCropComplete={handleCropComplete}
+        />
       )}
     </div>
   );
