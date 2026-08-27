@@ -135,15 +135,15 @@ function DifferentFeatureCards() {
 
 function LessIsMoreCard() {
   return (
-    <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20 rounded-2xl overflow-hidden border border-border/50">
-      <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden">
+    <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20 rounded-2xl overflow-hidden border border-border/50 group">
+      <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden rounded-2xl md:rounded-r-none">
         <Image
           src="/assets/lessismore.jpg"
           alt="ROZNE Knitwear Detail"
           fill
           quality={85}
           sizes="(max-width: 768px) 100vw, 66vw"
-          className="object-cover object-center"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="col-span-12 md:col-span-4 flex flex-col justify-center px-8 md:px-14 py-12 md:py-0">
