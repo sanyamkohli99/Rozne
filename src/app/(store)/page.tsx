@@ -135,7 +135,7 @@ function DifferentFeatureCards() {
 
 function LessIsMoreCard() {
   return (
-    <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20">
+    <section className="max-w-[1920px] mx-auto bg-stone-100/80 dark:bg-stone-900/60 grid grid-cols-12 my-20 rounded-2xl overflow-hidden border border-border/50">
       <div className="relative w-full h-[340px] md:h-[520px] col-span-12 md:col-span-8 overflow-hidden">
         <Image
           src="/assets/lessismore.jpg"
@@ -156,7 +156,7 @@ function LessIsMoreCard() {
         </p>
         <Link
           href="/shop"
-          className="inline-block bg-stone-900/70 backdrop-blur-sm text-white px-6 py-3 text-xs tracking-widest uppercase font-medium hover:bg-stone-800/80 transition-all duration-200 w-fit"
+          className="inline-block bg-stone-900/70 backdrop-blur-sm text-white px-6 py-3 text-xs tracking-widest uppercase font-medium hover:bg-stone-800/80 transition-all duration-200 w-fit rounded-full"
         >
           Shop the Collection
         </Link>
