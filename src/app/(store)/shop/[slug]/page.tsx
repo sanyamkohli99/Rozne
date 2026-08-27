@@ -10,7 +10,6 @@ import {
 import { AddProductToCartForm } from "@/features/carts";
 import { ProductCommentsSection } from "@/features/comments";
 import {
-  BuyNowButton,
   ProductCard,
   ProductImageShowcase,
   SizeChartDialog,
@@ -151,8 +150,6 @@ async function ProductDetailPage({ params }: Props) {
             <div className="flex items-center gap-x-3">
               <SizeChartDialog sizeChart={sizeChart} />
             </div>
-
-            <BuyNowButton productId={id} disabled={outOfStock} />
           </section>
 
           <section className="max-w-lg">
