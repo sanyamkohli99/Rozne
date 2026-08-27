@@ -1,20 +1,27 @@
 import AdminShell from "@/components/admin/AdminShell";
 import PaymentSettingsForm from "@/features/carts/components/admin/PaymentSettingsForm";
 import { getEnabledGateways } from "@/_actions/settings";
+import { getCredentials } from "@/_actions/credentials";
 
 export const dynamic = "force-dynamic";
 
-type Props = {};
-
-async function PaymentSettingsPage({}: Props) {
-  const gateways = await getEnabledGateways();
+async function PaymentSettingsPage() {
+  const [gateways, razorpayCreds] = await Promise.all([
+    getEnabledGateways(),
+    getCredentials("razorpay"),
+  ]);
 
   return (
     <AdminShell
       heading="Payment Settings"
-      description="Choose which payment methods customers see at checkout. Changes are protected — you must confirm with your admin password."
+      description="Manage payment methods and API keys. All changes require your admin password."
     >
-      <PaymentSettingsForm initial={gateways} />
+      <PaymentSettingsForm
+        initialGateways={gateways}
+        initialRazorpayKeyId={razorpayCreds?.keyId ?? ""}
+        hasRazorpaySecret={!!razorpayCreds?.keySecret}
+        hasRazorpayWebhook={!!razorpayCreds?.webhookSecret}
+      />
     </AdminShell>
   );
 }

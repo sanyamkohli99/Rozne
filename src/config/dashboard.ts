@@ -54,11 +54,5 @@ export const dashboardConfig: DashboardConfig = {
       icon: "billing",
       items: [],
     },
-    {
-      title: "Razorpay Keys",
-      href: "/admin/settings/razorpay",
-      icon: "billing",
-      items: [],
-    },
   ],
 };
