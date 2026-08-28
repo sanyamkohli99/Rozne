@@ -75,8 +75,8 @@ export default function PromoCardsForm({ cards }: Props) {
           });
           if (result.error) throw new Error(result.error);
         }
-        router.refresh();
         toast({ title: "Promo cards updated successfully." });
+        setTimeout(() => router.refresh(), 200);
       } catch (err) {
         toast({
           title: "Error saving promo cards.",

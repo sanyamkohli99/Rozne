@@ -13,8 +13,16 @@ import Link from "next/link";
 import { Icons } from "./icons";
 import Branding from "./Branding";
 import SocialMedias from "./SocialMedias";
+import { usePathname } from "next/navigation";
+import { dashboardConfig } from "@/config/dashboard";
 
 export function SideMenu() {
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
+  const navItems = isAdmin
+    ? dashboardConfig.sidebarNav.map((item) => ({ title: item.title, href: item.href }))
+    : siteConfig.mainNav;
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -29,7 +37,7 @@ export function SideMenu() {
         closeButtonClassName="w-6 h-6 md:w-10 md:h-10"
       >
         <div className="grid py-8 gap-y-3 ml-12 md:ml-[96px] mt-[120px]">
-          {siteConfig.mainNav.map(({ title, href }, index) => (
+          {navItems.map(({ title, href }, index) => (
             <SheetClose asChild key={index}>
               <Link href={href} className="text-xl md:text-3xl">
                 {title}
