@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Icons } from "./icons";
 import { Button } from "../ui/button";
 import SearchInput from "./SearchInput";
@@ -23,7 +23,9 @@ function MobileSearchInput({ onToggle }: Props) {
           <Icons.chevronLeft size={20} />
         </button>
         <div className="flex-1">
-          <SearchInput onSubmitextra={() => toggle(false)} />
+          <Suspense fallback={<div className="h-10" />}>
+            <SearchInput onSubmitextra={() => toggle(false)} />
+          </Suspense>
         </div>
       </div>
     );
