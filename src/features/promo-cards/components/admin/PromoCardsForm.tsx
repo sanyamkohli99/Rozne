@@ -113,26 +113,26 @@ export default function PromoCardsForm({ cards }: Props) {
               className="border rounded-lg overflow-hidden"
             >
               {/* Header */}
-              <div className="bg-zinc-50 px-6 py-3 border-b flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              <div className="bg-zinc-50 px-4 md:px-6 py-3 border-b flex items-center justify-between">
+                <div className="flex items-center gap-2 md:gap-3">
                   <span className="bg-zinc-900 text-white text-xs font-medium px-2.5 py-0.5 rounded">
                     {pos}
                   </span>
-                  <span className="text-sm font-medium text-zinc-700">
+                  <span className="text-xs md:text-sm font-medium text-zinc-700">
                     {CARD_LABELS[pos - 1]}
                   </span>
                 </div>
                 {pos < 4 && (
-                  <span className="text-xs text-zinc-400">
+                  <span className="text-[10px] md:text-xs text-zinc-400 hidden sm:inline">
                     ↓ Catchphrase below
                   </span>
                 )}
               </div>
 
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 {/* Image upload + title */}
-                <div className="flex gap-6 mb-6">
-                  <div className="shrink-0 w-[200px]">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 mb-6">
+                  <div className="shrink-0 w-full md:w-[200px]">
                     <ImageUploader
                       value={card.imageUrl ? keytoUrl(card.imageUrl) : ""}
                       onChange={(url) => update(pos, "imageUrl", url)}
@@ -173,7 +173,7 @@ export default function PromoCardsForm({ cards }: Props) {
                 </div>
 
                 {/* Catchphrase section */}
-                <div className="bg-zinc-50 rounded-md p-4 space-y-4">
+                <div className="bg-zinc-50 rounded-md p-3 md:p-4 space-y-3 md:space-y-4">
                   <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
                     Catchphrase (optional — shown below this card on the homepage)
                   </p>
@@ -203,7 +203,7 @@ export default function PromoCardsForm({ cards }: Props) {
         })}
       </div>
 
-      <div className="py-6 flex gap-x-5 items-center border-t">
+      <div className="py-6 flex flex-col sm:flex-row gap-4 sm:gap-x-5 items-start sm:items-center border-t">
         <Button disabled={isPending} onClick={handleSave} size="lg">
           Save All Cards
           {isPending && (
