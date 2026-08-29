@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import db from "@/lib/supabase/db";
 import { InsertPromoCards, promoCards } from "@/lib/supabase/schema";
 import { eq } from "drizzle-orm";
@@ -35,12 +36,14 @@ export const upsertPromoCard = async (
         .set(data)
         .where(eq(promoCards.id, id))
         .returning();
+      revalidatePath("/");
       return { data: result };
     } else {
       const result = await db
         .insert(promoCards)
         .values({ ...data, id })
         .returning();
+      revalidatePath("/");
       return { data: result };
     }
   } catch (err) {

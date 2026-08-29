@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createHash, timingSafeEqual } from "crypto";
 import db from "@/lib/supabase/db";
 import {
@@ -77,6 +78,7 @@ export async function updatePaymentGateways(
       set: { value, updatedAt: new Date() },
     });
 
+  revalidatePath("/");
   return { ok: true };
 }
 
@@ -110,5 +112,6 @@ export async function updateHeroImage(
       set: { value: { imageUrl }, updatedAt: new Date() },
     });
 
+  revalidatePath("/");
   return { ok: true };
 }
